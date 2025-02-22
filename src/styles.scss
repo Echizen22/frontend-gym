@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+@import './assets/styles/scss/mytheme/theme.scss';
+
+
+
+body {
+  margin: 0px;
+}
+
+
+.grid {
+  margin-left: 0;
+  margin-right: 0;
+}

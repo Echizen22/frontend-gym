@@ -1,0 +1,78 @@
+<p-menubar
+  [model]="menuItems"
+  class="sticky top-0 z-2"
+  >
+
+  <ng-template pTemplate="start">
+    <a  routerLink="/">
+      <!-- <img src="../../../../assets/images/logoMYGYM.png" alt="mi imagen" height="60" class="mr-2"> -->
+      <svg width="150" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+        <!-- Fondo oscuro solo para previsualizar -->
+        <rect width="100%" height="100%" fill="#212121" />
+
+        <!-- Texto del logo -->
+        <text x="50%" y="40" fill="#FF5722" font-size="30" font-weight="bold" font-family="Arial, sans-serif" text-anchor="middle">
+          My Gym
+        </text>
+
+        <!-- Ícono de mancuerna en blanco -->
+        <g fill="#FFFFFF">
+          <!-- Barra de la mancuerna -->
+          <rect x="60" y="50" width="70" height="10" />
+          <!-- Pesas de la izquierda -->
+          <rect x="40" y="45" width="10" height="20" />
+          <rect x="50" y="40" width="10" height="30" />
+          <!-- Pesas de la derecha -->
+          <rect x="140" y="45" width="10" height="20" />
+          <rect x="130" y="40" width="10" height="30" />
+        </g>
+
+        <!-- Contorno blanco alrededor del texto (opcional para mayor contraste) -->
+        <text x="50%" y="40" fill="none" stroke="#FFFFFF" stroke-width="2" font-size="30" font-weight="bold" font-family="Arial, sans-serif" text-anchor="middle">
+          My Gym
+        </text>
+      </svg>
+
+
+    </a>
+  </ng-template>
+
+  <ng-template pTemplate="end">
+
+    <!-- Botones en pantallas más grande -->
+    <button type="button" class="no-mobile btn-login mr-1" routerLink="/auth/login" aria-label="Iniciar sesión">Iniciar Sesión</button>
+    <button type="button" class="no-mobile btn-register" routerLink="/auth/register" aria-label="Registrarse">Registrarse</button>
+
+    <!-- Botones mobiles -->
+    <button
+      type="button"
+      class="btn-mobile mobile btn-mobile-login mr-1"
+      title="Iniciar sesión"
+      routerLink="/auth/login"
+    >
+      <i class="pi pi-sign-in"></i>
+    </button>
+    <button
+      type="button"
+      class="btn-mobile mobile btn-mobile-register"
+      title="Registrarse"
+      routerLink="/auth/register"
+    >
+      <i class="pi pi-user-plus">
+    </i></button>
+
+  </ng-template>
+
+  <!-- <ng-template  pTemplate="end"> -->
+
+    <!-- <button type="button" class="btn-login mr-1">Iniciar Sesión</button>
+    <button type="button" class="btn-register" aria-label="Registrarse">Registrarse</button> -->
+
+
+
+  <!-- </ng-template> -->
+
+  <!-- <ng-template pTemplate="end">
+  </ng-template> -->
+
+</p-menubar>

@@ -1,0 +1,63 @@
+
+<!-- Carrusel de imagenes -->
+<p-carousel
+[value]="promocion"
+[numVisible]="1"
+[numScroll]="1"
+[autoplayInterval]="miliSegunds"
+circular="true"
+>
+<ng-template let-promocion pTemplate="item">
+  <div class="m-2">
+    <div class="mb-3">
+      <div class="relative mx-auto">
+        <img
+            [src]="promocion.url"
+            alt=""
+            class="w-full img-carousel" />
+      </div>
+
+    </div>
+  </div>
+</ng-template>
+</p-carousel>
+
+
+
+<!-- imagen -->
+ <div class="p-2">
+  <img class="w-full" src="../../../../assets/images/promoción20deDescuento.png" alt="">
+ </div>
+
+
+ <div class="p-grid p-justify-content-center faq-container md:p-2 sm:p-2">
+  <div >
+    <h2>FAQ</h2>
+    <div class="p-grid p-justify-content-start accordion-container">
+      <div>
+        <p-accordion [multiple]="true" >
+          <p-accordionTab header="¿Cómo My Gym se adapta a mi nivel de condición física y objetivos específicos?">
+            <p>
+              En My Gym, nos enorgullece ofrecer programas personalizados que se ajustan a diversos niveles de condición física y aspiraciones personales. ¿Eres principiante y buscas establecer una base sólida? ¿O eres un atleta experimentado que busca desafíos más avanzados? Nuestros entrenadores altamente calificados están aquí para adaptar tus rutinas de ejercicios, proporcionar orientación experta y ayudarte a alcanzar tus objetivos de manera efectiva.
+            </p>
+          </p-accordionTab>
+          <p-accordionTab header="¿Puedo hacer una sesión de prueba antes de apuntarme a My Gym?">
+            <p>
+              Descubre la experiencia única de My Gym con la tranquilidad de una sesión de prueba. Antes de comprometerte, te ofrecemos la oportunidad de sumergirte en nuestro mundo de fitness y bienestar. Durante esta sesión de prueba, podrás experimentar de primera mano todo lo que My Gym tiene para ofrecer.
+              Explora nuestras instalaciones de vanguardia, con equipos de última generación y un ambiente motivador diseñado para inspirarte en cada paso de tu viaje fitness.
+            </p>
+          </p-accordionTab>
+          <p-accordionTab header="¿Cuáles son las opciones de membresía disponibles en My Gym?">
+            <p>
+              En My Gym, entendemos que cada persona tiene necesidades y metas fitness únicas. Por eso, ofrecemos diversas opciones de membresía para adaptarnos a tu estilo de vida y objetivos. ¿Estás interesado en entrenamientos diarios en nuestros modernos clubes, participar en clases colectivas de última generación en casa, o una combinación de ambas experiencias? Nuestro equipo estará encantado de guiarte a través de nuestras opciones de membresía para que encuentres la solución perfecta que se ajuste a tus necesidades y te ayude a alcanzar tus metas de bienestar. ¡Descubre la membresía ideal para ti en My Gym!
+            </p>
+          </p-accordionTab>
+        </p-accordion>
+      </div>
+    </div>
+    <div class="additional-content mb-3">
+      <p>¡Descubre más sobre nuestras ofertas especiales!</p>
+      <img src="../../../../assets/images/descubre.jpg" alt="Ofertas Especiales">
+    </div>
+  </div>
+</div>

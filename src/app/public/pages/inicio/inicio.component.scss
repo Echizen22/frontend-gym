@@ -1,0 +1,57 @@
+
+
+.img-carousel {
+  width: 100%; /* 🔥 Hace que la imagen ocupe todo el contenedor */
+  height: 65rem; /* 🔥 Asegura una altura uniforme */
+  object-fit: cover;
+  // display: block;
+
+}
+
+.faq-container {
+  max-width: 1000px; /* Establece un ancho máximo para el contenedor principal */
+  margin: 0 auto; /* Centra el contenedor principal en la pantalla */
+}
+
+.accordion-container {
+  margin-top: 16px; /* Agrega espacio entre el encabezado y el acordeón */
+}
+
+.additional-content {
+  margin-top: 16px; /* Agrega espacio entre el acordeón y el contenido adicional */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.additional-content img {
+  max-width: 40%; /* Ajusta el ancho máximo de la imagen según tus preferencias */
+  height: auto;
+}
+
+
+
+@media screen and ( max-width: 1024px ) {
+  .img-carousel {
+    height: auto;
+  }
+
+  .additional-content{
+    padding: .8rem;
+  }
+
+
+}
+
+
+@media screen and ( max-width: 1024px ) {
+  .faq-container {
+    padding: 1rem;
+  }
+
+
+}
+
+
+
