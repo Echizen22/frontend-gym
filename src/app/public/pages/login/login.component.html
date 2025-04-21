@@ -1,0 +1,46 @@
+
+<div id="contenido" class="grid justify-content-center">
+  <div class="sm:col-11 md:col-6 lg:col-3 mt-5 p-4 border-1">
+    <h1>Iniciar Sesión</h1>
+    <form [formGroup]="myForm" (ngSubmit)="login()">
+
+      <div class="field">
+        <label>Correo electronico</label><br>
+        <input
+          class="w-full"
+          type="text"
+          pInputText
+          required
+          formControlName="email"
+          placeholder="Ingrese su dni">
+      </div>
+
+      <div class="field">
+        <label>Contraseña</label><br>
+        <input type="password" required pPassword class="w-full" formControlName="password" placeholder="Ingrese su contraseña" >
+      </div>
+
+
+      <div class="mb-2">
+        <p-button
+          label="Login"
+          type="submit"
+          [disabled]="myForm.invalid"
+          [text]="true"
+          [raised]="true" />
+      </div>
+
+
+
+      <div>
+          <span class="mr-1">¿No tienes cuenta?</span>
+          <a routerLink="/auth/register">
+              Crear una aquí
+          </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Dialogs -->
+<p-toast></p-toast>

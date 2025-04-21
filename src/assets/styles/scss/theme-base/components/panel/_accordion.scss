@@ -65,7 +65,7 @@
         .p-accordion-tab {
             margin-bottom: $accordionSpacing;
         }
-        
+
         @if $accordionSpacing == 0 {
             .p-accordion-header {
                 .p-accordion-header-link {
@@ -114,6 +114,6 @@
                     border-bottom-left-radius: $borderRadius;
                 }
             }
-        } 
+        }
     }
 }

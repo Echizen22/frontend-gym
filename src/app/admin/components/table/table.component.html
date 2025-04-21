@@ -1,0 +1,45 @@
+<div class="card">
+  <p-table
+    class="table"
+    [value]="value"
+    [loading]="loading"
+    [tableStyle]="{ 'min-width': '50rem' }">
+      <ng-template pTemplate="header">
+          <tr>
+            <th class="m-1 p-2" *ngFor="let col of columns">{{ col.header }}</th>
+            <ng-container *ngIf="headerActions">
+              <ng-container *ngTemplateOutlet="headerActions"></ng-container>
+            </ng-container>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData>
+          <tr>
+            <td class="m-1 p-2" *ngFor="let col of columns">
+              @switch (col.type) {
+                @case ('date') {
+                  {{ rowData[col.field] | date: 'yyyy-MM-dd' }}
+                }
+                @case('boolean') {
+                  <i class="pi" [ngClass]="{
+                    'pi-check-circle text-green-500': rowData[col.field],
+                    'pi-times-circle text-red-500': !rowData[col.field]
+                  }"></i>
+                }
+                @default {
+                  {{ rowData[col.field] }}
+                }
+              }
+
+              <!-- @if( col.field === 'fechaRegistro') {
+                {{ rowData[col.field] | date:'yyyy-MM-dd' }}
+              } @else {
+                {{ rowData[col.field] }}
+              } -->
+            </td>
+            <ng-container *ngIf="rowActions">
+              <ng-container *ngTemplateOutlet="rowActions; context: { $implicit: rowData }"></ng-container>
+            </ng-container>
+          </tr>
+      </ng-template>
+  </p-table>
+</div>

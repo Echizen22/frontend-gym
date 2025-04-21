@@ -1,0 +1,84 @@
+<main>
+  <h1 class="text-sm  md:text-base lg:text-lg xl:text-2xl">Mantenimiento de Usuarios</h1>
+
+  <form class="grid justify-center " action="">
+
+    <div class="col-6 md:col-4 lg:col-3 flex flex-column gap-1">
+      <label class="text-xs sm:text-sm md:text-base" for="dni">Dni</label>
+      <input
+          pInputText
+          id="dni"
+          aria-describedby="dni-help"
+          formControlName="dni" />
+    </div>
+
+    <div class="col-6 md:col-4 lg:col-3 flex flex-column gap-1">
+      <label class="text-xs sm:text-sm md:text-base" for="dni">Nombre</label>
+      <input
+          pInputText
+          id="dni"
+          aria-describedby="dni-help"
+          formControlName="dni" />
+    </div>
+
+    <div class="col-6 md:col-4 lg:col-3 flex flex-column gap-1">
+      <label class="text-xs sm:text-sm md:text-base" for="dni">Dni</label>
+      <input
+          pInputText
+          id="dni"
+          aria-describedby="dni-help"
+          formControlName="dni" />
+    </div>
+
+    <div class="col-6 md:col-4 lg:col-3 flex flex-column gap-1">
+      <label class="text-xs sm:text-sm md:text-base" for="dni">Nombre</label>
+      <input
+          pInputText
+          id="dni"
+          aria-describedby="dni-help"
+          formControlName="dni" />
+    </div>
+
+    <div class="col-6 md:col-4 flex flex-column gap-1">
+      <label class="text-xs sm:text-sm md:text-base" for="dni">Dni</label>
+      <input
+          pInputText
+          id="dni"
+          aria-describedby="dni-help"
+          formControlName="dni" />
+    </div>
+
+    <div class="col-6 md:col-4 flex flex-column gap-1">
+      <label class="text-xs sm:text-sm md:text-base" for="dni">Nombre</label>
+      <input
+          pInputText
+          id="dni"
+          aria-describedby="dni-help"
+          formControlName="dni" />
+    </div>
+
+    <div class="btn-filter-container">
+      <button class="btn btn-search" type="button" (click)="search()">Buscar</button>
+      <button class="btn btn-reset" type="button" (click)="reset()">Limpiar</button>
+    </div>
+
+  </form>
+
+
+  <admin-component-table [value]="usuarios" [loading]="loading" [columns]="columnas" [rowActions]="rowActionsTemplate" [headerActions]="headerActionsTemplate">
+
+    <!-- Columna extra en el header -->
+    <ng-template #headerActionsTemplate>
+      <th>Operaciones</th>
+    </ng-template>
+
+    <!-- Columna extra en cada fila -->
+    <ng-template #rowActionsTemplate let-usuario>
+      <td class="operaciones-body">
+        <p-button  icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" />
+        <p-button (click)="onDelete(usuario._id)" icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger" />
+      </td>
+    </ng-template>
+
+  </admin-component-table>
+</main>

@@ -96,7 +96,8 @@ $tableHeaderCellBg: #f8f9fa;
 
 /// Text color of a table header cell
 /// @group data
-$tableHeaderCellTextColor: $textColor;
+// $tableHeaderCellTextColor: $textColor;
+$tableHeaderCellTextColor: $textTableColor;
 
 /// Font weight of a table header cell
 /// @group data
@@ -152,7 +153,8 @@ $tableBodyRowBg: #ffffff;
 
 /// Text color of a table body row
 /// @group data
-$tableBodyRowTextColor: $textColor;
+// $tableBodyRowTextColor: $textColor;
+$tableBodyRowTextColor: $textTableColor;
 
 /// Background of an even table body row
 /// @group data
@@ -188,7 +190,8 @@ $tableFooterCellBg: #f8f9fa;
 
 /// Text color of a table footer cell
 /// @group data
-$tableFooterCellTextColor: $textColor;
+// $tableFooterCellTextColor: $textColor;
+$tableFooterCellTextColor: $textTableColor;
 
 /// Font weight of a table footer cell
 /// @group data
@@ -223,7 +226,8 @@ $tableFooterBg: #f8f9fa;
 
 /// Text color of a table footer
 /// @group data
-$tableFooterTextColor: $textColor;
+// $tableFooterTextColor: $textColor;
+$tableFooterTextColor: $textTableColor;
 
 /// Font weight of a table footer
 /// @group data

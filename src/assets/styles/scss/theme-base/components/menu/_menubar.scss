@@ -47,12 +47,12 @@
             color: $horizontalMenuRootMenuitemIconColor;
             border-radius: $actionIconBorderRadius;
             transition: $actionIconTransition;
-        
+
             &:hover {
                 color: $horizontalMenuRootMenuitemIconHoverColor;
                 background: $horizontalMenuRootMenuitemHoverBg;
             }
-        
+
             &:focus {
                 @include focused();
             }
@@ -66,12 +66,12 @@
             border: $overlayMenuBorder;
             box-shadow: $overlayMenuShadow;
             width: 100%;
-    
+
             .p-menuitem-separator {
                 border-top: $divider;
                 margin: $menuSeparatorMargin;
             }
-    
+
             .p-submenu-icon {
                 font-size: $menuitemSubmenuIconFontSize;
             }
@@ -122,7 +122,7 @@
                     }
                 }
             }
-    
+
             .p-menuitem {
                 width: 100%;
                 position: static;

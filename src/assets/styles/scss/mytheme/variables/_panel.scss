@@ -12,7 +12,8 @@ $panelHeaderBg: #f8f9fa;
 
 /// Text color of a panel header
 /// @group panel
-$panelHeaderTextColor: $textColor;
+// $panelHeaderTextColor: $textColor;
+$panelHeaderTextColor: $textAccordion;
 
 /// Font weight of a panel header
 /// @group panel
@@ -112,7 +113,8 @@ $accordionHeaderHoverBorderColor: $panelHeaderBorder;
 
 /// Text color of an accordion panel header in hover state
 /// @group panel
-$accordionHeaderTextHoverColor: $textColor;
+// $accordionHeaderTextHoverColor: $textColor;
+$accordionHeaderTextHoverColor: $textAccordion;
 
 /// Background of an accordion panel header in expanded state
 /// @group panel
@@ -124,7 +126,8 @@ $accordionHeaderActiveBorderColor: #dee2e6;
 
 /// Text color of an accordion panel header in expanded state
 /// @group panel
-$accordionHeaderTextActiveColor: $textColor;
+// $accordionHeaderTextActiveColor: $textColor;
+$accordionHeaderTextActiveColor: $textAccordion;
 
 /// Hover background of an accordion panel header in expanded state
 /// @group panel
@@ -136,7 +139,8 @@ $accordionHeaderActiveHoverBorderColor: #dee2e6;
 
 /// Text color of an accordion panel header in expanded state
 /// @group panel
-$accordionHeaderTextActiveHoverColor: $textColor;
+// $accordionHeaderTextActiveHoverColor: $textColor;
+$accordionHeaderTextActiveHoverColor: $textAccordion;
 
 /// Border for a content section of an accordion panel
 /// @group panel
@@ -148,7 +152,8 @@ $accordionContentBg: $panelContentBg;
 
 /// Text color for a content section of an accordion panel
 /// @group panel
-$accordionContentTextColor: $panelContentTextColor;
+// $accordionContentTextColor: $panelContentTextColor;
+$accordionContentTextColor: $textAccordion;
 
 /// Padding for a content section of an accordion panel
 /// @group panel
@@ -237,6 +242,7 @@ $tabviewContentBg: $panelContentBg;
 /// Text color for a content section of a tabview tab
 /// @group panel
 $tabviewContentTextColor: $panelContentTextColor;
+// $tabviewContentTextColor: $textAccordion;
 
 /// Padding for a content section of a tabview tab
 /// @group panel

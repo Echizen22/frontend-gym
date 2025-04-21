@@ -4,9 +4,9 @@
   >
 
   <ng-template pTemplate="start">
-    <a  routerLink="/">
+    <a  [routerLink]="isAdmin ? '/admin/welcome': '/' ">
       <!-- <img src="../../../../assets/images/logoMYGYM.png" alt="mi imagen" height="60" class="mr-2"> -->
-      <svg width="150" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+      <svg class="w-8" width="150" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
         <!-- Fondo oscuro solo para previsualizar -->
         <rect width="100%" height="100%" fill="#212121" />
 
@@ -39,40 +39,35 @@
 
   <ng-template pTemplate="end">
 
-    <!-- Botones en pantallas más grande -->
-    <button type="button" class="no-mobile btn-login mr-1" routerLink="/auth/login" aria-label="Iniciar sesión">Iniciar Sesión</button>
-    <button type="button" class="no-mobile btn-register" routerLink="/auth/register" aria-label="Registrarse">Registrarse</button>
+    @if (!isAdmin) {
+      <!-- Botones en pantallas más grande -->
+      <button type="button" class="no-mobile btn-login mr-1" routerLink="/login" aria-label="Iniciar sesión">Iniciar Sesión</button>
+      <button type="button" class="no-mobile btn-register" routerLink="/register" aria-label="Registrarse">Registrarse</button>
 
-    <!-- Botones mobiles -->
-    <button
-      type="button"
-      class="btn-mobile mobile btn-mobile-login mr-1"
-      title="Iniciar sesión"
-      routerLink="/auth/login"
-    >
-      <i class="pi pi-sign-in"></i>
-    </button>
-    <button
-      type="button"
-      class="btn-mobile mobile btn-mobile-register"
-      title="Registrarse"
-      routerLink="/auth/register"
-    >
-      <i class="pi pi-user-plus">
-    </i></button>
+      <!-- Botones mobiles -->
+      <button
+        type="button"
+        class="btn-mobile mobile btn-mobile-login mr-1"
+        title="Iniciar sesión"
+        routerLink="/login"
+      >
+        <i class="pi pi-sign-in"></i>
+      </button>
+      <button
+        type="button"
+        class="btn-mobile mobile btn-mobile-register"
+        title="Registrarse"
+        routerLink="/register"
+      >
+        <i class="pi pi-user-plus">
+      </i></button>
+    } @else {
+      <button>prueba</button>
+    }
+
+
+
 
   </ng-template>
-
-  <!-- <ng-template  pTemplate="end"> -->
-
-    <!-- <button type="button" class="btn-login mr-1">Iniciar Sesión</button>
-    <button type="button" class="btn-register" aria-label="Registrarse">Registrarse</button> -->
-
-
-
-  <!-- </ng-template> -->
-
-  <!-- <ng-template pTemplate="end">
-  </ng-template> -->
 
 </p-menubar>

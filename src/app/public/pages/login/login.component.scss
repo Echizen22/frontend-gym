@@ -1,0 +1,73 @@
+label {
+  font-weight: bold;
+}
+
+#contenido {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  /* background-color: #3498db; */
+  background-image: url('../../../../assets/images/fondo_gimansio.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.sm\:col-11 {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.border-1 {
+  border: 1px solid #3498db;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: .8rem;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #3498db;
+  border-radius: 4px;
+}
+
+a {
+  color: #2980b9;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+h1 {
+  text-align: center;
+  color: #3498db;
+  font-size: 1.8rem;
+}
+
+div a {
+  vertical-align: middle;
+}
+
+form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+div {
+  margin-top: 10px;
+}

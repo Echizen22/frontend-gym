@@ -2,7 +2,8 @@ import { Routes } from '@angular/router';
 import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
 
 import { PUBLIC_ROUTES } from './public/public-routes';
-import { PRIVATE_ROUTES } from './private/private-routes';
+import { ADMIN_ROUTES } from './admin/admin-routes';
+import { PrivateLayoutComponent } from './layouts/private-layout/private-layout.component';
 
 export const routes: Routes = [
   {
@@ -11,7 +12,8 @@ export const routes: Routes = [
     children: PUBLIC_ROUTES
   },
   {
-    path: 'private',
-    children: PRIVATE_ROUTES
+    path: 'admin',
+    component: PrivateLayoutComponent,
+    children: ADMIN_ROUTES
   }
 ];

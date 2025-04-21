@@ -1,25 +1,54 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, computed, inject, Input, OnInit, signal } from '@angular/core';
 
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
+import { AuthService } from '../../../services/auth.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'shared-header',
   standalone: true,
   imports: [
     CommonModule,
-
     MenubarModule,
     ButtonModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+
+
+  private readonly authService: AuthService = inject(AuthService);
+
+  private _isAdmin = signal<boolean>(false);
+
 
   @Input()
   menuItems!: MenuItem[];
+
+  get isAdmin() {
+    return this._isAdmin();
+  }
+
+
+  ngOnInit(): void {
+    this._isAdmin.set(this.authService.isAdmin());
+    if( this.isAdmin ) {
+      this.menuItems = [
+        {
+          label: 'Bienvenido',
+          routerLink: '/admin'
+        },
+        {
+        label: 'Usuarios',
+        routerLink: '/admin/usuarios'
+        }
+      ]
+    }
+  }
+
 
 }
