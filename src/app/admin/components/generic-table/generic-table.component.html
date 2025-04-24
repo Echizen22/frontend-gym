@@ -102,11 +102,9 @@
 
                 <!-- Default (texto/número) -->
                 @default {
-                  @if (rowData[col.field] === 'activo') {
-                    <p-tag severity="success" [value]="rowData[col.field]"/>
-                  }@else if (rowData[col.field] === 'inactivo') {
-                    <p-tag severity="warning" [value]="rowData[col.field]"/>
-                  } @else {
+                  @if (col.filterType === 'select') {
+                    <p-tag [severity]="this.getSeverity(rowData[col.field])" [value]="rowData[col.field]"/>
+                   } @else {
                     <span>
                       {{ rowData[col.field] }}
                     </span>

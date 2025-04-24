@@ -19,6 +19,7 @@ export interface FormField<T = any> {
   defaultValue?: any;
   clear?: boolean;
   validators?: ValidatorFn[];
+  showEnabledFieldButton?: boolean;
 }
 
 

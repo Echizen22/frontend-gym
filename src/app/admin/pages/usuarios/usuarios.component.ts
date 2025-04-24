@@ -15,6 +15,7 @@ import { GenericTableComponent } from "../../components/generic-table/generic-ta
 import { GenericFormComponent } from '../../components/generic-form/generic-form.component';
 import { FilterValues, FormField } from '../../interfaces/form-field.interface';
 import { TableConfig } from '../../interfaces/table-config.interface';
+import { MessageService } from 'primeng/api';
 
 
 interface Columnas {
@@ -27,7 +28,6 @@ interface Columnas {
   selector: 'app-usuarios',
   standalone: true,
   imports: [
-    TableComponent,
     GenericTableComponent,
     ButtonModule,
     DropdownModule,
@@ -36,6 +36,7 @@ interface Columnas {
     GenericFormComponent,
     DialogModule,
 ],
+providers: [MessageService],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.scss'
 })
@@ -43,6 +44,7 @@ export class UsuariosComponent implements OnInit {
 
   private readonly fb = inject(UntypedFormBuilder);
   private readonly usuarioService = inject(UsuarioService);
+  private messageService = inject( MessageService );
 
 
   usuarios!: Usuario[];
@@ -84,10 +86,10 @@ export class UsuariosComponent implements OnInit {
 
     switch (this.mode) {
       case 'create':
-        this.usuarioService.createUser(usuario).subscribe(this.createUsuario());
+        this.usuarioService.createUser(usuario).subscribe(this.createUser());
         break;
       case 'edit':
-        this.usuarioService.updateUserById(this.selectDniUser, usuario).subscribe(this.editUsuario());
+        this.usuarioService.updateUserById(this.selectDniUser, usuario).subscribe(this.editUser());
         break;
       default:
         console.warn('Modo desconocido en updateUser');
@@ -126,9 +128,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   onDeleteUser(dni: string) {
-    console.log('Eliminar usuario:', dni);
-    // Aquí implementar la lógica para eliminar
-    // Puedes mostrar un diálogo de confirmación antes
+    this.usuarioService.deleteUser(dni).subscribe(this.deleteUser());
   }
 
 
@@ -167,7 +167,7 @@ export class UsuariosComponent implements OnInit {
   }
 
 
-  private createUsuario(): Partial<Observer<Usuario>> {
+  private createUser(): Partial<Observer<Usuario>> {
     return {
       next: (res: Usuario) => {
         this.loadUsers();
@@ -178,7 +178,7 @@ export class UsuariosComponent implements OnInit {
     }
   }
 
-  private editUsuario(): Partial<Observer<Usuario>> {
+  private editUser(): Partial<Observer<Usuario>> {
     return {
       next: (res: Usuario) => {
         this.loadUsers();
@@ -189,13 +189,25 @@ export class UsuariosComponent implements OnInit {
     }
   }
 
+  private deleteUser(): Partial<Observer<void>> {
+    return {
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Usuario eliminado con exito', detail: 'Usuario Eliminado' });
+        this.loadUsers();
+      },
+      error: (error) => {
+        console.error('Error al eliminar un usuario:', error);
+      }
+    }
+  }
+
 
   buildFormFields(mode: 'create' | 'edit'): FormField<Usuario>[] {
     const fields: FormField<Usuario>[] = [
       { name: 'dni', label: 'DNI', type: 'text', validators: [Validators.required], disabled: mode === 'edit' },
       { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required] },
       { name: 'apellidos', label: 'Apellidos', type: 'text', validators: [Validators.required] },
-      { name: 'email', label: 'Correo electrónico', type: 'email', validators: [Validators.required], disabled: mode === 'edit' },
+      { name: 'email', label: 'Correo electrónico', type: 'email', validators: [Validators.required], disabled: mode === 'edit', showEnabledFieldButton: mode === 'edit' },
       { name: 'telefono', label: 'Teléfono', type: 'text' },
       { name: 'isAdmin', label: 'Administrador', type: 'boolean', defaultValue: false },
       {

@@ -35,4 +35,8 @@ export class UsuarioService {
     return this.apiService.doPatch<Usuario>('/usuario', dni, body, { responseType: 'json'} );
   }
 
+  deleteUser(dni: string) {
+    return this.apiService.doDelete<void>(['usuario', dni], { responseType: 'json' });
+  }
+
 }

@@ -4,6 +4,8 @@ import { Component, computed, inject, Input, OnInit, signal } from '@angular/cor
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
+import { MenuModule } from 'primeng/menu';
+
 import { AuthService } from '../../../services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -14,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     MenubarModule,
     ButtonModule,
+    MenuModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
@@ -24,6 +27,18 @@ export class HeaderComponent implements OnInit {
   private readonly authService: AuthService = inject(AuthService);
 
   private _isAdmin = signal<boolean>(false);
+  itemsLogin: MenuItem[] = [
+    {
+      label: 'Options',
+      items: [
+          {
+              label: 'Logout',
+              icon: 'pi pi-sign-out',
+              command: () => this.authService.logout()
+          }
+      ]
+    }
+  ];
 
 
   @Input()

@@ -4,6 +4,7 @@ import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { LoginResponse } from '../interfaces/login-response.interface';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class AuthService {
   private readonly baseUrl: string = environment.baseUrl;
   private readonly http: HttpClient = inject(HttpClient);
   private readonly cookieService: CookieService = inject(CookieService);
+  private readonly router = inject(Router);
 
   login(email: string, password: string): Observable<boolean> {
     const url = `${this.baseUrl}/auth/login`;
@@ -59,6 +61,7 @@ export class AuthService {
 
   logout(): void {
     this.cookieService.delete(this.tokenKey, '/');
+    this.router.navigateByUrl('/login');
   }
 
   setAuthentication(name: string, token: string): void {

@@ -52,6 +52,8 @@
   background-color: #FF5722;
 }
 
+
+
 :host ::ng-deep {
   .p-menubar {
 
@@ -72,6 +74,27 @@
       background-color: #4d4d4d;
     }
   }
+
+  .p-menu {
+    border-radius: 8px;
+    .p-button.p-button-text.p-button-plain, .p-menuitem-icon {
+      color: white;
+    }
+
+  }
+
+  .btn-logout {
+
+    .p-button {
+      color: #fff;
+    }
+
+  }
+
+
+
+
+
 }
 
 

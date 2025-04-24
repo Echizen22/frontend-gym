@@ -2,7 +2,7 @@
 
   @for (field of formFields; track $index) {
     @if (!field.hidden) {
-      <div class="col-12 md:col-6 lg:col-4 flex flex-column gap-1 mb-6">
+      <div class="col-12 md:col-6 lg:col-4 flex flex-column gap-1 mb-3">
         <label class="text-xs sm:text-sm md:text-base" [for]="field.name">{{ field.label }}</label>
 
         <!-- Campo de texto -->
@@ -45,9 +45,9 @@
 
          @if (field.type === 'boolean') {
           <p-checkbox
+            class="ju"
             [formControlName]="field.name"
             [binary]="true"
-            [label]="field.label"
             />
          }
 
@@ -66,6 +66,16 @@
          @if (field.type === 'password') {
           <p-password class="w-full" [formControlName]="field.name" [feedback]="false" />
          }
+
+         @if (this.mode === 'edit' && field.showEnabledFieldButton) {
+          <p-button
+            (onClick)="enable(field.name)"
+            icon="pi pi-unlock"
+            severity="success"
+            [rounded]="true"
+            [text]="true"
+          />
+        }
 
 
          @if (form.get(field.name)?.touched && form.get(field.name)?.invalid) {

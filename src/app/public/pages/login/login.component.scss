@@ -6,7 +6,7 @@ label {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh;
+  height: 78vh;
   /* background-color: #3498db; */
   background-image: url('../../../../assets/images/fondo_gimansio.jpg');
   background-repeat: no-repeat;
@@ -70,4 +70,8 @@ form {
 
 div {
   margin-top: 10px;
+}
+
+.grid {
+  margin-top: 0;
 }

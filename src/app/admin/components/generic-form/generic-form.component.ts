@@ -75,7 +75,6 @@ export class GenericFormComponent<T extends Record<string, any>> implements OnCh
       formGroup[field.name] = control;
     });
     this.form = this.fb.group(formGroup);
-    console.log(this.form.controls);
   }
 
 
@@ -94,6 +93,17 @@ export class GenericFormComponent<T extends Record<string, any>> implements OnCh
     }, {} as Partial<T>);
 
     this.form.reset(defaultValues);
+  }
+
+
+  enable(control: string) {
+    const formControl = this.form.get(control);
+
+    if (!formControl) return;
+
+    formControl.disabled
+      ? formControl.enable()
+      : formControl.disable();
   }
 
   private markAllAsTouched() {

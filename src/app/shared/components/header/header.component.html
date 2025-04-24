@@ -62,7 +62,8 @@
         <i class="pi pi-user-plus">
       </i></button>
     } @else {
-      <button>prueba</button>
+        <p-menu #menu [model]="itemsLogin" [popup]="true"></p-menu>
+        <p-button class="btn-logout" icon="pi pi-bars" (click)="menu.toggle($event)" [text]="true" [plain]="true"></p-button>
     }
 
 
