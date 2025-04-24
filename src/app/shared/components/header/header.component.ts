@@ -60,7 +60,31 @@ export class HeaderComponent implements OnInit {
         {
         label: 'Usuarios',
         routerLink: '/admin/usuarios'
-        }
+        },
+        {
+        label: 'Membresias',
+        routerLink: '/admin/membresias'
+        },
+        {
+        label: 'Pagos',
+        routerLink: '/admin/pagos'
+        },
+        {
+        label: 'Instructores',
+        routerLink: '/admin/instructores'
+        },
+        {
+        label: 'Clases',
+        routerLink: '/admin/clases'
+        },
+        {
+        label: 'Reservas',
+        routerLink: '/admin/reservas'
+        },
+        {
+        label: 'Promociones',
+        routerLink: '/admin/promociones'
+        },
       ]
     }
   }

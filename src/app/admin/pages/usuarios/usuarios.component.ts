@@ -77,7 +77,8 @@ export class UsuariosComponent implements OnInit {
       ]},
     ],
     menuMode: 'menu',
-    showBtnLimpiarFiltros: true
+    showBtnLimpiarFiltros: true,
+    showRowExpansion: false
   };
 
 

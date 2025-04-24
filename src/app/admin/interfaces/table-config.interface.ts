@@ -19,4 +19,5 @@ export interface TableConfig {
   columns: TableColumn[];
   menuMode: 'menu' | 'row';
   showBtnLimpiarFiltros: boolean;
+  showRowExpansion?: boolean;
 }

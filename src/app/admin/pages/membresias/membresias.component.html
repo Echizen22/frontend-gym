@@ -1,13 +1,13 @@
 <main>
-  <h1 class="text-sm  md:text-base lg:text-lg xl:text-2xl">Mantenimiento de Usuarios</h1>
+  <h1 class="text-sm  md:text-base lg:text-lg xl:text-2xl">Mantenimiento de Membresias</h1>
   <app-generic-table
   [config]="tableConfig"
-  [data]="usuarios"
+  [data]="membresias"
   [totalRecords]="totalRecords"
   [loading]="loading"
-  (showModalCreate)="onCreateUser($event)"
-  (onEdit)="onEditUser($event)"
-  (onDelete)="onDeleteUser($event)"
+  (showModalCreate)="onCreateMembresia($event)"
+  (onEdit)="onEditMembresia($event)"
+  (onDelete)="onDeleteMembresia($event)"
   ></app-generic-table>
 
 
@@ -24,9 +24,9 @@
 
   <admin-generic-form
     #formRef
-    [formFieldsValues]="selectedUser"
+    [formFieldsValues]="selectedMembresia"
     [formFields]="formFields"
-    (onEntity)="updateUser($event)"
+    (onEntity)="updateMembresia($event)"
     [mode]="mode"
   ></admin-generic-form>
 

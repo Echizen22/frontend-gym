@@ -32,7 +32,7 @@ export class GenericFormComponent<T extends Record<string, any>> implements OnCh
   @Input() formFields!: FormField<T>[];
   @Input() formFieldsValues!: T;
   @Input() mode!: 'create' | 'edit';
-  @Output() onUser = new EventEmitter<T>();
+  @Output() onEntity = new EventEmitter<T>();
 
   form!: FormGroup;
 
@@ -80,7 +80,7 @@ export class GenericFormComponent<T extends Record<string, any>> implements OnCh
 
   submitForm(): void {
     if (this.form.valid) {
-      this.onUser.emit(this.form.value);
+      this.onEntity.emit(this.form.value);
     } else {
       this.form.markAllAsTouched();
     }

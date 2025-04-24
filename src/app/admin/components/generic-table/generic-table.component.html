@@ -19,7 +19,9 @@
       }
       <ng-template pTemplate="header">
         <tr>
-
+          @if (config.showRowExpansion) {
+            <th></th>
+          }
           @for (col of config.columns; track $index) {
             <th
               [ngClass]="col.responsiveClass"
@@ -36,6 +38,9 @@
           <th>Operaciones</th>
         </tr>
         <tr>
+          @if (config.showRowExpansion) {
+            <th></th>
+          }
           @for (col of config.columns; track $index) {
             <th [ngClass]="col.responsiveClass">
               @if (col.filterable) {
@@ -79,8 +84,13 @@
           </th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-rowData>
+      <ng-template pTemplate="body" let-rowData let-expanded="expanded">
         <tr>
+          @if (config.showRowExpansion) {
+            <td >
+              <p-button type="button" pRipple [pRowToggler]="rowData" [text]="true" [rounded]="true" [plain]="true" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
+            </td>
+          }
           @for (col of config.columns; track $index) {
             <td [ngClass]="col.responsiveClass">
               @switch (col.dataType) {
