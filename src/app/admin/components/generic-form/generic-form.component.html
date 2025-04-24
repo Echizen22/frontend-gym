@@ -1,0 +1,93 @@
+<form [formGroup]="form" class="grid justify-center form-container">
+
+  @for (field of formFields; track $index) {
+    @if (!field.hidden) {
+      <div class="col-12 md:col-6 lg:col-4 flex flex-column gap-1 mb-6">
+        <label class="text-xs sm:text-sm md:text-base" [for]="field.name">{{ field.label }}</label>
+
+        <!-- Campo de texto -->
+         @if (field.type === 'text') {
+          <input
+          pInputText
+          [id]="field.name"
+          aria-describedby="dni-help"
+          [formControlName]="field.name"
+          [placeholder]="field.placeholder || ''"
+          />
+         }
+
+         @if (field.type === 'email') {
+          <input
+          pInputText
+          [type]="field.type"
+          [id]="field.name"
+          aria-describedby="dni-help"
+          [formControlName]="field.name"
+          [placeholder]="field.placeholder || ''"
+          />
+         }
+
+         @if (field.type === 'number') {
+          <p-inputNumber inputId="integeronly" [formControlName]="field.name"
+          />
+         }
+
+         @if (field.type === 'dropdown') {
+          <p-dropdown
+            [id]="field.name"
+            [showClear]="field.clear"
+            class="estado-desplegable"
+            [formControlName]="field.name"
+            [options]="field.options || []"
+            [placeholder]="field.placeholder || ''"
+            />
+         }
+
+         @if (field.type === 'boolean') {
+          <p-checkbox
+            [formControlName]="field.name"
+            [binary]="true"
+            [label]="field.label"
+            />
+         }
+
+         @if (field.type === 'date') {
+          <p-calendar
+            [id]="field.name"
+            [formControlName]="field.name"
+            [showIcon]="true"
+            [iconDisplay]="'input'"
+            appendTo="body"
+            [placeholder]="field.placeholder || 'Seleccione fecha'"
+            class="w-full">
+            </p-calendar>
+         }
+
+         @if (field.type === 'password') {
+          <p-password class="w-full" [formControlName]="field.name" [feedback]="false" />
+         }
+
+
+         @if (form.get(field.name)?.touched && form.get(field.name)?.invalid) {
+          <div class="text-red-600 text-sm mt-1">
+            @if (form.get(field.name)?.errors?.['required']) {
+              * Campo obligatorio
+            }
+            @if (form.get(field.name)?.errors?.['email']) {
+              * Formato de correo inválido
+            }
+            @if (form.get(field.name)?.errors?.['minlength']) {
+              * Mínimo de caracteres no cumplido
+            }
+            @if (form.get(field.name)?.errors?.['maxlength']) {
+              * Máximo de caracteres excedido
+            }
+          </div>
+        }
+
+
+      </div>
+    }
+  }
+</form>
+

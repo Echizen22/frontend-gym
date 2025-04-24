@@ -1,0 +1,142 @@
+<div class="container">
+  <div class="card p-1 mt-4">
+    <p-table #dt [value]="data"  [paginator]="true" [rows]="rows"
+             [totalRecords]="totalRecords" [loading]="loading"
+             [rows]="10" [rowsPerPageOptions]="[10, 25, 55]"
+             [tableStyle]="{ 'min-width': '75rem' }"
+             >
+      @if (config.showBtnLimpiarFiltros) {
+        <ng-template pTemplate="caption">
+          <div class="flex">
+            <p-button
+              label="Limpiar filtros"
+              icon="pi pi-filter-slash"
+              [outlined]="true"
+              (onClick)="dt.clear()"
+            />
+          </div>
+        </ng-template>
+      }
+      <ng-template pTemplate="header">
+        <tr>
+
+          @for (col of config.columns; track $index) {
+            <th
+              [ngClass]="col.responsiveClass"
+              [pSortableColumn]="col.sortable ? col.field : ''"
+              >
+              {{ col.header }}
+
+              @if (col.sortable) {
+                <p-sortIcon [field]="col.field" />
+              }
+
+            </th>
+          }
+          <th>Operaciones</th>
+        </tr>
+        <tr>
+          @for (col of config.columns; track $index) {
+            <th [ngClass]="col.responsiveClass">
+              @if (col.filterable) {
+
+
+                @if (col.filterType === 'select') {
+                  <p-columnFilter [field]="col.field" matchMode="equals" [showMenu]="false">
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                      <p-dropdown
+                        [ngModel]="value"
+                        [options]="col.filterOptions"
+                        (onChange)="filter($event.value)"
+                        placeholder="Selecciona uno"
+                        showClear
+                        class="w-full"
+                      >
+                        <ng-template let-option pTemplate="item">
+                          <p-tag
+                            [value]="option.label"
+                            [severity]="getSeverity(option.value)" />
+                        </ng-template>
+                      </p-dropdown>
+                    </ng-template>
+                  </p-columnFilter>
+                } @else {
+                    <p-columnFilter
+                    [type]="col.filterType || 'text'"
+                    [field]="col.field"
+                    [ariaLabel]="'Filter ' + col.header"
+                    [showOperator]="true"
+                    [showMatchModes]="true"
+                    [showAddButton]="true"
+                    [display]="config.menuMode"
+                  />
+                }
+              }
+            </th>
+          }
+          <th style="text-align: center;">
+            <p-button (onClick)="handleCreate()" icon="pi pi-user-plus" [text]="true" [rounded]="true" severity="info" />
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData>
+        <tr>
+          @for (col of config.columns; track $index) {
+            <td [ngClass]="col.responsiveClass">
+              @switch (col.dataType) {
+
+                <!-- Boolean como tag -->
+                @case ('boolean') {
+                  <p-tag
+                  [value]="rowData[col.field] ? 'Si' : 'No' "
+                  [severity]="rowData[col.field] ? 'success' : 'danger'"
+                 />
+                }
+
+                <!-- Fecha con formato -->
+                @case ('date') {
+                  <span>
+                    {{ rowData[col.field] | date:'dd/MM/yyyy' }}
+                  </span>
+                }
+
+                <!-- Default (texto/número) -->
+                @default {
+                  @if (rowData[col.field] === 'activo') {
+                    <p-tag severity="success" [value]="rowData[col.field]"/>
+                  }@else if (rowData[col.field] === 'inactivo') {
+                    <p-tag severity="warning" [value]="rowData[col.field]"/>
+                  } @else {
+                    <span>
+                      {{ rowData[col.field] }}
+                    </span>
+                  }
+                }
+              }
+            </td>
+          }
+
+          <td class="text-center">
+            <div class="flex justify-content-center gap-2">
+              <button pButton
+                      type="button"
+                      icon="pi pi-pencil"
+                      class="p-button-rounded p-button-text p-button-primary"
+                      (click)="handleEdit(rowData.dni)"
+                      pTooltip="Editar"
+                      tooltipPosition="top"></button>
+
+              <button pButton
+                      type="button"
+                      icon="pi pi-trash"
+                      class="p-button-rounded p-button-text p-button-danger"
+                      (click)="handleDelete(rowData.dni)"
+                      pTooltip="Eliminar"
+                      tooltipPosition="top"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

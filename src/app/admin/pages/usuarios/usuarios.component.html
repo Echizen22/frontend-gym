@@ -1,78 +1,17 @@
 <main>
   <h1 class="text-sm  md:text-base lg:text-lg xl:text-2xl">Mantenimiento de Usuarios</h1>
 
-  <form class="grid justify-center " action="">
+  <!-- <admin-generic-form
+    [formFields]="formFields"
+    (onFilter)="applyFilter($event)"
+  /> -->
 
-    <div class="col-6 md:col-4 lg:col-3 flex flex-column gap-1">
-      <label class="text-xs sm:text-sm md:text-base" for="dni">Dni</label>
-      <input
-          pInputText
-          id="dni"
-          aria-describedby="dni-help"
-          formControlName="dni" />
-    </div>
+  <!-- <admin-component-table [value]="usuarios" [loading]="loading" [columns]="columnas" [rowActions]="rowActionsTemplate" [headerActions]="headerActionsTemplate">
 
-    <div class="col-6 md:col-4 lg:col-3 flex flex-column gap-1">
-      <label class="text-xs sm:text-sm md:text-base" for="dni">Nombre</label>
-      <input
-          pInputText
-          id="dni"
-          aria-describedby="dni-help"
-          formControlName="dni" />
-    </div>
-
-    <div class="col-6 md:col-4 lg:col-3 flex flex-column gap-1">
-      <label class="text-xs sm:text-sm md:text-base" for="dni">Dni</label>
-      <input
-          pInputText
-          id="dni"
-          aria-describedby="dni-help"
-          formControlName="dni" />
-    </div>
-
-    <div class="col-6 md:col-4 lg:col-3 flex flex-column gap-1">
-      <label class="text-xs sm:text-sm md:text-base" for="dni">Nombre</label>
-      <input
-          pInputText
-          id="dni"
-          aria-describedby="dni-help"
-          formControlName="dni" />
-    </div>
-
-    <div class="col-6 md:col-4 flex flex-column gap-1">
-      <label class="text-xs sm:text-sm md:text-base" for="dni">Dni</label>
-      <input
-          pInputText
-          id="dni"
-          aria-describedby="dni-help"
-          formControlName="dni" />
-    </div>
-
-    <div class="col-6 md:col-4 flex flex-column gap-1">
-      <label class="text-xs sm:text-sm md:text-base" for="dni">Nombre</label>
-      <input
-          pInputText
-          id="dni"
-          aria-describedby="dni-help"
-          formControlName="dni" />
-    </div>
-
-    <div class="btn-filter-container">
-      <button class="btn btn-search" type="button" (click)="search()">Buscar</button>
-      <button class="btn btn-reset" type="button" (click)="reset()">Limpiar</button>
-    </div>
-
-  </form>
-
-
-  <admin-component-table [value]="usuarios" [loading]="loading" [columns]="columnas" [rowActions]="rowActionsTemplate" [headerActions]="headerActionsTemplate">
-
-    <!-- Columna extra en el header -->
     <ng-template #headerActionsTemplate>
       <th>Operaciones</th>
     </ng-template>
 
-    <!-- Columna extra en cada fila -->
     <ng-template #rowActionsTemplate let-usuario>
       <td class="operaciones-body">
         <p-button  icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" />
@@ -80,5 +19,58 @@
       </td>
     </ng-template>
 
-  </admin-component-table>
+  </admin-component-table> -->
+
+  <app-generic-table
+  [config]="tableConfig"
+  [data]="usuarios"
+  [totalRecords]="totalRecords"
+  [loading]="loading"
+  (showModalCreate)="onCreateUser($event)"
+  (onEdit)="onEditUser($event)"
+  (onDelete)="onDeleteUser($event)"
+  ></app-generic-table>
+
+
+  <p-dialog
+
+    [header]="titleDialog"
+    [(visible)]="displayDialog"
+    [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [draggable]="false"
+    [resizable]="false"
+    [maximizable]="true"
+  >
+
+  <admin-generic-form
+    #formRef
+    [formFieldsValues]="selectedUser"
+    [formFields]="formFields"
+    (onUser)="updateUser($event)"
+    [mode]="mode"
+  ></admin-generic-form>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      label="Cancelar"
+      icon="pi pi-times"
+      (click)="handleCancel(formRef)"
+      class="p-button-text"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Guardar"
+      icon="pi pi-check"
+      (click)="formRef.submitForm()"
+      class="p-button-success"
+    ></button>
+  </ng-template>
+
+
+  </p-dialog>
+
 </main>

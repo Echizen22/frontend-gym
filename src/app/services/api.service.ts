@@ -30,6 +30,15 @@ export class ApiService {
     return this.http.get<T>(this.baseUrl + url, options);
   }
 
+  doPost<T>(url: string, body: any, options: {
+    headers?: HttpHeaders;
+    context?: HttpContext;
+    params?: HttpParams | { [param: string]: string | number | boolean };
+    responseType: 'json';
+  }): Observable<T> {
+    return this.http.post<T>(this.baseUrl + url, body, options);
+  }
+
   doPatch<T>(baseUrl: string, id: string, body: any, options: {
     headers?: HttpHeaders;
     context?: HttpContext;

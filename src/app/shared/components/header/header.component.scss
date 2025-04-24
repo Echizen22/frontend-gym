@@ -52,6 +52,28 @@
   background-color: #FF5722;
 }
 
+:host ::ng-deep {
+  .p-menubar {
+
+    .p-menu-list,
+    .p-menuitem-text {
+      color: #fff;
+    }
+
+    .p-menuitem .p-menuitem-content:hover, .p-menubar-button:focus {
+      background-color: #4d4d4d;
+    }
+
+    .p-menuitem a:active {
+      background-color: #4d4d4d;
+    }
+
+    .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content {
+      background-color: #4d4d4d;
+    }
+  }
+}
+
 
 :host {
   @media screen and (min-width: 550px) {
