@@ -21,11 +21,6 @@ export class UsuarioService {
     return this.apiService.doGet<Usuario[]>('/usuario', { responseType: 'json'} );
   }
 
-  getUserFilter() {
-    return this.apiService.doGet<Usuario[]>('/usuario/filter', { responseType: 'json'} );
-  }
-
-
   getUserById(dni: string) {
     return this.apiService.doGetWithId<Usuario>('/usuario', dni, { responseType: 'json' });
   }
