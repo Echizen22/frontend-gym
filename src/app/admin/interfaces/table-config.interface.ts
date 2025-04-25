@@ -1,5 +1,6 @@
 
 type FieldType = 'text' | 'number' | 'date' | 'select' | 'boolean';
+type FilterType = 'text' | 'numeric' | 'date' | 'select' | 'boolean';
 
 export interface TableColumn {
   field: string;
@@ -9,7 +10,7 @@ export interface TableColumn {
   width?: string;
   hasActions?: boolean;
   filterable: true;
-  filterType: FieldType;
+  filterType: FilterType;
   filterOptions?: { label: string; value: any }[];
   responsiveClass?: string;
 }

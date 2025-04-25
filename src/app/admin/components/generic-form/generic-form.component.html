@@ -1,9 +1,13 @@
-<form [formGroup]="form" class="grid justify-center form-container">
+<form *ngIf="formReady" [formGroup]="form" class="grid justify-center form-container">
 
   @for (field of formFields; track $index) {
     @if (!field.hidden) {
       <div class="col-12 md:col-6 lg:col-4 flex flex-column gap-1 mb-3">
-        <label class="text-xs sm:text-sm md:text-base" [for]="field.name">{{ field.label }}</label>
+        @if (field.type === 'dropdown') {
+          <span class="text-xs sm:text-sm md:text-base">{{ field.label }}</span>
+         } @else {
+           <label class="text-xs sm:text-sm md:text-base" [for]="field.name">{{ field.label }}</label>
+        }
 
         <!-- Campo de texto -->
          @if (field.type === 'text') {
@@ -28,13 +32,13 @@
          }
 
          @if (field.type === 'number') {
-          <p-inputNumber inputId="integeronly" [formControlName]="field.name"
+          <p-inputNumber [inputId]="field.name" [formControlName]="field.name"
           />
          }
 
          @if (field.type === 'dropdown') {
           <p-dropdown
-            [id]="field.name"
+            [inputId]="field.name"
             [showClear]="field.clear"
             class="estado-desplegable"
             [formControlName]="field.name"
@@ -46,6 +50,7 @@
          @if (field.type === 'boolean') {
           <p-checkbox
             class="ju"
+            [inputId]="field.name"
             [formControlName]="field.name"
             [binary]="true"
             />
@@ -53,7 +58,7 @@
 
          @if (field.type === 'date') {
           <p-calendar
-            [id]="field.name"
+            [inputId]="field.name"
             [formControlName]="field.name"
             [showIcon]="true"
             [iconDisplay]="'input'"
@@ -64,7 +69,7 @@
          }
 
          @if (field.type === 'password') {
-          <p-password class="w-full" [formControlName]="field.name" [feedback]="false" />
+          <p-password [inputId]="field.name" class="w-full" [formControlName]="field.name" [feedback]="false" />
          }
 
          @if (this.mode === 'edit' && field.showEnabledFieldButton) {

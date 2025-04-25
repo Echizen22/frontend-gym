@@ -44,6 +44,12 @@
   display: none;
 }
 
+:host ::ng-deep {
+  .p-inputnumber {
+    height: 45px;
+  }
+}
+
 
 @media (min-width: 1440px) {
   .table-cell {

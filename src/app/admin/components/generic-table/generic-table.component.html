@@ -51,9 +51,9 @@
                     <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                       <p-dropdown
                         [ngModel]="value"
+                        appendTo="body"
                         [options]="col.filterOptions"
                         (onChange)="filter($event.value)"
-                        placeholder="Selecciona uno"
                         showClear
                         class="w-full"
                       >

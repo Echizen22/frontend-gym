@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
@@ -9,6 +9,7 @@ import { FilterValues, FormField } from '../../interfaces/form-field.interface';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
 import { PasswordModule } from 'primeng/password';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -23,16 +24,19 @@ import { PasswordModule } from 'primeng/password';
     CheckboxModule,
     CalendarModule,
     PasswordModule,
+    CommonModule,
   ],
   templateUrl: './generic-form.component.html',
   styleUrl: './generic-form.component.scss'
 })
-export class GenericFormComponent<T extends Record<string, any>> implements OnChanges {
+export class GenericFormComponent<T extends Record<string, any>> implements OnChanges, OnDestroy {
 
   @Input() formFields!: FormField<T>[];
   @Input() formFieldsValues!: T;
   @Input() mode!: 'create' | 'edit';
   @Output() onEntity = new EventEmitter<T>();
+
+  formReady!: boolean;
 
   form!: FormGroup;
 
@@ -47,10 +51,13 @@ export class GenericFormComponent<T extends Record<string, any>> implements OnCh
   ngOnChanges(changes: SimpleChanges): void {
     // Se ejecuta si cambian los campos o los valores
     if (changes['formFields'] || changes['formFieldsValues']) {
+      this.formReady = false;
       this.createForm();
       if (this.formFieldsValues) {
         this.form.patchValue(this.formFieldsValues);
       }
+
+      queueMicrotask(() => this.formReady = true);
     }
   }
 
@@ -77,12 +84,16 @@ export class GenericFormComponent<T extends Record<string, any>> implements OnCh
     this.form = this.fb.group(formGroup);
   }
 
+  ngOnDestroy(): void {
+    this.form.reset();
+  }
+
 
   submitForm(): void {
     if (this.form.valid) {
       this.onEntity.emit(this.form.value);
     } else {
-      this.form.markAllAsTouched();
+      this.markAllAsTouched();
     }
   }
 
