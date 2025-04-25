@@ -8,6 +8,7 @@ import { MenuModule } from 'primeng/menu';
 
 import { AuthService } from '../../../services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'shared-header',
@@ -55,7 +56,7 @@ export class HeaderComponent implements OnInit {
       this.menuItems = [
         {
           label: 'Bienvenido',
-          routerLink: '/admin'
+          routerLink: '/admin',
         },
         {
         label: 'Usuarios',
@@ -63,7 +64,7 @@ export class HeaderComponent implements OnInit {
         },
         {
         label: 'Membresias',
-        routerLink: '/admin/membresias'
+        routerLink: '/admin/membresias',
         },
         {
         label: 'Pagos',

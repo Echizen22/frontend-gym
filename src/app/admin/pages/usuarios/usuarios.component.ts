@@ -70,7 +70,7 @@ export class UsuariosComponent implements OnInit {
       { field: 'fechaRegistro', header: 'Fecha Registro', dataType: 'date', filterable: true, filterType: 'date', responsiveClass: 'table-cell' },
       { field: 'fechaActualizacion', header: 'Fecha Actualización', dataType: 'date', filterable: true, filterType: 'date', responsiveClass: 'table-cell' },
       { field: 'telefono', header: 'Teléfono', dataType: 'text', filterable: true, filterType: 'text', responsiveClass: 'table-cell' },
-      { field: 'estado', header: 'Estado', dataType: 'text', filterable: true, filterType: 'select', filterOptions: [
+      { field: 'estado', header: 'Estado', dataType: 'text', filterable: true, filterType: 'select', selectBg: true, filterOptions: [
         { label: 'Activo', value: 'activo' },
         { label: 'Suspendido', value: 'suspendido' },
         { label: 'Inactivo', value: 'inactivo' },

@@ -13,6 +13,7 @@ export interface TableColumn {
   filterType: FilterType;
   filterOptions?: { label: string; value: any }[];
   responsiveClass?: string;
+  selectBg?: boolean;
 }
 
 

@@ -47,24 +47,42 @@
 
 
                 @if (col.filterType === 'select') {
-                  <p-columnFilter [field]="col.field" matchMode="equals" [showMenu]="false">
-                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                      <p-dropdown
-                        [ngModel]="value"
-                        appendTo="body"
-                        [options]="col.filterOptions"
-                        (onChange)="filter($event.value)"
-                        showClear
-                        class="w-full"
-                      >
-                        <ng-template let-option pTemplate="item">
-                          <p-tag
-                            [value]="option.label"
-                            [severity]="getSeverity(option.value)" />
-                        </ng-template>
-                      </p-dropdown>
-                    </ng-template>
-                  </p-columnFilter>
+
+                  @if( col.selectBg ) {
+                    <p-columnFilter [field]="col.field" matchMode="equals" [showMenu]="false">
+                      <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                        <p-dropdown
+                          [ngModel]="value"
+                          appendTo="body"
+                          [options]="col.filterOptions"
+                          (onChange)="filter($event.value)"
+                          showClear
+                          class="w-full"
+                        >
+                          <ng-template let-option pTemplate="item">
+                            <p-tag
+                              [value]="option.label"
+                              [severity]="getSeverity(option.value)" />
+                          </ng-template>
+                        </p-dropdown>
+                      </ng-template>
+                    </p-columnFilter>
+                  } @else {
+                    <p-columnFilter [field]="col.field" matchMode="equals" [showMenu]="false">
+                      <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                        <p-dropdown
+                          [ngModel]="value"
+                          appendTo="body"
+                          [options]="col.filterOptions"
+                          (onChange)="filter($event.value)"
+                          showClear
+                          class="w-full"
+                        >
+                        </p-dropdown>
+                      </ng-template>
+                    </p-columnFilter>
+                  }
+
                 } @else {
                     <p-columnFilter
                     [type]="col.filterType || 'text'"
@@ -112,12 +130,21 @@
 
                 <!-- Default (texto/número) -->
                 @default {
-                  @if (col.filterType === 'select') {
+                  @if (col.filterType === 'select' && col.selectBg) {
                     <p-tag [severity]="this.getSeverity(rowData[col.field])" [value]="rowData[col.field]"/>
                    } @else {
-                    <span>
-                      {{ rowData[col.field] }}
-                    </span>
+
+                    @if( col.field === 'experiencia' ) {
+                      <span>
+                        {{ rowData[col.field] }} Años
+                      </span>
+                    } @else {
+                      <span>
+                        {{ rowData[col.field] }}
+                      </span>
+                    }
+
+
                   }
                 }
               }
@@ -130,7 +157,7 @@
                       type="button"
                       icon="pi pi-pencil"
                       class="p-button-rounded p-button-text p-button-primary"
-                      (click)="handleEdit(rowData.dni)"
+                      (click)="handleEdit(rowData.dni || rowData.id)"
                       pTooltip="Editar"
                       tooltipPosition="top"></button>
 
@@ -138,7 +165,7 @@
                       type="button"
                       icon="pi pi-trash"
                       class="p-button-rounded p-button-text p-button-danger"
-                      (click)="handleDelete(rowData.dni)"
+                      (click)="handleDelete(rowData.dni || rowData.id)"
                       pTooltip="Eliminar"
                       tooltipPosition="top"></button>
             </div>

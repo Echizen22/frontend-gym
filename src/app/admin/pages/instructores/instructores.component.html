@@ -1,1 +1,54 @@
-<p>instructores works!</p>
+<main>
+  <h1 class="text-sm  md:text-base lg:text-lg xl:text-2xl">Mantenimiento de Membresias</h1>
+  <app-generic-table
+  [config]="tableConfig"
+  [data]="instructores"
+  [totalRecords]="totalRecords"
+  [loading]="loading"
+  (showModalCreate)="onCreateInstructor($event)"
+  (onEdit)="onEditInstructor($event)"
+  (onDelete)="onDeleteInstructor($event)"
+  ></app-generic-table>
+
+
+  <p-dialog
+    [header]="titleDialog"
+    [(visible)]="displayDialog"
+    [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [draggable]="false"
+    [resizable]="false"
+    [maximizable]="true"
+  >
+
+  <admin-generic-form
+    #formRef
+    [formFieldsValues]="selectedInstructor"
+    [formFields]="formFields"
+    (onEntity)="updateInstructor($event)"
+    [mode]="mode"
+  ></admin-generic-form>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      label="Cancelar"
+      icon="pi pi-times"
+      (click)="handleCancel(formRef)"
+      class="p-button-text"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Guardar"
+      icon="pi pi-check"
+      (click)="formRef.submitForm()"
+      class="p-button-success"
+    ></button>
+  </ng-template>
+
+
+  </p-dialog>
+
+</main>

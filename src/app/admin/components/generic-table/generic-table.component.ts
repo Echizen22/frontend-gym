@@ -54,12 +54,12 @@ export class GenericTableComponent {
     this.showModalCreate.emit(true);
   }
 
-  handleEdit(dni: string) {
-    this.onEdit.emit(dni);
+  handleEdit(id: string) {
+    this.onEdit.emit(id);
   }
 
-  handleDelete(dni: string) {
-    this.onDelete.emit(dni);
+  handleDelete(id: string) {
+    this.onDelete.emit(id);
   }
 
   getSeverity(value: string): 'success' | 'warning' | 'danger' | 'info' {

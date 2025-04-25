@@ -32,8 +32,19 @@
          }
 
          @if (field.type === 'number') {
-          <p-inputNumber [inputId]="field.name" [formControlName]="field.name"
-          />
+
+          <!-- Comprueba si es un formato moneda -->
+           @switch (field.numberType) {
+            @case ("decimal") {
+              <p-inputNumber [minFractionDigits]="2" [maxFractionDigits]="2" [inputId]="field.name" [formControlName]="field.name" />
+            }
+            @case ("currency") {
+              <p-inputNumber mode="currency" currency="EUR"  [inputId]="field.name" [formControlName]="field.name" />
+            }
+            @default {
+              <p-inputNumber  [inputId]="field.name" [formControlName]="field.name" />
+            }
+           }
          }
 
          @if (field.type === 'dropdown') {

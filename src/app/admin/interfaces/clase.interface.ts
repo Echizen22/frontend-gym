@@ -3,16 +3,16 @@ export interface Clase {
   descripcion:  string;
   duracion:     number;
   capacidadMax: number;
-  instructor:   Instructor;
+  idInstructor:   string;
   id:           string;
 }
 
-export interface Instructor {
-  id:           string;
-  nombre:       string;
-  apellidos:    string;
-  especialidad: string;
-  experiencia:  number;
-  telefono:     string;
-  foto:         string;
-}
+// export interface Instructor {
+//   id:           string;
+//   nombre:       string;
+//   apellidos:    string;
+//   especialidad: string;
+//   experiencia:  number;
+//   telefono:     string;
+//   foto:         string;
+// }

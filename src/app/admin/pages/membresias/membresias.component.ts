@@ -14,7 +14,6 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { Observer } from 'rxjs';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-membresias',
@@ -28,7 +27,6 @@ import { CommonModule } from '@angular/common';
     InputTextModule,
     GenericFormComponent,
     DialogModule,
-    CommonModule,
   ],
   providers: [
     MessageService
@@ -36,7 +34,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './membresias.component.html',
   styleUrl: './membresias.component.scss'
 })
-export class MembresiasComponent  implements OnInit {
+export class MembresiasComponent implements OnInit {
 
   // @ViewChild(GenericFormComponent, { static: false }) formRef!: GenericFormComponent<Membresia>;
 
@@ -112,7 +110,7 @@ export class MembresiasComponent  implements OnInit {
 
     switch (this.mode) {
       case 'create':
-        this.membresiaService.createMembresia(membresia).subscribe(this.createUser());
+        this.membresiaService.createMembresia(membresia).subscribe(this.createMembresia());
         break;
       case 'edit':
         this.membresiaService.updateMembresiaById(this.selectIdMembresia, membresia).subscribe(this.editMembresia());
@@ -146,7 +144,7 @@ export class MembresiasComponent  implements OnInit {
     }
   }
 
-  private createUser(): Partial<Observer<Membresia>> {
+  private createMembresia(): Partial<Observer<Membresia>> {
     return {
       next: (res: Membresia) => {
         this.loadMembresias();
@@ -183,7 +181,7 @@ export class MembresiasComponent  implements OnInit {
   buildFormFields(mode: 'create' | 'edit'): FormField<Membresia>[] {
     const fields: FormField<Membresia>[] = [
       { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required] },
-      { name: 'precio', label: 'Precio', type: 'number', validators: [Validators.required] },
+      { name: 'precio', label: 'Precio', type: 'number', numberType: 'currency', validators: [Validators.required] },
       {
         name: 'tipo',
         label: 'Tipo Membresia',
