@@ -10,6 +10,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
 import { PasswordModule } from 'primeng/password';
 import { CommonModule } from '@angular/common';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 
 @Component({
@@ -25,6 +26,7 @@ import { CommonModule } from '@angular/common';
     CalendarModule,
     PasswordModule,
     CommonModule,
+    InputTextareaModule,
   ],
   templateUrl: './generic-form.component.html',
   styleUrl: './generic-form.component.scss'

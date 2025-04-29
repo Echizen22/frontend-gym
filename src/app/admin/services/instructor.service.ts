@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Instructor } from '../interfaces/instructor.interface';
+import { OptionsDropDown } from '../interfaces/form-field.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,10 @@ export class InstructorService {
 
   getInstructorById(id: string) {
     return this.apiService.doGetWithId<Instructor>('/instructor', id, { responseType: 'json' });
+  }
+
+  getInstructoresForDropdown() {
+    return this.apiService.doGet<OptionsDropDown[]>('/instructor/dropdown', { responseType: 'json'} );
   }
 
 

@@ -58,6 +58,19 @@
             />
          }
 
+         @if (field.type === 'textarea') {
+          <textarea
+              rows="5"
+              cols="30"
+              maxlength="100"
+              class="textarea"
+              pInputTextarea
+              [autoResize]="false"
+              [formControlName]="field.name"
+              >
+          </textarea>
+         }
+
          @if (field.type === 'boolean') {
           <p-checkbox
             class="ju"

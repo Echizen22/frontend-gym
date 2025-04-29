@@ -1,11 +1,11 @@
 import { ValidatorFn } from "@angular/forms";
 
-type FieldType = 'text' | 'number' | 'date' | 'dropdown' | 'boolean' | 'email' | 'password';
+type FieldType = 'text' | 'number' | 'date' | 'dropdown' | 'boolean' | 'email' | 'password' | 'textarea';
 type NumberType = 'currency' | 'decimal';
 
-interface optionsDropDown {
+export interface OptionsDropDown {
   label: string;
-  value: string
+  value: any
 }
 
 
@@ -18,7 +18,7 @@ export interface FormField<T = any> {
   hidden?: boolean;
   currency?: boolean;
   numberType?: NumberType;
-  options?: optionsDropDown[];
+  options?: OptionsDropDown[];
   placeholder?: string;
   defaultValue?: any;
   clear?: boolean;

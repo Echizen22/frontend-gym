@@ -56,6 +56,12 @@ form {
 
 }
 
+.textarea {
+  height: 130px;
+  resize: none;
+  overflow-y: scroll;
+}
+
 
 .btn-filter-container .btn-search {
   background-color: #35add4;

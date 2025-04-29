@@ -1,45 +1,4 @@
 
-// .card {
-//   background: lightgray;
-//   border-radius: 10px;
-//   margin-bottom: 1rem;
-// }
-
-// .p-fluid .field {
-//   margin-bottom: 1.5rem;
-// }
-
-// Ajustes para la tabla
-// .p-table {
-//   margin-top: 1rem;
-
-//   th {
-//     white-space: nowrap;
-//   }
-// }
-
-// .p-tag {
-//   border-radius: 6px;
-//   padding: 0.25rem 0.5rem;
-//   font-weight: 700;
-//   font-size: 0.85rem;
-// }
-
-
-// .text-center {
-//   text-align: center;
-// }
-
-// .p-button.p-button-text {
-//   &:hover {
-//     background-color: rgba(0, 0, 0, 0.04);
-//   }
-
-//   &:focus {
-//     box-shadow: none;
-//   }
-// }
-
 .table-cell {
   display: none;
 }
@@ -47,6 +6,10 @@
 :host ::ng-deep {
   .p-inputnumber {
     height: 45px;
+  }
+
+  .p-datatable .p-datatable-tbody td {
+    word-break: break-word;
   }
 }
 

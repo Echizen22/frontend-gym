@@ -9,9 +9,10 @@ import { GenericFormComponent } from '../../components/generic-form/generic-form
 import { GenericTableComponent } from '../../components/generic-table/generic-table.component';
 import { ClaseService } from '../../services/clase.service';
 import { Clase } from '../../interfaces/clase.interface';
-import { FormField } from '../../interfaces/form-field.interface';
+import { FormField, OptionsDropDown } from '../../interfaces/form-field.interface';
 import { TableConfig } from '../../interfaces/table-config.interface';
-import { Observer } from 'rxjs';
+import { firstValueFrom, Observer } from 'rxjs';
+import { InstructorService } from '../../services/instructor.service';
 
 @Component({
   selector: 'app-clases',
@@ -27,7 +28,8 @@ import { Observer } from 'rxjs';
     DialogModule,
   ],
   providers: [
-    MessageService
+    MessageService,
+    InstructorService,
   ],
   templateUrl: './clases.component.html',
   styleUrl: './clases.component.scss'
@@ -36,6 +38,7 @@ export class ClasesComponent implements OnInit {
 
   private readonly fb = inject(UntypedFormBuilder);
   private readonly claseService = inject(ClaseService);
+  private readonly instructorService = inject(InstructorService);
   private messageService = inject( MessageService );
 
   clases!: Clase[];
@@ -57,8 +60,7 @@ export class ClasesComponent implements OnInit {
       { field: 'descripcion', header: 'Descripción', dataType: 'text', filterable: true, filterType: 'text' },
       { field: 'duracion', header: 'Duración', dataType: 'number', filterable: true, filterType: 'numeric' },
       { field: 'capacidadMax', header: 'Capacidad Máxima', dataType: 'number', filterable: true, filterType: 'numeric' },
-      { field: 'idInstructor', header: 'Instructor', dataType: 'text', filterable: true, filterType: 'select', filterOptions: [
-      ]},
+      { field: 'instructorNombre', header: 'Instructor', dataType: 'text', filterable: false, filterType: 'select', filterOptions: []},
     ],
     menuMode: 'row',
     showBtnLimpiarFiltros: false,
@@ -67,31 +69,42 @@ export class ClasesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadClases();
+    this.loadInstructoresDropdownForTable();
   }
 
-  onCreateClase(showModal: boolean) {
+  async onCreateClase(showModal: boolean) {
     this.mode = 'create';
-    this.formFields = this.buildFormFields(this.mode);
+    this.formFields = await this.buildFormFields(this.mode);
     this.selectedClase = {} as Clase;
     this.titleDialog = 'Crear Clase';
     this.displayDialog = showModal;
   }
 
-  onEditClase(id: string) {
+  async onEditClase(id: string) {
     this.mode = 'edit';
-    this.formFields = this.buildFormFields(this.mode);
     this.titleDialog = 'Editar Clase';
-    this.displayDialog = true;
     this.selectIdClase = id;
 
+    // Primero obtenemos los datos de la clase
     this.claseService.getClaseById(id).subscribe({
       next: (clase: Clase) => {
-        this.selectedClase = clase;
+        this.selectedClase = {
+          ...clase,
+          idInstructor: clase.instructor.id
+        };
+
+        this.buildFormFields(this.mode).then( formFields => {
+          this.formFields = formFields;
+          this.displayDialog = true;
+        })
+
       },
       error: (error) => {
         console.error(error);
       }
     });
+
+
   }
 
   onDeleteClase(id: string) {
@@ -99,14 +112,20 @@ export class ClasesComponent implements OnInit {
   }
 
   updateClase(clase: Clase) {
+      // Prepara los datos para la API
+      const dataParaAPI = {
+        ...clase,
+        idInstructor: clase.idInstructor // Asegúrate de que esto coincida con lo que espera tu backend
+      };
+
     this.displayDialog = false;
 
     switch (this.mode) {
       case 'create':
-        this.claseService.createClase(clase).subscribe(this.createClase());
+        this.claseService.createClase(dataParaAPI).subscribe(this.createClase());
         break;
       case 'edit':
-        this.claseService.updateClaseById(this.selectIdClase, clase).subscribe(this.editClase());
+        this.claseService.updateClaseById(this.selectIdClase, dataParaAPI).subscribe(this.editClase());
         break;
       default:
         console.warn('Modo desconocido en updateClase');
@@ -128,7 +147,10 @@ export class ClasesComponent implements OnInit {
   private getClases(): Partial<Observer<Clase[]>> {
     return  {
       next: (res) => {
-        this.clases = res;
+        this.clases = res.map(clase => ({
+          ...clase,
+          instructorNombre: `${clase.instructor.nombre} ${clase.instructor.apellidos}`
+        }));
         this.loading = false;
       },
       error: (err) => {
@@ -171,28 +193,78 @@ export class ClasesComponent implements OnInit {
     }
   }
 
-  buildFormFields(mode: 'create' | 'edit'): FormField<Clase>[] {
+  async buildFormFields(mode: 'create' | 'edit'): Promise<FormField<Clase>[]> {
     const fields: FormField<Clase>[] = [
       { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required] },
-      { name: 'descripcion', label: 'Descripción', type: 'text', validators: [Validators.required] },
+      { name: 'descripcion', label: 'Descripción', type: 'textarea', validators: [Validators.required] },
       { name: 'duracion', label: 'Duración', type: 'number', validators: [Validators.required] },
       { name: 'capacidadMax', label: 'Capacidad Máxima', type: 'number', validators: [Validators.required] },
     ];
 
-    fields.push(
-      {
+    try {
+      const instructores = await firstValueFrom(this.instructorService.getInstructoresForDropdown());
+
+      const instructorField: FormField<Clase> = {
         name: 'idInstructor',
         label: 'Instructor',
         type: 'dropdown',
         clear: true,
         validators: [Validators.required],
-        options: [
-        ],
-      },
-    )
+        options: instructores,
+        defaultValue: null
+      };
+
+      if (mode === 'edit' && this.selectedClase?.idInstructor) {
+        instructorField.defaultValue = this.selectedClase.idInstructor;
+      }
+
+      fields.push(instructorField);
+
+    } catch (error) {
+      console.error('Error al cargar instructores para dropdown:', error);
+
+      fields.push({
+        name: 'instructor',
+        label: 'Instructor (no disponible)',
+        type: 'dropdown',
+        clear: true,
+        validators: [],
+        options: [],
+        defaultValue: null
+      });
+
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No se pudieron cargar los instructores'
+      });
+
+    }
 
     return fields;
 
+  }
+
+
+  private async loadInstructoresDropdownForTable() {
+    try {
+      const instructores = await firstValueFrom(this.instructorService.getInstructoresForDropdown());
+
+      // Buscamos la columna de idInstructor
+      const instructorColumn = this.tableConfig.columns.find(col => col.field === 'instructor');
+
+      if (instructorColumn) {
+        instructorColumn.filterOptions = instructores;
+      }
+
+    } catch (error) {
+      console.error('Error al cargar instructores para el filtro de tabla:', error);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No se pudieron cargar los instructores para el filtro'
+      });
+    }
   }
 
 }

@@ -2,14 +2,14 @@
 type FieldType = 'text' | 'number' | 'date' | 'select' | 'boolean';
 type FilterType = 'text' | 'numeric' | 'date' | 'select' | 'boolean';
 
-export interface TableColumn {
-  field: string;
+export interface TableColumn< T = any> {
+  field: keyof T & string;
   header: string;
   sortable?: boolean;
   dataType?: FieldType;
   width?: string;
   hasActions?: boolean;
-  filterable: true;
+  filterable: boolean;
   filterType: FilterType;
   filterOptions?: { label: string; value: any }[];
   responsiveClass?: string;
@@ -17,8 +17,8 @@ export interface TableColumn {
 }
 
 
-export interface TableConfig {
-  columns: TableColumn[];
+export interface TableConfig< T = any> {
+  columns: TableColumn<T>[];
   menuMode: 'menu' | 'row';
   showBtnLimpiarFiltros: boolean;
   showRowExpansion?: boolean;

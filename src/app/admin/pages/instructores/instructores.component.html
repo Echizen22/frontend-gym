@@ -1,5 +1,5 @@
 <main>
-  <h1 class="text-sm  md:text-base lg:text-lg xl:text-2xl">Mantenimiento de Membresias</h1>
+  <h1 class="text-sm  md:text-base lg:text-lg xl:text-2xl">Mantenimiento de Instructores</h1>
   <app-generic-table
   [config]="tableConfig"
   [data]="instructores"
@@ -16,7 +16,7 @@
     [(visible)]="displayDialog"
     [modal]="true"
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
-    [draggable]="false"
+    [draggable]="true"
     [resizable]="false"
     [maximizable]="true"
   >
