@@ -54,9 +54,9 @@ export class ReservasComponent implements OnInit {
   // Configuración de tabla
   tableConfig: TableConfig = {
     columns: [
-      { field: 'dni', header: 'Dni', dataType: 'text', filterable: true, filterType: 'text' },
-      { field: 'nombre', header: 'Nombre', dataType: 'text', filterable: true, filterType: 'text' },
-      { field: 'apellidos', header: 'Apellidos', dataType: 'text', filterable: true, filterType: 'text' },
+      { field: 'usuario.dni', header: 'Dni', dataType: 'text', object: true, filterable: true, filterType: 'text' },
+      { field: 'usuario.nombre', header: 'Nombre', dataType: 'text', object: true, filterable: true, filterType: 'text' },
+      { field: 'usuario.apellidos', header: 'Apellidos', dataType: 'text', object: true, filterable: true, filterType: 'text' },
       { field: 'estado', header: 'Estado', dataType: 'text', filterable: true, filterType: 'select', selectBg: false, filterOptions: [
         { label: 'Pendiente', value: 'pendiente' },
         { label: 'Confirmada', value: 'confirmada' },
@@ -90,7 +90,13 @@ export class ReservasComponent implements OnInit {
 
     this.reservaService.getReservaById(id).subscribe({
       next: (reserva: Reserva) => {
-        this.selectedReserva = reserva;
+
+        const { fecha, ...rest } = reserva;
+
+        this.selectedReserva = {
+          fecha: new Date(fecha),
+          ...rest
+        };
       },
       error: (error) => {
         console.error(error);
@@ -131,7 +137,10 @@ export class ReservasComponent implements OnInit {
   private getReservas(): Partial<Observer<Reserva[]>> {
     return  {
       next: (res) => {
-        this.reservas = res;
+        this.reservas = res.map( reserva => {
+          reserva.fecha = new Date(reserva.fecha);
+          return reserva;
+        });
         this.loading = false;
       },
       error: (err) => {
@@ -196,7 +205,7 @@ export class ReservasComponent implements OnInit {
       {
         name: 'idUsuario',
         label: 'Usuario',
-        type: 'dropdown',
+        type: 'autocomplete',
         clear: true,
         validators: [Validators.required],
         options: [

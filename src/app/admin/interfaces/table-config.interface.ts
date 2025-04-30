@@ -9,6 +9,7 @@ export interface TableColumn< T = any> {
   dataType?: FieldType;
   width?: string;
   hasActions?: boolean;
+  object?: boolean;
   filterable: boolean;
   filterType: FilterType;
   filterOptions?: { label: string; value: any }[];

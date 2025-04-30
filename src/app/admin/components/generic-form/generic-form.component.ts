@@ -3,14 +3,17 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, UntypedFormControl, Untype
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
-import { Usuario } from '../../interfaces/usuario.interface';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { FilterValues, FormField } from '../../interfaces/form-field.interface';
+import { FormField } from '../../interfaces/form-field.interface';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
 import { PasswordModule } from 'primeng/password';
 import { CommonModule } from '@angular/common';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { FileUploadModule } from 'primeng/fileupload';
+import { MessageService } from 'primeng/api';
+
 
 
 @Component({
@@ -27,11 +30,17 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     PasswordModule,
     CommonModule,
     InputTextareaModule,
+    AutoCompleteModule,
+    FileUploadModule,
+  ],
+  providers: [
+    MessageService
   ],
   templateUrl: './generic-form.component.html',
   styleUrl: './generic-form.component.scss'
 })
 export class GenericFormComponent<T extends Record<string, any>> implements OnChanges, OnDestroy {
+
 
   @Input() formFields!: FormField<T>[];
   @Input() formFieldsValues!: T;
@@ -43,7 +52,8 @@ export class GenericFormComponent<T extends Record<string, any>> implements OnCh
   form!: FormGroup;
 
   constructor(
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
+    private readonly messageService: MessageService
   ) {}
 
 
@@ -124,5 +134,61 @@ export class GenericFormComponent<T extends Record<string, any>> implements OnCh
       control.markAsTouched();
     });
   }
+
+
+  filteredAutocomplete: Record<string, any[]> = {};
+
+  onCompleteMethod(event: any, fieldName: string) {
+    const query = event.query.toLowerCase();
+    const field = this.formFields.find(f => f.name === fieldName);
+    if (!field || !field.options) return;
+
+    this.filteredAutocomplete[fieldName] = field.options.filter(opt =>
+      opt.label.toLowerCase().includes(query)
+    );
+  }
+
+
+
+  // FileUpload
+
+  // Maneja la selección de archivos
+  handleFileSelect(event: any, fieldName: string | number | symbol) {
+    const files = event.files;
+    this.form.get(fieldName as string)?.setValue(files);
+    this.form.get(fieldName as string)?.markAsDirty();
+  }
+
+  // Maneja la subida exitosa
+  handleFileUpload(event: any, fieldName: string | number | symbol) {
+    const response = event.originalEvent.body; // Asume que el servidor devuelve la URL del archivo
+    this.form.get(fieldName as string)?.setValue(response.fileUrl);
+  }
+
+  // Maneja errores
+  handleUploadError(event: any) {
+    console.error('Error al subir archivo:', event);
+    // Puedes emitir un evento o mostrar un mensaje
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Error al subir el archivo'
+    });
+  }
+
+  // Obtiene mensajes de error
+  getFileUploadError(fieldName: string | number | symbol): string {
+    const errors = this.form.get(fieldName as string)?.errors;
+    if (!errors) return '';
+
+    if (errors['maxFileSize']) {
+      return 'El archivo excede el tamaño máximo permitido';
+    }
+    if (errors['fileType']) {
+      return 'Tipo de archivo no permitido';
+    }
+    return 'Error en el archivo';
+  }
+
 
 }

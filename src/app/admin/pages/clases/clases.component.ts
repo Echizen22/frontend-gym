@@ -208,7 +208,7 @@ export class ClasesComponent implements OnInit {
         name: 'idInstructor',
         label: 'Instructor',
         type: 'dropdown',
-        clear: true,
+        clear: false,
         validators: [Validators.required],
         options: instructores,
         defaultValue: null
@@ -227,7 +227,7 @@ export class ClasesComponent implements OnInit {
         name: 'instructor',
         label: 'Instructor (no disponible)',
         type: 'dropdown',
-        clear: true,
+        clear: false,
         validators: [],
         options: [],
         defaultValue: null

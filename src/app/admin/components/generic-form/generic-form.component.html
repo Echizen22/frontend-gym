@@ -58,6 +58,26 @@
             />
          }
 
+         @if (field.type === 'autocomplete') {
+          <p-autoComplete
+            [formControlName]="field.name"
+            [suggestions]="filteredAutocomplete[field.name]"
+            (completeMethod)="onCompleteMethod($event, field.name)"
+            [field]="'label'"
+            [dropdown]="true"
+            />
+          <!-- <p-autoComplete
+            [formControlName]="field.name"
+            [suggestions]="field.suggestions || []"
+            (completeMethod)="field.completeMethod ? field.completeMethod($event) : null"
+            [optionLabel]="field.optionLabel || 'name' "
+            [dropdown]="true"
+            [forceSelection]="true"
+            [inputStyle]="{ 'width': '100%' }"
+            /> -->
+
+         }
+
          @if (field.type === 'textarea') {
           <textarea
               rows="5"
@@ -69,6 +89,31 @@
               [formControlName]="field.name"
               >
           </textarea>
+         }
+
+         @if(field.type === 'fileUpload') {
+          <div class="field">
+            <label [for]="field.name">{{ field.label }}</label>
+            <p-fileUpload
+              [name]="field.name.toString()"
+              [url]="field.url || '/api/upload'"
+              [accept]="field.accept || '*'"
+              [maxFileSize]="field.maxFileSize || 1000000"
+              [chooseLabel]="field.chooseLabel || 'Seleccionar'"
+              [chooseIcon]="field.chooseIcon || 'pi pi-upload'"
+              [mode]="field.mode || 'basic'"
+              [multiple]="field.multiple || false"
+              (onUpload)="handleFileUpload($event, field.name)"
+              (onSelect)="handleFileSelect($event, field.name)"
+              (onError)="handleUploadError($event)"
+              [auto]="true"
+              [showUploadButton]="false"
+              [showCancelButton]="false">
+            </p-fileUpload>
+            @if (form.get(field.name)?.errors) {
+              <small class="p-error">{{ getFileUploadError(field.name) }}</small>
+            }
+          </div>
          }
 
          @if (field.type === 'boolean') {

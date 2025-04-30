@@ -138,7 +138,12 @@
                       <span>
                         {{ rowData[col.field] }} Años
                       </span>
-                    } @else {
+                    } @else if ( col.object ) {
+                      <span>
+                        {{ getNestedValue(rowData, col.field) }}
+                      </span>
+                    }
+                    @else {
                       <span>
                         {{ rowData[col.field] }}
                       </span>

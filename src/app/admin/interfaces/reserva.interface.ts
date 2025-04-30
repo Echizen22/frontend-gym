@@ -1,7 +1,8 @@
 export interface Reserva {
   fecha:   Date;
-  idUsuario: string;
+  idUsuario?: string;
   idClase:   string;
+  usuario: Usuario;
   id:      string;
   estado:  string;
 }
@@ -14,14 +15,14 @@ export interface Reserva {
 //   capacidadMax: number;
 // }
 
-// export interface Usuario {
-//   dni:                string;
-//   nombre:             string;
-//   apellidos:          string;
-//   email:              string;
-//   isAdmin:            boolean;
-//   fechaRegistro:      Date;
-//   fechaActualizacion: Date;
-//   estado:             string;
-//   telefono:           string;
-// }
+export interface Usuario {
+  dni:                string;
+  nombre:             string;
+  apellidos:          string;
+  email:              string;
+  isAdmin:            boolean;
+  fechaRegistro:      Date;
+  fechaActualizacion: Date;
+  estado:             string;
+  telefono:           string;
+}
