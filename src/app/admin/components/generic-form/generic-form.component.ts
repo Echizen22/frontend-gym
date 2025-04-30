@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
@@ -11,7 +11,7 @@ import { PasswordModule } from 'primeng/password';
 import { CommonModule } from '@angular/common';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { FileUploadModule } from 'primeng/fileupload';
+import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
@@ -43,11 +43,12 @@ import { ToastModule } from 'primeng/toast';
 })
 export class GenericFormComponent<T extends Record<string, any>> implements OnChanges, OnDestroy {
 
-
   @Input() formFields!: FormField<T>[];
   @Input() formFieldsValues!: T;
   @Input() mode!: 'create' | 'edit';
   @Output() onEntity = new EventEmitter<T>();
+
+  imgPreview: string | null = null;
 
   formReady!: boolean;
 
@@ -199,14 +200,20 @@ export class GenericFormComponent<T extends Record<string, any>> implements OnCh
   // Maneja la selección de archivos
   handleFileSelect(event: any, fieldName: string | number | symbol) {
     const files = event.files;
-    this.form.get(fieldName as string)?.setValue(files);
-    this.form.get(fieldName as string)?.markAsDirty();
+    if( fieldName ) {
+      this.form.get(fieldName as string)?.markAsDirty();
+      this.form.get(fieldName as string)?.setValue(files);
+    }
+
   }
 
   // Maneja la subida exitosa
   handleFileUpload(event: any, fieldName: string | number | symbol) {
+
     const response = event.originalEvent.body; // Asume que el servidor devuelve la URL del archivo
-    this.form.get(fieldName as string)?.setValue(response.fileUrl);
+    const urlImg = response.secureUrl;
+    this.imgPreview = urlImg;
+    this.form.get(fieldName as string)?.setValue(urlImg);
   }
 
   // Maneja errores
@@ -218,6 +225,11 @@ export class GenericFormComponent<T extends Record<string, any>> implements OnCh
       summary: 'Error',
       detail: 'Error al subir el archivo'
     });
+  }
+
+  removeSelectedImage(field: string) {
+    this.imgPreview = null;
+    this.form.get(field)?.setValue(null);
   }
 
   // Obtiene mensajes de error

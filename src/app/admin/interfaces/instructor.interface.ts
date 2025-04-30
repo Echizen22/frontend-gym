@@ -6,4 +6,5 @@ export interface Instructor {
   experiencia:  number;
   telefono:     string;
   foto:         string;
+  file?:        string;
 }

@@ -13,6 +13,7 @@ export interface OptionsDropDown {
 
 export interface FormField<T = any> {
   name: keyof T & string;
+  inputName?: string;
   label: string;
   type: FieldType;
   disabled?: boolean;

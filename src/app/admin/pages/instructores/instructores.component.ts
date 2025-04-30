@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ReactiveFormsModule, UntypedFormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormBuilder, Validators, ValidatorFn } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
@@ -12,6 +12,7 @@ import { FormField } from '../../interfaces/form-field.interface';
 import { TableConfig } from '../../interfaces/table-config.interface';
 import { Observer } from 'rxjs';
 import { Instructor } from '../../interfaces/instructor.interface';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-instructores',
@@ -25,6 +26,7 @@ import { Instructor } from '../../interfaces/instructor.interface';
     InputTextModule,
     GenericFormComponent,
     DialogModule,
+    ToastModule
   ],
   providers: [
     MessageService
@@ -58,6 +60,7 @@ export class InstructoresComponent {
       { field: 'especialidad', header: 'Especialidad', dataType: 'text', filterable: true, filterType: 'text' },
       { field: 'experiencia', header: 'Experiencia', dataType: 'number', filterable: true, filterType: 'numeric' },
       { field: 'telefono', header: 'Teléfono', dataType: 'text', filterable: true, filterType: 'text' },
+      { field: 'foto', header: 'Foto', dataType: 'img', filterable: false, filterType: 'text'},
     ],
     menuMode: 'row',
     showBtnLimpiarFiltros: false,
@@ -70,119 +73,131 @@ export class InstructoresComponent {
 
 
   onCreateInstructor(showModal: boolean) {
-      this.mode = 'create';
-      this.formFields = this.buildFormFields(this.mode);
-      this.selectedInstructor = {} as Instructor;
-      this.titleDialog = 'Crear Membresia';
-      this.displayDialog = showModal;
+    this.mode = 'create';
+    this.formFields = this.buildFormFields(this.mode);
+    this.selectedInstructor = {} as Instructor;
+    this.titleDialog = 'Crear Membresia';
+    this.displayDialog = showModal;
+  }
+
+  onEditInstructor(id: string) {
+    this.mode = 'edit';
+    this.formFields = this.buildFormFields(this.mode);
+    this.titleDialog = 'Editar Membresia';
+    this.displayDialog = true;
+    this.selectIdInstructor = id;
+
+    this.instructorService.getInstructorById(id).subscribe({
+      next: (instructor: Instructor) => {
+        this.selectedInstructor = instructor;
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  onDeleteInstructor(id: string) {
+    this.instructorService.deleteInstructor(id).subscribe(this.deleteInstructor());
+  }
+
+  updateInstructor(instructor: Instructor) {
+    this.displayDialog = false;
+    const { file = '', ...rest } = instructor;
+
+    rest.foto = file;
+
+    const nuevoInstructor = {
+      ...rest,
+      foto: file
     }
 
-    onEditInstructor(id: string) {
-      this.mode = 'edit';
-      this.formFields = this.buildFormFields(this.mode);
-      this.titleDialog = 'Editar Membresia';
-      this.displayDialog = true;
-      this.selectIdInstructor = id;
 
-      this.instructorService.getInstructorById(id).subscribe({
-        next: (instructor: Instructor) => {
-          this.selectedInstructor = instructor;
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      });
+    switch (this.mode) {
+      case 'create':
+        this.instructorService.createInstructor(nuevoInstructor).subscribe(this.createInstructor());
+        break;
+      case 'edit':
+        this.instructorService.updateInstructorById(this.selectIdInstructor, nuevoInstructor).subscribe(this.editInstructor());
+        break;
+      default:
+        console.warn('Modo desconocido en updateInstructor');
     }
+  }
 
-    onDeleteInstructor(id: string) {
-      this.instructorService.deleteInstructor(id).subscribe(this.deleteInstructor());
-    }
+  handleCancel(formRef: GenericFormComponent<Instructor>) {
+    formRef.resetForm();
+    this.selectedInstructor = {} as Instructor;
+    this.displayDialog = false;
+  }
 
-    updateInstructor(instructor: Instructor) {
-      this.displayDialog = false;
 
-      switch (this.mode) {
-        case 'create':
-          this.instructorService.createInstructor(instructor).subscribe(this.createInstructor());
-          break;
-        case 'edit':
-          this.instructorService.updateInstructorById(this.selectIdInstructor, instructor).subscribe(this.editInstructor());
-          break;
-        default:
-          console.warn('Modo desconocido en updateInstructor');
+  private loadInstructores() {
+    this.loading = true;
+    this.instructorService.getAllWithPagination().subscribe(this.getInstructores());
+  }
+
+  private getInstructores(): Partial<Observer<Instructor[]>> {
+    return  {
+      next: (res) => {
+        this.instructores = res;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error(err);
       }
     }
+  }
 
-    handleCancel(formRef: GenericFormComponent<Instructor>) {
-      formRef.resetForm();
-      this.selectedInstructor = {} as Instructor;
-      this.displayDialog = false;
-    }
-
-
-    private loadInstructores() {
-      this.loading = true;
-      this.instructorService.getAllWithPagination().subscribe(this.getInstructores());
-    }
-
-    private getInstructores(): Partial<Observer<Instructor[]>> {
-      return  {
-        next: (res) => {
-          this.instructores = res;
-          this.loading = false;
-        },
-        error: (err) => {
-          console.error(err);
-        }
+  private createInstructor(): Partial<Observer<Instructor>> {
+    return {
+      next: (res: Instructor) => {
+        this.loadInstructores();
+      },
+      error: (error) => {
+        console.error('Error al crear al instructor:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
       }
     }
+  }
 
-    private createInstructor(): Partial<Observer<Instructor>> {
-      return {
-        next: (res: Instructor) => {
-          this.loadInstructores();
-        },
-        error: (error) => {
-          console.error('Error al crear al instructor:', error);
-        }
+  private editInstructor(): Partial<Observer<Instructor>> {
+    return {
+      next: (res: Instructor) => {
+        this.loadInstructores();
+      },
+      error: (error) => {
+        console.error('Error al actualizar al instructor:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
       }
     }
+  }
 
-    private editInstructor(): Partial<Observer<Instructor>> {
-      return {
-        next: (res: Instructor) => {
-          this.loadInstructores();
-        },
-        error: (error) => {
-          console.error('Error al actualizar al instructor:', error);
-        }
+  private deleteInstructor(): Partial<Observer<void>> {
+    return {
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Instructor eliminado con exito', detail: 'Instructor Eliminada' });
+        this.loadInstructores();
+      },
+      error: (error) => {
+        console.error('Error al eliminar un instructor:', error);
       }
     }
+  }
 
-    private deleteInstructor(): Partial<Observer<void>> {
-      return {
-        next: () => {
-          this.messageService.add({ severity: 'success', summary: 'Instructor eliminado con exito', detail: 'Instructor Eliminada' });
-          this.loadInstructores();
-        },
-        error: (error) => {
-          console.error('Error al eliminar un instructor:', error);
-        }
-      }
-    }
+  buildFormFields(mode: 'create' | 'edit'): FormField<Instructor>[] {
+    const fields: FormField<Instructor>[] = [
+      { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required] },
+      { name: 'apellidos', label: 'Apellidos', type: 'text', validators: [Validators.required] },
+      { name: 'especialidad', label: 'Especialidad', type: 'text', validators: [Validators.required] },
+      { name: 'experiencia', label: 'Experiencia (Años)', type: 'number', validators: [Validators.required] },
+      { name: 'telefono', label: 'Teléfono', type: 'text', validators: [Validators.required] },
+      // { name: 'foto', label: 'Foto', type: 'text', validators: [Validators.required] },
+      { name: 'file', inputName: 'foto', label: 'Foto', type: 'fileUpload', accept: 'image/*', validators: [Validators.required] }
+    ];
 
-    buildFormFields(mode: 'create' | 'edit'): FormField<Instructor>[] {
-      const fields: FormField<Instructor>[] = [
-        { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required] },
-        { name: 'apellidos', label: 'Apellidos', type: 'text', validators: [Validators.required] },
-        { name: 'especialidad', label: 'Especialidad', type: 'text', validators: [Validators.required] },
-        { name: 'experiencia', label: 'Experiencia (Años)', type: 'number', validators: [Validators.required] },
-        { name: 'telefono', label: 'Teléfono', type: 'text', validators: [Validators.required] },
-        { name: 'foto', label: 'Foto', type: 'text', validators: [Validators.required] }
-      ];
+    return fields;
 
-      return fields;
-
-    }
+  }
 
 }

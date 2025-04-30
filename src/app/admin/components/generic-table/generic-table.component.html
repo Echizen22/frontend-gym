@@ -128,6 +128,12 @@
                   </span>
                 }
 
+                @case ('img') {
+                  <span class="img">
+                    <img [src]="rowData[col.field]" alt="Imagen de perfil">
+                  </span>
+                }
+
                 <!-- Default (texto/número) -->
                 @default {
                   @if (col.filterType === 'select' && col.selectBg) {

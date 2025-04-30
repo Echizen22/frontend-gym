@@ -106,10 +106,12 @@
 
          @if(field.type === 'fileUpload') {
           <div class="field">
-            <label [for]="field.name">{{ field.label }}</label>
+            <div *ngIf="imgPreview" class="imgPreview">
+              <img  [src]="imgPreview" alt="Foto de instructor" />
+            </div>
             <p-fileUpload
               [name]="field.name.toString()"
-              [url]="field.url || '/api/upload'"
+              [url]="field.url || 'http://localhost:3000/api/files/instructor'"
               [accept]="field.accept || '*'"
               [maxFileSize]="field.maxFileSize || 1000000"
               [chooseLabel]="field.chooseLabel || 'Seleccionar'"
@@ -119,13 +121,10 @@
               (onUpload)="handleFileUpload($event, field.name)"
               (onSelect)="handleFileSelect($event, field.name)"
               (onError)="handleUploadError($event)"
-              [auto]="true"
-              [showUploadButton]="false"
-              [showCancelButton]="false">
+              [auto]="false"
+              [showUploadButton]="true"
+              [showCancelButton]="true">
             </p-fileUpload>
-            @if (form.get(field.name)?.errors) {
-              <small class="p-error">{{ getFileUploadError(field.name) }}</small>
-            }
           </div>
          }
 
@@ -188,7 +187,7 @@
   }
 
 
-  <p-toast />
+  <!-- <p-toast /> -->
 
 </form>
 

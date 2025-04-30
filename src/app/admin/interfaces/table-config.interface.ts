@@ -1,5 +1,5 @@
 
-type FieldType = 'text' | 'number' | 'date' | 'select' | 'boolean';
+type FieldType = 'text' | 'number' | 'date' | 'select' | 'boolean' | 'img';
 type FilterType = 'text' | 'numeric' | 'date' | 'select' | 'boolean';
 
 export interface TableColumn< T = any> {
