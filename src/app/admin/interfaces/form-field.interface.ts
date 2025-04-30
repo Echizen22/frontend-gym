@@ -5,7 +5,8 @@ type NumberType = 'currency' | 'decimal';
 
 export interface OptionsDropDown {
   label: string;
-  value: any
+  value: any;
+  [key: string]: any;
 }
 
 
@@ -25,10 +26,14 @@ export interface FormField<T = any> {
   validators?: ValidatorFn[];
   showEnabledFieldButton?: boolean;
 
-  // Nuevas propiedades para autocomplete
-  optionLabel?: string; // Campo a mostrar en las sugerencias
-  completeMethod?: (event: any) => void; // Método para filtrar
-  suggestions?: any[]; // Sugerencias disponibles
+  // Propiedades específicas para autocomplete
+  optionLabel?: string;
+  completeMethod?: (event: any) => void;
+  suggestions?: any[];
+  returnObject?: boolean;
+  onSelect?: (event: any) => void; // <- Añade esta propiedad
+  dropdown?: boolean;
+  forceSelection?: boolean;
 
 
   // Propiedades especificas para fileUpload

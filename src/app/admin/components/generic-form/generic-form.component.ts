@@ -13,6 +13,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 
 
@@ -32,6 +33,7 @@ import { MessageService } from 'primeng/api';
     InputTextareaModule,
     AutoCompleteModule,
     FileUploadModule,
+    ToastModule,
   ],
   providers: [
     MessageService
@@ -148,6 +150,48 @@ export class GenericFormComponent<T extends Record<string, any>> implements OnCh
     );
   }
 
+  onAutoCompleteSelect(event: any, fieldName: string ) {
+    const selected = event.value.value;
+    this.form.get(fieldName)?.setValue(selected.value);
+  }
+
+
+  // AutoComplete con Deepseek
+  getFilteredSuggestions(fieldName: string, defaultSuggestions: any[]): any[] {
+    return this.filteredAutocomplete[fieldName] || defaultSuggestions;
+  }
+
+  filterAutocomplete(event: any, field: FormField<any>) {
+    const query = event.query.toLowerCase();
+    if (field.completeMethod) {
+      field.completeMethod(event);
+    } else if (field.options) {
+      this.filteredAutocomplete[field.name as string] = field.options.filter(opt => {
+        // Usamos el optionLabel o 'label' por defecto
+        const labelField = field.optionLabel || 'label';
+        return opt[labelField]?.toLowerCase().includes(query);
+      });
+    }
+  }
+
+  handleAutocompleteSelect(event: any, field: FormField<any>) {
+    if (field.onSelect) {
+      field.onSelect(event);
+    } else {
+      // Manejo por defecto más seguro
+      const selectedValue = event.value;
+      let valueToSet: any;
+
+      if (field.returnObject) {
+        valueToSet = selectedValue;
+      } else {
+        // Verificamos si existe la propiedad value
+        valueToSet = selectedValue?.value ?? selectedValue;
+      }
+
+      this.form.get(field.name as string)?.setValue(valueToSet);
+    }
+  }
 
 
   // FileUpload

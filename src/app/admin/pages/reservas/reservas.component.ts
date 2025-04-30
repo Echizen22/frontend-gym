@@ -11,7 +11,10 @@ import { ReservaService } from '../../services/reserva.service';
 import { Reserva } from '../../interfaces/reserva.interface';
 import { TableConfig } from '../../interfaces/table-config.interface';
 import { FormField } from '../../interfaces/form-field.interface';
-import { Observer } from 'rxjs';
+import { firstValueFrom, Observer } from 'rxjs';
+import { UsuarioService } from '../../services/usuario.service';
+import { ClaseService } from '../../services/clase.service';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-reservas',
@@ -25,9 +28,12 @@ import { Observer } from 'rxjs';
     InputTextModule,
     GenericFormComponent,
     DialogModule,
+    ToastModule,
   ],
   providers: [
-    MessageService
+    MessageService,
+    UsuarioService,
+    ClaseService
   ],
   templateUrl: './reservas.component.html',
   styleUrl: './reservas.component.scss'
@@ -36,6 +42,8 @@ export class ReservasComponent implements OnInit {
 
   private readonly fb = inject(UntypedFormBuilder);
   private readonly reservaService = inject(ReservaService);
+  private readonly usuarioService = inject(UsuarioService);
+  private readonly claseService = inject(ClaseService);
   private messageService = inject( MessageService );
 
   reservas!: Reserva[];
@@ -73,30 +81,34 @@ export class ReservasComponent implements OnInit {
     this.loadReservas();
   }
 
-  onCreateReserva(showModal: boolean) {
+  async onCreateReserva(showModal: boolean) {
     this.mode = 'create';
-    this.formFields = this.buildFormFields(this.mode);
+    this.formFields = await this.buildFormFields(this.mode);
     this.selectedReserva = {} as Reserva;
     this.titleDialog = 'Crear Reserva';
     this.displayDialog = showModal;
   }
 
-  onEditReserva(id: string) {
+  async onEditReserva(id: string) {
     this.mode = 'edit';
-    this.formFields = this.buildFormFields(this.mode);
     this.titleDialog = 'Editar Reserva';
-    this.displayDialog = true;
     this.selectIdReserva = id;
 
     this.reservaService.getReservaById(id).subscribe({
       next: (reserva: Reserva) => {
-
-        const { fecha, ...rest } = reserva;
-
         this.selectedReserva = {
-          fecha: new Date(fecha),
-          ...rest
+          ...reserva,
+          fecha: new Date(reserva.fecha),
+          idClase: reserva.clase.id,
+          idUsuario: reserva.usuario.dni
         };
+
+        this.buildFormFields(this.mode).then( formFields => {
+          this.formFields = formFields;
+          this.displayDialog = true;
+        })
+
+
       },
       error: (error) => {
         console.error(error);
@@ -156,6 +168,12 @@ export class ReservasComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error al crear reserva:', error);
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.error.message
+        });
       }
     }
   }
@@ -183,7 +201,7 @@ export class ReservasComponent implements OnInit {
     }
   }
 
-  buildFormFields(mode: 'create' | 'edit'): FormField<Reserva>[] {
+  async buildFormFields(mode: 'create' | 'edit'): Promise<FormField<Reserva>[]> {
     const fields: FormField<Reserva>[] = [
       {
         name: 'estado',
@@ -201,29 +219,50 @@ export class ReservasComponent implements OnInit {
       { name: 'fecha', label: 'Fecha', type: 'date', validators: [Validators.required] },
     ];
 
-    fields.unshift(
-      {
-        name: 'idUsuario',
-        label: 'Usuario',
-        type: 'autocomplete',
-        clear: true,
-        validators: [Validators.required],
-        options: [
-        ],
-        defaultValue: null
-      }
-    );
+    try {
+      const usuariosDropdown = await firstValueFrom(this.usuarioService.getUsuariosForDropdown());
+      const clasesDropdown = await firstValueFrom(this.claseService.getClasesForDropdown());
 
-    fields.push({
-      name: 'idClase',
-      label: 'Clase',
-      type: 'dropdown',
-      clear: true,
-      validators: [Validators.required],
-      options: [
-      ],
-      defaultValue: null
-    });
+      const usuarioField: FormField<Reserva> = {
+        name: 'idUsuario',
+        label: 'Usuarios',
+        type: 'autocomplete',
+        validators: [Validators.required],
+        options: usuariosDropdown,
+        defaultValue: null
+      };
+
+      if (mode === 'edit' && this.selectedReserva?.idUsuario) {
+        usuarioField.defaultValue = this.selectedReserva.idUsuario;
+      }
+
+      const claseField: FormField<Reserva> = {
+        name: 'idClase',
+        label: 'Clases',
+        type: 'dropdown',
+        validators: [Validators.required],
+        options: clasesDropdown,
+        defaultValue: null
+      };
+
+      if (mode === 'edit' && this.selectedReserva?.idClase) {
+        claseField.defaultValue = this.selectedReserva.idClase;
+      }
+
+      fields.unshift(usuarioField);
+      fields.push(claseField);
+
+
+    } catch (error) {
+      console.error('Error al cargar usuario o clases para dropdown:', error);
+
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No se pudieron cargar los usuarios o clases.'
+      });
+
+    }
 
     return fields;
 

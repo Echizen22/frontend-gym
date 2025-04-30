@@ -61,11 +61,24 @@
          @if (field.type === 'autocomplete') {
           <p-autoComplete
             [formControlName]="field.name"
+            [suggestions]="getFilteredSuggestions(field.name, field.suggestions || [])"
+            (completeMethod)="filterAutocomplete($event, field)"
+            (onSelect)="handleAutocompleteSelect($event, field)"
+            [field]="field.optionLabel || 'label'"
+            [dropdown]="field.dropdown ?? true"
+            [placeholder]="field.placeholder || ''"
+            [forceSelection]="field.forceSelection ?? true"
+            [inputStyle]="{ 'width': '100%' }"
+          />
+
+          <!-- <p-autoComplete
+            [formControlName]="field.name"
             [suggestions]="filteredAutocomplete[field.name]"
             (completeMethod)="onCompleteMethod($event, field.name)"
+            (onSelect)="onAutoCompleteSelect($event, field.name)"
             [field]="'label'"
             [dropdown]="true"
-            />
+            /> -->
           <!-- <p-autoComplete
             [formControlName]="field.name"
             [suggestions]="field.suggestions || []"
@@ -173,5 +186,10 @@
       </div>
     }
   }
+
+
+  <p-toast />
+
 </form>
+
 

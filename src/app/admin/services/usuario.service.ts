@@ -4,6 +4,7 @@ import { Usuario } from '../interfaces/usuario.interface';
 import { PaginatedResponse } from '../interfaces/pagainted-response.interface';
 import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { OptionsDropDown } from '../interfaces/form-field.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,11 @@ export class UsuarioService {
 
   deleteUser(dni: string) {
     return this.apiService.doDelete<void>(['usuario', dni], { responseType: 'json' });
+  }
+
+  // Dropdown
+  getUsuariosForDropdown() {
+    return this.apiService.doGet<OptionsDropDown[]>('/usuario/dropdown', { responseType: 'json'} );
   }
 
 }

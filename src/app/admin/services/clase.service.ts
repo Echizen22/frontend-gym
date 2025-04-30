@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Clase } from '../interfaces/clase.interface';
+import { OptionsDropDown } from '../interfaces/form-field.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,11 @@ export class ClaseService {
 
   deleteClase(id: string) {
     return this.apiService.doDelete<void>(['clase', id], { responseType: 'json' });
+  }
+
+  // Dropdown
+  getClasesForDropdown() {
+    return this.apiService.doGet<OptionsDropDown[]>('/clase/dropdown', { responseType: 'json'} );
   }
 
 }

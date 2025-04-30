@@ -2,18 +2,19 @@ export interface Reserva {
   fecha:   Date;
   idUsuario?: string;
   idClase:   string;
-  usuario: Usuario;
   id:      string;
   estado:  string;
+  usuario: Usuario;
+  clase: Clase;
 }
 
-// export interface Clase {
-//   id:           string;
-//   nombre:       string;
-//   descripcion:  string;
-//   duracion:     number;
-//   capacidadMax: number;
-// }
+export interface Clase {
+  id:           string;
+  nombre:       string;
+  descripcion:  string;
+  duracion:     number;
+  capacidadMax: number;
+}
 
 export interface Usuario {
   dni:                string;
