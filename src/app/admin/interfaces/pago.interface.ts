@@ -1,3 +1,4 @@
+import { UsuarioMembresia } from "./usuario.interface";
 
 enum EstadoPago {
   PENDIENTE = 'pendiente',
@@ -11,4 +12,5 @@ export interface Pago {
   fechaPago: Date;
   metodoPago: string;
   estado: EstadoPago;
+  usuarioMembresia?: UsuarioMembresia;
 }

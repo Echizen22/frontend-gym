@@ -32,11 +32,16 @@ export class HeaderComponent implements OnInit {
     {
       label: 'Options',
       items: [
-          {
-              label: 'Logout',
-              icon: 'pi pi-sign-out',
-              command: () => this.authService.logout()
-          }
+        {
+          label: 'Perfil',
+          icon: 'pi pi-user',
+          routerLink: ''
+        },
+        {
+            label: 'Logout',
+            icon: 'pi pi-sign-out',
+            command: () => this.authService.logout()
+        }
       ]
     }
   ];

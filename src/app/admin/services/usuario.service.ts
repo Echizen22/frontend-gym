@@ -56,5 +56,8 @@ export class UsuarioService {
     return this.apiService.doGet<OptionsDropDown[]>('/usuario/dropdown', { responseType: 'json'} );
   }
 
+  getUsuarioMembresiaForDropdown() {
+    return this.apiService.doGet<OptionsDropDown[]>('/usuario-membresia/dropdown', { responseType: 'json'} );
+  }
 
 }

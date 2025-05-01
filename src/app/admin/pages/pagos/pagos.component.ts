@@ -11,7 +11,8 @@ import { PagoService } from '../../services/pago.service';
 import { Pago } from '../../interfaces/pago.interface';
 import { FormField } from '../../interfaces/form-field.interface';
 import { TableConfig } from '../../interfaces/table-config.interface';
-import { Observer } from 'rxjs';
+import { firstValueFrom, Observer } from 'rxjs';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-pagos',
@@ -27,7 +28,9 @@ import { Observer } from 'rxjs';
     DialogModule,
   ],
   providers: [
-    MessageService
+    MessageService,
+    PagoService,
+    UsuarioService,
   ],
   templateUrl: './pagos.component.html',
   styleUrl: './pagos.component.scss'
@@ -36,6 +39,7 @@ export class PagosComponent implements OnInit {
 
   private readonly fb = inject(UntypedFormBuilder);
   private readonly pagoService = inject(PagoService);
+  private readonly usuarioService = inject(UsuarioService);
   private messageService = inject( MessageService );
 
   pagos!: Pago[];
@@ -53,7 +57,7 @@ export class PagosComponent implements OnInit {
   // Configuración de tabla
   tableConfig: TableConfig = {
     columns: [
-      { field: 'idUsuarioMembresia', header: 'Usuario con membresia', dataType: 'text', filterable: true, filterType: 'text' },
+      // { field: 'idUsuarioMembresia', header: 'Usuario con membresia', dataType: 'text', filterable: true, filterType: 'text' },
       { field: 'monto', header: 'Monto', dataType: 'number', filterable: true, filterType: 'numeric' },
       { field: 'fechaPago', header: 'Fecha de Pago', dataType: 'date', filterable: true, filterType: 'date' },
       { field: 'estado', header: 'Estado', dataType: 'text', filterable: true, filterType: 'select', selectBg: false, filterOptions: [
@@ -72,24 +76,31 @@ export class PagosComponent implements OnInit {
     this.loadPagos();
   }
 
-  onCreatePago(showModal: boolean) {
+  async onCreatePago(showModal: boolean) {
     this.mode = 'create';
-    this.formFields = this.buildFormFields(this.mode);
+    this.formFields = await this.buildFormFields(this.mode);
     this.selectedPago = {} as Pago;
     this.titleDialog = 'Crear Pago';
     this.displayDialog = showModal;
   }
 
-  onEditPago(id: string) {
+  async onEditPago(id: string) {
     this.mode = 'edit';
-    this.formFields = this.buildFormFields(this.mode);
+    this.formFields = await this.buildFormFields(this.mode);
     this.titleDialog = 'Editar Pago';
     this.displayDialog = true;
     this.selectIdPago = id;
 
     this.pagoService.getPagoById(id).subscribe({
       next: (pago: Pago) => {
-        this.selectedPago = pago;
+
+        if( pago.usuarioMembresia ) {
+          this.selectedPago = {
+            ...pago,
+            idUsuarioMembresia: pago.usuarioMembresia.id
+          };
+        }
+
       },
       error: (error) => {
         console.error(error);
@@ -173,10 +184,10 @@ export class PagosComponent implements OnInit {
       }
     }
 
-    buildFormFields(mode: 'create' | 'edit'): FormField<Pago>[] {
+    async buildFormFields(mode: 'create' | 'edit'): Promise<FormField<Pago>[]> {
       const fields: FormField<Pago>[] = [
         { name: 'monto', label: 'Monto', type: 'number', numberType: 'decimal', validators: [Validators.required] },
-        { name: 'fechaPago', label: 'Fecha de Pago', type: 'date', validators: [Validators.required] },
+        // { name: 'fechaPago', label: 'Fecha de Pago', type: 'date', validators: [Validators.required] },
         { name: 'metodoPago', label: 'Metodo de Pago', type: 'text', validators: [Validators.required] },
         {
           name: 'estado',
@@ -193,14 +204,28 @@ export class PagosComponent implements OnInit {
         },
       ];
 
-      if(mode === 'create') {
+      try {
+        const usuarioMembresiaDropdown = await firstValueFrom(this.usuarioService.getUsuarioMembresiaForDropdown());
 
+        const usuarioMembresiaField: FormField<Pago> = {
+          name: 'idUsuarioMembresia',
+          label: 'Usuario Membresia',
+          type: 'dropdown',
+          validators: [Validators.required],
+          options: usuarioMembresiaDropdown,
+          defaultValue: null
+        };
 
+        fields.unshift(usuarioMembresiaField);
 
-        fields.unshift(
-          { name: 'idUsuarioMembresia', label: 'Usuario Membresia', type: 'text', validators: [Validators.required] }
-        )
+      } catch (error) {
+        console.error('Error al cargar usuario-membresia:', error);
 
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudieron cargar los usuarios-membresias.'
+        });
       }
 
       return fields;
