@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { Usuario } from '../interfaces/usuario.interface';
+import { Usuario, UsuarioMembresia } from '../interfaces/usuario.interface';
 import { PaginatedResponse } from '../interfaces/pagainted-response.interface';
 import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -18,6 +18,10 @@ export class UsuarioService {
     return this.apiService.doPost<Usuario>('/usuario', body, { responseType: 'json'});
   }
 
+  createUsuarioMembresia(body: UsuarioMembresia) {
+    return this.apiService.doPost<UsuarioMembresia>('/usuario-membresia', body, { responseType: 'json'});
+  }
+
   getAllWithPagination() {
     return this.apiService.doGet<Usuario[]>('/usuario', { responseType: 'json'} );
   }
@@ -26,18 +30,31 @@ export class UsuarioService {
     return this.apiService.doGetWithId<Usuario>('/usuario', dni, { responseType: 'json' });
   }
 
+  getUseMembresiarById(id: string) {
+    return this.apiService.doGetWithId<UsuarioMembresia>('/usuario-membresia', id, { responseType: 'json' });
+  }
+
 
   updateUserById(dni: string, body: Usuario ) {
     return this.apiService.doPatch<Usuario>('/usuario', dni, body, { responseType: 'json'} );
+  }
+
+  updateUsuarioMembresiaById(id: string, body: UsuarioMembresia ) {
+    return this.apiService.doPatch<UsuarioMembresia>('/usuario-membresia', id, body, { responseType: 'json'} );
   }
 
   deleteUser(dni: string) {
     return this.apiService.doDelete<void>(['usuario', dni], { responseType: 'json' });
   }
 
+  deleteUserMembresia(id: string) {
+    return this.apiService.doDelete<void>(['usuario-membresia', id], { responseType: 'json' });
+  }
+
   // Dropdown
   getUsuariosForDropdown() {
     return this.apiService.doGet<OptionsDropDown[]>('/usuario/dropdown', { responseType: 'json'} );
   }
+
 
 }

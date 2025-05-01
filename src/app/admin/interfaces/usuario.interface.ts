@@ -1,3 +1,6 @@
+import { Membresia } from "./membresia.interface";
+import { Promocion } from "./promocion.interface";
+
 export interface Usuario {
   dni:                string;
   nombre:             string;
@@ -8,5 +11,19 @@ export interface Usuario {
   fechaRegistro:      Date;
   fechaActualizacion: Date;
   estado:             string;
-  telefono:           null;
+  telefono:           string;
+  usuarioMembresia?:  UsuarioMembresia;
+}
+
+
+export interface UsuarioMembresia {
+  id: string;
+  estado: string;
+  fechaIni?: Date;
+  fechaFin?: Date;
+  idUsuario?: string;
+  idMembresia?: string;
+  idPromocion?: string;
+  membresia?: Membresia;
+  promocion?: Promocion;
 }

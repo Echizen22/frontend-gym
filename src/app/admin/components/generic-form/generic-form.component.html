@@ -13,6 +13,7 @@
          @if (field.type === 'text') {
           <input
           pInputText
+          [readOnly]="field.readonly || false"
           [id]="field.name"
           aria-describedby="dni-help"
           [formControlName]="field.name"

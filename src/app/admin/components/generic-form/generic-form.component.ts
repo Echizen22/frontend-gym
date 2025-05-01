@@ -79,6 +79,7 @@ export class GenericFormComponent<T extends Record<string, any>> implements OnCh
 
   private createForm(): void {
     const formGroup: Record<string, any> = {};
+
     this.formFields?.forEach(field => {
       const key = field.name as keyof T;
       let value = this.formFieldsValues?.[key] ?? field.defaultValue ?? null;

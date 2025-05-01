@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Promocion } from '../interfaces/promocion.interface';
+import { OptionsDropDown } from '../interfaces/form-field.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,11 @@ export class PromocionService {
 
   deletePromocion(id: string) {
     return this.apiService.doDelete<void>(['promocion', id], { responseType: 'json' });
+  }
+
+  // Dropdown
+  getPromocionesForDropdown() {
+    return this.apiService.doGet<OptionsDropDown[]>('/promocion/dropdown', { responseType: 'json'} );
   }
 
 }

@@ -1,7 +1,7 @@
 <div class="container">
   <div class="card p-1 mt-4">
-    <p-table #dt [value]="data"  [paginator]="true" [rows]="rows"
-             [totalRecords]="totalRecords" [loading]="loading"
+    <p-table #dt [value]="data" [dataKey]="config.dataKey" [paginator]="true" [rows]="rows"
+             [totalRecords]="totalRecords" [loading]="loading" [rowExpandMode]="'single'"
              [rows]="10" [rowsPerPageOptions]="[10, 25, 55]"
              [tableStyle]="{ 'min-width': '75rem' }"
              >
@@ -183,6 +183,138 @@
           </td>
         </tr>
       </ng-template>
+
+      @if (config.showRowExpansion && config.expansionConfig) {
+        <ng-template pTemplate="rowexpansion" let-rowData>
+          <tr>
+            <td [colSpan]="config.columns.length + (config.showRowExpansion ? 2: 1)">
+              <div class="p-3 expansion-content">
+
+                 <!-- Contenido personalizado si se especificó -->
+                 @if (config.expansionConfig.template) {
+                  <ng-container *ngTemplateOutlet="
+                    config.expansionConfig.template;
+                    context: { $implicit: rowData }">
+                  </ng-container>
+                } @else {
+                  <!-- Tabla generada automáticamente -->
+                  @if (config.expansionConfig.title) {
+                    <h4 class="expansion-title">
+                      {{ config.expansionConfig.title }}
+                    </h4>
+                  }
+
+                  @if (rowData[config.expansionConfig.dataField]?.length > 0) {
+                    <p-table [value]="rowData[config.expansionConfig.dataField]"
+                            styleClass="p-datatable-sm">
+
+                      <!-- Header expansion -->
+                      <ng-template pTemplate="header">
+                        <tr>
+                          @for (col of config.expansionConfig.columns; track $index) {
+                            <th [pSortableColumn]="col.sortable ? col.field : ''">
+                              {{ col.header }}
+                              @if (col.sortable) {
+                                <p-sortIcon [field]="col.field" />
+                              }
+                            </th>
+                          }
+                          <th class="text-center">Operaciones</th>
+                        </tr>
+                      </ng-template>
+
+                      <!-- body expansion -->
+                      <ng-template pTemplate="body" let-expandedData>
+                        <tr>
+                          @for (col of config.expansionConfig.columns; track $index) {
+                            <td>
+                              @switch (col.dataType) {
+                                @case ('boolean') {
+                                  <p-tag [value]="expandedData[col.field] ? 'Sí' : 'No'"
+                                         [severity]="expandedData[col.field] ? 'success' : 'danger'" />
+                                }
+                                @case ('date') {
+                                  {{ expandedData[col.field] | date:('dd/MM/yyyy') }}
+                                }
+                                @case ('number') {
+                                  {{ expandedData[col.field] | number }}
+                                }
+                                @default {
+                                  @if( col.object ) {
+                                      {{ getNestedValue(expandedData, col.field) }}
+                                  }@else {
+                                    {{ expandedData[col.field] }}
+                                  }
+                                }
+                              }
+                            </td>
+                          }
+                          <td class="text-center">
+                            <div class="flex justify-content-center gap-2">
+                              <button pButton
+                                      type="button"
+                                      icon="pi pi-pencil"
+                                      class="p-button-rounded p-button-text p-button-primary"
+                                      (click)="handleEditExpansion(expandedData.dni || expandedData.id, rowData.dni || rowData.id)"
+                                      pTooltip="Editar"
+                                      tooltipPosition="top"></button>
+
+                              <button pButton
+                                      type="button"
+                                      icon="pi pi-trash"
+                                      class="p-button-rounded p-button-text p-button-danger"
+                                      (click)="handleDeleteExpansion(expandedData.dni || expandedData.id)"
+                                      pTooltip="Eliminar"
+                                      tooltipPosition="top"></button>
+                            </div>
+                          </td>
+                        </tr>
+                      </ng-template>
+
+                      <ng-template pTemplate="emptymessage">
+                        <tr>
+                          <td [colSpan]="config.expansionConfig.columns?.length">
+                            {{ config.expansionConfig.emptyMessage || 'No hay datos' }}
+                          </td>
+                        </tr>
+                      </ng-template>
+
+                    </p-table>
+
+                    <div class="mt-2 text-right">
+                      <p-button
+                        label="Añadir membresía"
+                        icon="pi pi-plus"
+                        [outlined]="true"
+                        [rounded]="true"
+                        (onClick)="addExpansionItem(rowData.dni)"
+                        severity="success"
+                      />
+                    </div>
+                  } @else {
+                    <p class="expansion-empty-message">
+                      {{ config.expansionConfig.emptyMessage || 'No hay datos para mostrar' }}
+                    </p>
+
+                    <div class="mt-2 text-right">
+                      <p-button
+                        label="Añadir membresía"
+                        icon="pi pi-plus"
+                        [outlined]="true"
+                        [rounded]="true"
+                        (onClick)="addExpansionItem(rowData.dni || rowData.id)"
+                        severity="success"
+                      />
+                    </div>
+                  }
+                }
+
+              </div>
+            </td>
+          </tr>
+
+        </ng-template>
+      }
     </p-table>
   </div>
 </div>

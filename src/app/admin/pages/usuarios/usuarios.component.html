@@ -6,11 +6,14 @@
   [totalRecords]="totalRecords"
   [loading]="loading"
   (showModalCreate)="onCreateUser($event)"
+  (showModalExpansionCreate)="onCreateUsuarioMembresia($event)"
   (onEdit)="onEditUser($event)"
+  (onEditExpansion)="onEditUserMembresia($event)"
   (onDelete)="onDeleteUser($event)"
+  (onDeleteExpansion)="onDeleteUserMembresia($event)"
   ></app-generic-table>
 
-
+  <!-- Usuarios -->
   <p-dialog
 
     [header]="titleDialog"
@@ -51,5 +54,49 @@
 
 
   </p-dialog>
+
+  <!-- Row Expansion -->
+  <p-dialog
+
+    [header]="titleDialogExpansion"
+    [(visible)]="displayDialogExpansion"
+    [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [draggable]="true"
+    [resizable]="false"
+    [maximizable]="true"
+  >
+
+  <admin-generic-form
+    #formRefExpansion
+    [formFieldsValues]="selectedUsuarioMembresia"
+    [formFields]="formFieldsExpansion"
+    (onEntity)="updateUsuarioMembresia($event)"
+    [mode]="mode"
+  ></admin-generic-form>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      label="Cancelar"
+      icon="pi pi-times"
+      (click)="handleExpansionCancel(formRefExpansion)"
+      class="p-button-text"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Guardar"
+      icon="pi pi-check"
+      (click)="formRefExpansion.submitForm()"
+      class="p-button-success"
+    ></button>
+  </ng-template>
+
+
+  </p-dialog>
+
+  <p-toast />
 
 </main>

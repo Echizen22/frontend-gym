@@ -43,8 +43,11 @@ export class GenericTableComponent {
   @Output() onLazyLoad = new EventEmitter<TableLazyLoadEvent>();
 
   @Output() onEdit = new EventEmitter<string>();
+  @Output() onEditExpansion = new EventEmitter<{id: string, idPadre: string}>();
   @Output() onDelete = new EventEmitter<string>();
+  @Output() onDeleteExpansion = new EventEmitter<string>();
   @Output() showModalCreate = new EventEmitter<boolean>();
+  @Output() showModalExpansionCreate = new EventEmitter<{id: string, showModal: boolean}>();
 
   handleLazyLoad(event: TableLazyLoadEvent) {
     this.onLazyLoad.emit(event);
@@ -58,8 +61,19 @@ export class GenericTableComponent {
     this.onEdit.emit(id);
   }
 
+  handleEditExpansion(id: string, idPadre: string) {
+    this.onEditExpansion.emit({
+      id,
+      idPadre
+    });
+  }
+
   handleDelete(id: string) {
     this.onDelete.emit(id);
+  }
+
+  handleDeleteExpansion(id: string) {
+    this.onDeleteExpansion.emit(id);
   }
 
   getSeverity(value: string): 'success' | 'warning' | 'danger' | 'info' {
@@ -77,6 +91,11 @@ export class GenericTableComponent {
 
   getNestedValue(obj: any, path: string): any {
     return path.split('.').reduce((acc, part) => acc?.[part], obj);
+  }
+
+
+  addExpansionItem(dni: string) {
+    this.showModalExpansionCreate.emit({id: dni, showModal: true});
   }
 
 }

@@ -18,6 +18,7 @@ export interface FormField<T = any> {
   type: FieldType;
   disabled?: boolean;
   hidden?: boolean;
+  readonly?: boolean;
   currency?: boolean;
   numberType?: NumberType;
   options?: OptionsDropDown[];

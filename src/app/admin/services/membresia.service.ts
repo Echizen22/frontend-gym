@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Membresia } from '../interfaces/membresia.interface';
+import { OptionsDropDown } from '../interfaces/form-field.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,9 @@ export class MembresiaService {
     return this.apiService.doDelete<void>(['membresia', id], { responseType: 'json' });
   }
 
+  // Dropdown
+  getMembresiasForDropdown() {
+    return this.apiService.doGet<OptionsDropDown[]>('/membresia/dropdown', { responseType: 'json'} );
+  }
 
 }
