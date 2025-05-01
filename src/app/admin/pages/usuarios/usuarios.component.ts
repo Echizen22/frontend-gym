@@ -102,6 +102,7 @@ export class UsuariosComponent implements OnInit {
         { field: 'estado', header: 'Estado', sortable: true, dataType: 'text', filterable: true, filterType: 'text' },
         { field: 'fechaIni', header: 'Fecha Inicio', sortable: true, dataType: 'date', filterable: true, filterType: 'date' },
         { field: 'fechaFin', header: 'Fecha Fin', sortable: true, dataType: 'date', filterable: true, filterType: 'date' },
+        { field: 'promocion.nombre', header: 'Promoción', object: true, sortable: true, dataType: 'text', filterable: true, filterType: 'text' },
       ]
     }
   };
@@ -186,7 +187,6 @@ export class UsuariosComponent implements OnInit {
 
     this.usuarioService.getUseMembresiarById(ids.id).subscribe({
       next: (respuesta) => {
-        console.log(respuesta);
         if( respuesta.membresia ) {
 
           if( respuesta.promocion ) {
