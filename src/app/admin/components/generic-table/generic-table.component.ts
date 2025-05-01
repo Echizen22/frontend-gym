@@ -38,6 +38,7 @@ export class GenericTableComponent {
   @Input() rows: number = 10;
   @Input() first: number = 0;
 
+
   // @Input() viewModal!: boolean;
 
   @Output() onLazyLoad = new EventEmitter<TableLazyLoadEvent>();

@@ -8,6 +8,9 @@
   (showModalCreate)="onCreateMembresia($event)"
   (onEdit)="onEditMembresia($event)"
   (onDelete)="onDeleteMembresia($event)"
+  (showModalExpansionCreate)="onCreateMembresiaPromocion($event)"
+  (onEditExpansion)="onEditMembresiaPromocion($event)"
+  (onDeleteExpansion)="onDeleteMembresiaPromocion($event)"
   ></app-generic-table>
 
 
@@ -50,5 +53,49 @@
 
 
   </p-dialog>
+
+  <!-- Row Expansion -->
+  <p-dialog
+
+    [header]="titleDialogExpansion"
+    [(visible)]="displayDialogExpansion"
+    [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [draggable]="true"
+    [resizable]="false"
+    [maximizable]="true"
+  >
+
+  <admin-generic-form
+    #formRefExpansion
+    [formFieldsValues]="selectedMembresiaPromocion"
+    [formFields]="formFieldsExpansion"
+    (onEntity)="updateMembresiaPromocion($event)"
+    [mode]="mode"
+  ></admin-generic-form>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      label="Cancelar"
+      icon="pi pi-times"
+      (click)="handleExpansionCancel(formRefExpansion)"
+      class="p-button-text"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Guardar"
+      icon="pi pi-check"
+      (click)="formRefExpansion.submitForm()"
+      class="p-button-success"
+    ></button>
+  </ng-template>
+
+
+  </p-dialog>
+
+  <p-toast />
 
 </main>

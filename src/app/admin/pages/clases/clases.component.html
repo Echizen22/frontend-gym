@@ -8,6 +8,9 @@
   (showModalCreate)="onCreateClase($event)"
   (onEdit)="onEditClase($event)"
   (onDelete)="onDeleteClase($event)"
+  (showModalExpansionCreate)="onCreateHorario($event)"
+  (onEditExpansion)="onEditHorario($event)"
+  (onDeleteExpansion)="onDeleteHorario($event)"
   ></app-generic-table>
 
 
@@ -50,5 +53,49 @@
 
 
   </p-dialog>
+
+  <!-- Row Expansion -->
+  <p-dialog
+
+    [header]="titleDialogExpansion"
+    [(visible)]="displayDialogExpansion"
+    [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [draggable]="true"
+    [resizable]="false"
+    [maximizable]="true"
+  >
+
+  <admin-generic-form
+    #formRefExpansion
+    [formFieldsValues]="selectedHorario"
+    [formFields]="formFieldsExpansion"
+    (onEntity)="updateHorario($event)"
+    [mode]="mode"
+  ></admin-generic-form>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      label="Cancelar"
+      icon="pi pi-times"
+      (click)="handleExpansionCancel(formRefExpansion)"
+      class="p-button-text"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Guardar"
+      icon="pi pi-check"
+      (click)="formRefExpansion.submitForm()"
+      class="p-button-success"
+    ></button>
+  </ng-template>
+
+
+  </p-dialog>
+
+  <p-toast />
 
 </main>

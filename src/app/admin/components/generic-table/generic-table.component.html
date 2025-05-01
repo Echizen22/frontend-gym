@@ -170,6 +170,7 @@
                       class="p-button-rounded p-button-text p-button-primary"
                       (click)="handleEdit(rowData.dni || rowData.id)"
                       pTooltip="Editar"
+                      title="Editar"
                       tooltipPosition="top"></button>
 
               <button pButton
@@ -178,6 +179,7 @@
                       class="p-button-rounded p-button-text p-button-danger"
                       (click)="handleDelete(rowData.dni || rowData.id)"
                       pTooltip="Eliminar"
+                      title="Eliminar"
                       tooltipPosition="top"></button>
             </div>
           </td>
@@ -253,6 +255,7 @@
                             <div class="flex justify-content-center gap-2">
                               <button pButton
                                       type="button"
+                                      title="Editar"
                                       icon="pi pi-pencil"
                                       class="p-button-rounded p-button-text p-button-primary"
                                       (click)="handleEditExpansion(expandedData.dni || expandedData.id, rowData.dni || rowData.id)"
@@ -261,6 +264,7 @@
 
                               <button pButton
                                       type="button"
+                                      title="Eliminar"
                                       icon="pi pi-trash"
                                       class="p-button-rounded p-button-text p-button-danger"
                                       (click)="handleDeleteExpansion(expandedData.dni || expandedData.id)"
@@ -283,11 +287,11 @@
 
                     <div class="mt-2 text-right">
                       <p-button
-                        label="Añadir membresía"
+                        label="Añadir"
                         icon="pi pi-plus"
                         [outlined]="true"
                         [rounded]="true"
-                        (onClick)="addExpansionItem(rowData.dni)"
+                        (onClick)="addExpansionItem(rowData.dni || rowData.id)"
                         severity="success"
                       />
                     </div>
@@ -298,7 +302,7 @@
 
                     <div class="mt-2 text-right">
                       <p-button
-                        label="Añadir membresía"
+                        label="Añadir"
                         icon="pi pi-plus"
                         [outlined]="true"
                         [rounded]="true"

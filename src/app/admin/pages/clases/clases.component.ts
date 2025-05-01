@@ -8,11 +8,12 @@ import { InputTextModule } from 'primeng/inputtext';
 import { GenericFormComponent } from '../../components/generic-form/generic-form.component';
 import { GenericTableComponent } from '../../components/generic-table/generic-table.component';
 import { ClaseService } from '../../services/clase.service';
-import { Clase } from '../../interfaces/clase.interface';
+import { Clase, Horario } from '../../interfaces/clase.interface';
 import { FormField, OptionsDropDown } from '../../interfaces/form-field.interface';
 import { TableConfig } from '../../interfaces/table-config.interface';
 import { firstValueFrom, Observer } from 'rxjs';
 import { InstructorService } from '../../services/instructor.service';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-clases',
@@ -26,10 +27,12 @@ import { InstructorService } from '../../services/instructor.service';
     InputTextModule,
     GenericFormComponent,
     DialogModule,
+    ToastModule
   ],
   providers: [
     MessageService,
     InstructorService,
+    ClaseService,
   ],
   templateUrl: './clases.component.html',
   styleUrl: './clases.component.scss'
@@ -46,12 +49,17 @@ export class ClasesComponent implements OnInit {
   displayDialog = false;
   totalRecords: number = 0;
   selectedClase!: Clase;
+  selectedHorario!: Horario;
   selectIdClase!: string;
+  selectIdHorario!: string;
   titleDialog!: string;
+  titleDialogExpansion!: string;
+  displayDialogExpansion!: boolean;
   mode!: 'create' | 'edit';
 
   // Campo para el formulario generico
   formFields!: FormField<Clase>[];
+  formFieldsExpansion!: FormField<Horario>[];
 
   // Configuración de tabla
   tableConfig: TableConfig = {
@@ -64,7 +72,17 @@ export class ClasesComponent implements OnInit {
     ],
     menuMode: 'row',
     showBtnLimpiarFiltros: false,
-    showRowExpansion: false
+    showRowExpansion: true,
+    dataKey: 'id',
+    expansionConfig: {
+      dataField: 'horarios',
+      title: 'Horarios de clase',
+      columns: [
+        { field: 'horaIni', header: 'Hora Inicio', object: true, sortable: true, dataType: 'text', filterable: true, filterType: 'text' },
+        { field: 'horaFin', header: 'Hora Fin', object: true, sortable: true, dataType: 'text', filterable: true, filterType: 'text' },
+        { field: 'fecha', header: 'Fecha', object: true, sortable: true, dataType: 'date', filterable: true, filterType: 'date' }
+      ]
+    }
   };
 
   ngOnInit(): void {
@@ -267,4 +285,138 @@ export class ClasesComponent implements OnInit {
     }
   }
 
+
+  // Expansion
+  async onCreateHorario(showModalExpansion: { id: string; showModal: boolean; }) {
+    this.mode = 'create';
+    this.formFieldsExpansion = await this.buildFormFieldsExpansion(this.mode, showModalExpansion.id);
+    this.selectedHorario = {} as Horario;
+    this.titleDialogExpansion = 'Añadir horario a la clase';
+    this.displayDialogExpansion = showModalExpansion.showModal;
+  }
+
+  async onEditHorario(ids: { id: string; idPadre: string; }) {
+    this.mode = 'edit';
+    this.formFieldsExpansion = await this.buildFormFieldsExpansion(this.mode, ids.idPadre);
+    this.titleDialogExpansion = 'Editar horario de la clase';
+    this.displayDialogExpansion = true;
+    this.selectIdHorario = ids.id;
+
+    this.claseService.getHorarioById(ids.id).subscribe({
+      next: (respuesta) => {
+
+        this.selectedHorario = {
+          ...respuesta,
+          fecha: new Date(respuesta.fecha)
+        };
+
+        // if( respuesta.promocion ) {
+        //     this.selectedMembresiaPromocion = {
+        //       ...respuesta,
+        //       idMembresia: ids.idPadre,
+        //       idPromocion: respuesta.promocion.id
+        //     };
+
+        // }
+
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+
+  }
+
+  onDeleteHorario(id: string) {
+    this.claseService.deleteHorario(id).subscribe(this.deleteHorario());
+  }
+
+  private deleteHorario(): Partial<Observer<void>> {
+    return {
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Horario eliminada con exito', detail: 'Horario Eliminada' });
+        this.loadClases();
+      },
+      error: (error) => {
+        console.error('Error al eliminar un horario:', error);
+      }
+    }
+  }
+
+  updateHorario(horario: Horario) {
+    this.displayDialogExpansion = false;
+
+    switch (this.mode) {
+      case 'create':
+        this.claseService.createHorario(horario).subscribe(this.createHorario());
+        break;
+      case 'edit':
+        this.claseService.updateHorarioById(this.selectIdHorario, horario).subscribe(this.editHorario());
+        break;
+      default:
+        console.warn('Modo desconocido en horario');
+    }
+  }
+
+  private createHorario(): Partial<Observer<Horario>> {
+    return {
+      next: (res: Horario) => {
+        this.loadClases();
+      },
+      error: (error) => {
+        console.error('Error al crear horario:', error);
+      }
+    }
+  }
+
+  private editHorario(): Partial<Observer<Horario>> {
+    return {
+      next: (res: Horario) => {
+        this.loadClases();
+      },
+      error: (error) => {
+        console.error('Error al actualizar horario:', error);
+      }
+    }
+  }
+
+  handleExpansionCancel(formRef: GenericFormComponent<Horario>) {
+    formRef.resetForm();
+    this.selectedHorario = {} as Horario;
+    this.displayDialogExpansion = false;
+  }
+
+  async buildFormFieldsExpansion(mode: 'create' | 'edit', id: string ): Promise<FormField<Horario>[]> {
+    const fields: FormField<Horario>[] = [
+      { name: 'horaIni', label: 'Hora Inicio', type: 'time', validators: [Validators.required] },
+      { name: 'horaFin', label: 'Hora Fin', type: 'time', validators: [Validators.required] },
+      { name: 'fecha', label: 'Fecha', type: 'date', validators: [Validators.required] },
+    ];
+
+
+    try {
+      const clasesDropdown = await firstValueFrom(this.claseService.getClasesForDropdown());
+
+      const claseField: FormField<Horario> = {
+        name: 'idClase',
+        label: 'Clase',
+        readonly: true,
+        type: 'dropdown',
+        options: clasesDropdown,
+        defaultValue: id
+      };
+
+      fields.push(claseField);
+
+    } catch (error) {
+      console.error('Error al cargar membresia o promociones para dropdown:', error);
+
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No se pudieron cargar las clases.'
+      });
+    }
+    return fields;
+  }
 }

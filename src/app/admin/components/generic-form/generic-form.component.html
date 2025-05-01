@@ -21,6 +21,12 @@
           />
          }
 
+         @if (field.type === 'time') {
+          <input [id]="field.name" type="time" pInputText [formControlName]="field.name" />
+         }
+
+
+
          @if (field.type === 'email') {
           <input
           pInputText
@@ -51,6 +57,7 @@
          @if (field.type === 'dropdown') {
           <p-dropdown
             [inputId]="field.name"
+            [readonly]="field.readonly || false"
             [showClear]="field.clear"
             class="estado-desplegable"
             [formControlName]="field.name"

@@ -321,11 +321,11 @@ export class UsuariosComponent implements OnInit {
   private deleteUserMembresia(): Partial<Observer<void>> {
     return {
       next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Usuario con membresia eliminado con exito', detail: 'Usuario con membresia Eliminado' });
+        this.messageService.add({ severity: 'success', summary: 'Usuario con membresia eliminado con exito', detail: 'Usuario con membresia eliminado' });
         this.loadUsers();
       },
       error: (error) => {
-        console.error('Error al eliminar un usuario:', error);
+        console.error('Error al eliminar un usuario con membresia:', error);
       }
     }
   }

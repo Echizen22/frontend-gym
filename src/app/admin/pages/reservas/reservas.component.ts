@@ -216,7 +216,7 @@ export class ReservasComponent implements OnInit {
         ],
         defaultValue: null
       },
-      { name: 'fecha', label: 'Fecha', type: 'date', validators: [Validators.required] },
+      { name: 'fecha', label: 'Fecha', type: 'date', validators: [Validators.required], defaultValue: new Date(), },
     ];
 
     try {
