@@ -1,0 +1,107 @@
+<div class="perfil-container">
+  <h1 class="title-perfil">Perfil</h1>
+  <p-card *ngIf="user" class="perfil-card">
+    <div class="perfil-header">
+      <img src="https://i.pravatar.cc/120?u={{user.dni}}" alt="avatar" class="avatar">
+      <div>
+        <h1>Hola {{ user.nombre }}</h1>
+        <p>Gestiona tus datos en <strong>My Gym</strong>, ¡donde y cuando quieras!</p>
+      </div>
+    </div>
+
+    <div class="perfil-datos">
+      <h3 class="section-title">Datos personales</h3>
+      <form [formGroup]="form">
+        <div class="grid grid-cols-2 ">
+          <div class="dato-label">DNI:</div>
+          <div class="dato-valor">{{ user.dni }}</div>
+
+          <div class="dato-label">Nombre:</div>
+          <div class="dato-valor">
+            @if (editMode()) {
+              <input type="text" pInputText formControlName="nombre" />
+            } @else {
+              {{ user.nombre }}
+            }
+          </div>
+
+          <div class="dato-label">Apellidos:</div>
+          <div class="dato-valor">
+            @if (editMode()) {
+              <input type="text" pInputText formControlName="apellidos" />
+            } @else {
+              {{ user.apellidos }}
+            }
+          </div>
+
+          <div class="dato-label">Email:</div>
+          <div class="dato-valor">
+            @if (editMode()) {
+              <input type="email" pInputText formControlName="email" />
+            } @else {
+              {{ user.email }}
+            }
+          </div>
+
+          <div class="dato-label">Teléfono:</div>
+          <div class="dato-valor">
+            @if (editMode()) {
+              <input type="text" pInputText formControlName="telefono" />
+            } @else {
+              {{ user.telefono }}
+            }
+          </div>
+
+          <div class="dato-label">Fecha de registro:</div>
+          <div class="dato-valor">
+            {{ user.fechaRegistro | dateFormat }}
+          </div>
+        </div>
+      </form>
+
+      <!-- <div class="mt-4 text-end">
+        <button pButton type="button" icon="pi pi-pencil" label="Actualizar datos"
+        (click)="toggleEdit()" class="p-button-sm"></button>
+      </div> -->
+
+      <div class="mt-4 text-end">
+        @if (!editMode()) {
+          <button pButton type="button" icon="pi pi-pencil" label="Actualizar datos"
+                  (click)="toggleEdit()" class="p-button-sm"></button>
+        } @else {
+          <button pButton type="button" icon="pi pi-check" label="Guardar"
+                  (click)="guardarCambios()" class="p-button-sm p-button-success mr-2"></button>
+          <button pButton type="button" icon="pi pi-times" label="Cancelar"
+                  (click)="toggleEdit()" class="p-button-sm p-button-secondary"></button>
+        }
+      </div>
+    </div>
+  </p-card>
+
+  <div class="consejos">
+    <h2 class="titulo-consejos">Consejos para tu progreso</h2>
+
+    <div class="consejos-grid">
+      <p-card header="Varía tu entrenamiento" class="consejo-card">
+        <p>
+          Evita la monotonía cambiando tu rutina con nuevas clases o actividades. Así trabajas más músculos y mantienes la motivación.
+        </p>
+      </p-card>
+
+      <p-card header="Escucha a tu cuerpo" class="consejo-card">
+        <p>
+          El descanso y la recuperación son clave para mejorar tu rendimiento y evitar lesiones. Dormir bien también cuenta.
+        </p>
+      </p-card>
+
+      <p-card header="Nutrición equilibrada" class="consejo-card">
+        <p>
+          Alimentarte bien es tan importante como entrenar. Asegura proteínas, carbohidratos complejos y grasas saludables.
+        </p>
+      </p-card>
+    </div>
+  </div>
+
+  <p-toast />
+
+</div>

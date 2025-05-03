@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -17,6 +17,12 @@ export class AuthService {
   private readonly cookieService: CookieService = inject(CookieService);
   private readonly router = inject(Router);
 
+  private _authStatus = signal({ isLoggedIn: this.isLoggedIn(), isAdmin: this.isAdmin() });
+
+  get authStatus() {
+    return this._authStatus.asReadonly();
+  }
+
   login(email: string, password: string): Observable<boolean> {
     const url = `${this.baseUrl}/auth/login`;
     const body = { email, password };
@@ -31,6 +37,21 @@ export class AuthService {
 
   getToken(): string | null {
     return this.cookieService.get(this.tokenKey) || null;
+  }
+
+  getCurrentUser() {
+    const token = this.getToken();
+    if (!token) return null;
+
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return {
+        ...payload
+      }
+    } catch (error) {
+      return null;
+    }
   }
 
   isLoggedIn(): boolean {
@@ -61,6 +82,7 @@ export class AuthService {
 
   logout(): void {
     this.cookieService.delete(this.tokenKey, '/');
+    this._authStatus.set({ isLoggedIn: false, isAdmin: false });
     this.router.navigateByUrl('/login');
   }
 
@@ -71,6 +93,16 @@ export class AuthService {
       sameSite: 'Lax',
       secure: false // cambia a true si usas HTTPS
     });
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      this._authStatus.set({
+        isLoggedIn: true,
+        isAdmin: payload.isAdmin === true
+      });
+    } catch {
+      this._authStatus.set({ isLoggedIn: false, isAdmin: false });
+    }
 
   }
 

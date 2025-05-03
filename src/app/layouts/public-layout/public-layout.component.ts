@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { MenuItem } from 'primeng/api';
@@ -15,6 +15,9 @@ import { AuthService } from '../../services/auth.service';
     RouterOutlet,
     FooterComponent,
   ],
+  providers: [
+    AuthService
+  ],
   templateUrl: './public-layout.component.html',
   styleUrl: './public-layout.component.scss'
 })
@@ -22,22 +25,21 @@ export class PublicLayoutComponent {
 
   private readonly authService = inject(AuthService);
 
-  public menuItem: MenuItem[] = [{
-    label: 'Inicio',
-    routerLink: '/'
-  },
-  {
-    label: 'About',
-    routerLink: '/about'
-  },
-  {
-    label: 'Contacto',
-    routerLink: 'contacto'
-  },
-  {
-    label: 'Clases',
-    routerLink: 'clases'
-  }
-];
+
+public menuItems = computed<MenuItem[]>(() => {
+  const baseItems = [
+    { label: 'Inicio', routerLink: '/' },
+    { label: 'About', routerLink: '/about' },
+    { label: 'Contacto', routerLink: '/contacto' }
+  ];
+
+  const clasesItem = this.authService.authStatus().isLoggedIn
+    ? { label: 'Mis Clases', routerLink: '/user/mis-clases' }
+    : { label: 'Clases', routerLink: '/clases' };
+
+  return [...baseItems, clasesItem];
+});
+
+
 
 }

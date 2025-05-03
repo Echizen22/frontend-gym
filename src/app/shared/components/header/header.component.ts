@@ -27,7 +27,9 @@ export class HeaderComponent implements OnInit {
 
   private readonly authService: AuthService = inject(AuthService);
 
-  private _isAdmin = signal<boolean>(false);
+  isLoggedIn = computed(() => this.authService.authStatus().isLoggedIn);
+  isAdmin = computed(() => this.authService.authStatus().isAdmin);
+
   itemsLogin: MenuItem[] = [
     {
       label: 'Options',
@@ -35,8 +37,21 @@ export class HeaderComponent implements OnInit {
         {
           label: 'Perfil',
           icon: 'pi pi-user',
-          routerLink: ''
+          routerLink: '/user/mi-perfil'
         },
+        {
+            label: 'Logout',
+            icon: 'pi pi-sign-out',
+            command: () => this.authService.logout()
+        }
+      ]
+    }
+  ];
+
+  itemsLoginAdmin: MenuItem[] = [
+    {
+      label: 'Options',
+      items: [
         {
             label: 'Logout',
             icon: 'pi pi-sign-out',
@@ -50,14 +65,10 @@ export class HeaderComponent implements OnInit {
   @Input()
   menuItems!: MenuItem[];
 
-  get isAdmin() {
-    return this._isAdmin();
-  }
-
 
   ngOnInit(): void {
-    this._isAdmin.set(this.authService.isAdmin());
-    if( this.isAdmin ) {
+
+    if( this.isAdmin() ) {
       this.menuItems = [
         {
           label: 'Bienvenido',

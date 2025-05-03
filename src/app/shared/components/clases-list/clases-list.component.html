@@ -1,0 +1,15 @@
+<div *ngFor="let clase of clasesAgrupadas" class="clase-card">
+  <h2>{{ clase.claseNombre }}</h2>
+  <p><strong>Instructor:</strong> {{ clase.instructor.nombre }} ({{ clase.instructor.especialidad }})</p>
+  <p><strong>Duración:</strong> {{ clase.duracion }} min</p>
+  <p>{{ clase.descripcion }}</p>
+
+  <div *ngIf="clase.horarios.length > 0">
+    <h4>Próximos horarios:</h4>
+    <ul>
+      <li *ngFor="let h of clase.horarios">
+        {{ h.fecha | date:'fullDate' }} — {{ h.horaIni }} a {{ h.horaFin }}
+      </li>
+    </ul>
+  </div>
+</div>

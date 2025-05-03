@@ -39,6 +39,10 @@ export class UsuarioService {
     return this.apiService.doPatch<Usuario>('/usuario', dni, body, { responseType: 'json'} );
   }
 
+  updateUserForProfileById(dni: string, body: Partial<Usuario>) {
+    return this.apiService.doPatch<Usuario>('/usuario', dni, body, { responseType: 'json'} );
+  }
+
   updateUsuarioMembresiaById(id: string, body: UsuarioMembresia ) {
     return this.apiService.doPatch<UsuarioMembresia>('/usuario-membresia', id, body, { responseType: 'json'} );
   }
@@ -59,5 +63,6 @@ export class UsuarioService {
   getUsuarioMembresiaForDropdown() {
     return this.apiService.doGet<OptionsDropDown[]>('/usuario-membresia/dropdown', { responseType: 'json'} );
   }
+
 
 }
