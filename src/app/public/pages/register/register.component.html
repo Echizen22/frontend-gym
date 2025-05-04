@@ -1,0 +1,145 @@
+<!-- <div class="grid justify-content-center"> -->
+<div class="flex justify-content-center px-4">
+  <!-- <div class="sm:col-11 md:col-7 lg:col-6 mt-5 p-4  "> -->
+  <div class="w-full sm:w-11 md:w-7 lg:w-6  ">
+    <!-- <h1 style="text-align: center;">Registrarse</h1> -->
+
+    <p-card class="shadow-md border-round-lg bg-white mx-2">
+
+      <ng-template pTemplate="header">
+        <h2 class="title-register">Registrarse</h2>
+      </ng-template>
+
+      <form [formGroup]="myForm" (ngSubmit)="doSubmit()" class="registration-form">
+
+        <div class="field">
+          <label>Dni</label>
+          <input pInputText formControlName="dni"  class="text-base p-2 w-full" type="text">
+          <small *ngIf="isValidField('dni', 'required')" class="text-red-500">
+            El dni es requerido
+          </small>
+          <small *ngIf="myForm.get('dni')?.hasError('required') ? false:  myForm.get('dni')?.hasError('dniInvalido') && myForm.controls['dni'].touched" class="text-red-500">
+            Formato de dni invalido, introduzca un dni valido
+          </small>
+          <small *ngIf="myForm.get('dni')?.hasError('required') ? false:  myForm.get('dni')?.hasError('dniNoValido') && myForm.controls['dni'].touched" class="text-red-500">
+            Dni no valido, debe introducir un dni valido
+          </small>
+          <small *ngIf="isValidField('dni', 'dniExiste')" class="text-red-500">
+            Ya existe un usuario con este DNI
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Nombre</label>
+          <input pInputText formControlName="nombre" class="text-base p-2 w-full"  type="text">
+          <small *ngIf="isValidField('nombre', 'required')"  class="text-red-500">
+            El nombre es requerido
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Apellidos</label>
+          <input pInputText formControlName="apellidos" class="text-base p-2 w-full"  type="text">
+          <small *ngIf="isValidField('apellidos', 'required')"  class="text-red-500">
+            Los apellidos son requeridos
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Contraseña</label>
+          <input type="password" [feedback]="false" pPassword class="w-full" formControlName="password" >
+          <small *ngIf="isValidField('password', 'required')"  class="text-red-500">
+            La contraseña es requerida
+          </small>
+          <small *ngIf="isValidField('password', 'minlength')"   class="text-red-500">
+            La contraseña debe tener un mínimo de 6 caracteres de longitud
+          </small>
+          <small *ngIf="!isValidField('password', 'minlength') && isValidField('password', 'pattern')" class="text-red-500">
+            Debe incluir al menos una mayúscula, una minúscula, un número y un carácter especial.
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Correo Electrónico</label>
+          <input pInputText  class="text-base p-2 w-full" formControlName="email"  type="text">
+          <small *ngIf="isValidField('email', 'required')" class="text-red-500">
+            El correo electrónico es requerido
+          </small>
+          <small *ngIf="myForm.get('email')?.hasError('required') ? false:  myForm.get('email')?.hasError('pattern')"  class="text-red-500">
+            Se debe introducir un correo electrónico valido
+          </small>
+          <small *ngIf="isValidField('email', 'emailExiste')" class="text-red-500">
+            Ya existe un usuario con este Correo electrónico
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Plan</label>
+
+          <div class="card-container">
+            <div
+              *ngFor="let plan of membresias"
+              (click)="myForm.get('membresia')?.setValue(plan.id)"
+              [ngClass]="{
+                'card': true,
+                'selected': myForm.get('membresia')?.value === plan.id
+              }"
+            >
+              <h3 class="font-bold text-lg text-gray-800 mb-1">{{ plan.nombre }}</h3>
+              <p class="text-sm text-gray-600">{{ plan.tipo }}</p>
+              <p class="text-sm text-gray-600 mb-2 leading-snug">{{ plan.descripcion }}</p>
+              <p class="text-base font-semibold mt-3">{{ plan.precio | currency:'EUR' }}</p>
+            </div>
+          </div>
+
+          <small *ngIf="isValidField('membresia', 'required')" class="text-red-500">
+            La membresía es requerida
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Teléfono</label>
+          <input pInputText class="text-base p-2 w-full" formControlName="telefono"  type="text">
+          <small *ngIf="isValidField('telefono', 'pattern')"  class="text-red-500">
+            Se debe introducir un teléfono valido
+          </small>
+        </div>
+
+
+        <div class="field">
+          <div class="field flex gap-3 justify-end mt-4">
+            <p-button
+              label="Limpiar"
+              icon="pi pi-refresh"
+              class="p-button-secondary"
+              (click)="onResetForm()"
+              [text]="true"
+              [raised]="true"
+              type="button"
+            />
+
+            <p-button
+              label="Enviar"
+              icon="pi pi-check"
+              type="submit"
+              [text]="true"
+              [raised]="true"
+            />
+          </div>
+
+          <div class="text-center">
+            <a routerLink="/login">Ir a Iniciar Sesión</a>
+          </div>
+        </div>
+      </form>
+    </p-card>
+
+  </div>
+
+  <!-- <app-visual-plan [visualPlan]="visualPlan" class="lg:col-3 sm:col-11 md:col-3 p-4 mt-5 border rounded-md shadow-md bg-white"></app-visual-plan> -->
+
+</div>
+
+<!-- Dialogs -->
+<p-toast></p-toast>
+

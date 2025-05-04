@@ -14,6 +14,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { ValidatorsService } from '../../../validators/Validators.service';
 
 
 
@@ -36,7 +37,8 @@ import { ToastModule } from 'primeng/toast';
     ToastModule,
   ],
   providers: [
-    MessageService
+    MessageService,
+    ValidatorsService
   ],
   templateUrl: './generic-form.component.html',
   styleUrl: './generic-form.component.scss'
@@ -56,7 +58,8 @@ export class GenericFormComponent<T extends Record<string, any>> implements OnCh
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly messageService: MessageService
+    private readonly messageService: MessageService,
+    private readonly validatorsService: ValidatorsService,
   ) {}
 
 
@@ -92,7 +95,8 @@ export class GenericFormComponent<T extends Record<string, any>> implements OnCh
 
       const control = this.fb.control(
         { value, disabled: field.disabled ?? false },
-        field.validators || []
+        field.validators || [],
+        field.asyncValidators || []
       )
 
       formGroup[field.name] = control;

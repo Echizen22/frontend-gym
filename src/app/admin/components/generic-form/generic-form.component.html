@@ -15,7 +15,6 @@
           pInputText
           [readOnly]="field.readonly || false"
           [id]="field.name"
-          aria-describedby="dni-help"
           [formControlName]="field.name"
           [placeholder]="field.placeholder || ''"
           />
@@ -103,7 +102,7 @@
           <textarea
               rows="5"
               cols="30"
-              maxlength="100"
+              maxlength="9000"
               class="textarea"
               pInputTextarea
               [autoResize]="false"
@@ -175,17 +174,45 @@
          @if (form.get(field.name)?.touched && form.get(field.name)?.invalid) {
           <div class="text-red-600 text-sm mt-1">
             @if (form.get(field.name)?.errors?.['required']) {
-              * Campo obligatorio
+              <small class="text-red-500">
+                Campo obligatorio
+              </small>
             }
             @if (form.get(field.name)?.errors?.['email']) {
-              * Formato de correo inválido
+              <small class="text-red-500">
+                Formato de correo inválido
+              </small>
             }
             @if (form.get(field.name)?.errors?.['minlength']) {
-              * Mínimo de caracteres no cumplido
+              <small class="text-red-500">
+                Mínimo de caracteres no cumplido
+              </small>
             }
             @if (form.get(field.name)?.errors?.['maxlength']) {
-              * Máximo de caracteres excedido
+              <small class="text-red-500">
+                Máximo de caracteres excedido
+              </small>
             }
+
+            @if (form.get(field.name)?.errors?.['dniInvalido']) {
+              <small class="text-red-500">
+                Formato de dni invalido, introduzca un dni valido
+              </small>
+            }
+
+            @if (form.get(field.name)?.errors?.['dniInvalido']) {
+              <small class="text-red-500">
+                Formato de dni invalido, introduzca un dni valido
+              </small>
+            }
+
+
+            @if (form.get(field.name)?.errors?.['dniExiste']) {
+              <small class="text-red-500">
+                Ya existe un usuario con este DNI
+              </small>
+            }
+
           </div>
         }
 

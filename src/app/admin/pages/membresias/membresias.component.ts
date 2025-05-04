@@ -70,6 +70,7 @@ export class MembresiasComponent implements OnInit {
   tableConfig: TableConfig = {
     columns: [
       { field: 'nombre', header: 'Nombre', dataType: 'text', filterable: true, filterType: 'text' },
+      { field: 'descripciion', header: 'Descripción', dataType: 'text', filterable: true, filterType: 'text', responsiveClass: 'table-cell' },
       { field: 'precio', header: 'Precio', dataType: 'number', filterable: true, filterType: 'numeric' },
       { field: 'tipo', header: 'Tipo Membresia', dataType: 'text', filterable: true, filterType: 'select', filterOptions: [
         { label: 'Mensual', value: 'mensual' },
@@ -205,6 +206,7 @@ export class MembresiasComponent implements OnInit {
   buildFormFields(mode: 'create' | 'edit'): FormField<Membresia>[] {
     const fields: FormField<Membresia>[] = [
       { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required] },
+      { name: 'descripcion', label: 'Descripción', type: 'textarea', validators: [Validators.required] },
       { name: 'precio', label: 'Precio', type: 'number', numberType: 'currency', validators: [Validators.required] },
       {
         name: 'tipo',

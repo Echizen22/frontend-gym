@@ -17,6 +17,7 @@ import { MessageService } from 'primeng/api';
 import { MembresiaService } from '../../services/membresia.service';
 import { ToastModule } from 'primeng/toast';
 import { PromocionService } from '../../services/promocion.service';
+import { ValidatorsService } from '../../../validators/Validators.service';
 
 
 interface Columnas {
@@ -41,7 +42,8 @@ interface Columnas {
 providers: [
   MessageService,
   MembresiaService,
-  PromocionService
+  PromocionService,
+  ValidatorsService
 ],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.scss'
@@ -52,6 +54,7 @@ export class UsuariosComponent implements OnInit {
   private readonly usuarioService = inject(UsuarioService);
   private readonly membresiaService = inject(MembresiaService);
   private readonly promocionService = inject(PromocionService);
+  private readonly validatorsService = inject(ValidatorsService);
   private messageService = inject( MessageService );
 
 
@@ -167,8 +170,8 @@ export class UsuariosComponent implements OnInit {
         const { fechaActualizacion, fechaRegistro, ...rest } = user;
 
         this.selectedUser = {
-          fechaActualizacion: new Date(fechaActualizacion),
-          fechaRegistro: new Date(fechaRegistro),
+          fechaActualizacion: new Date(fechaActualizacion!),
+          fechaRegistro: new Date(fechaRegistro!),
           ...rest
         };
       },
@@ -247,8 +250,8 @@ export class UsuariosComponent implements OnInit {
     return  {
       next: (res) => {
         this.usuarios = res.map( usuario => {
-          usuario.fechaActualizacion = new Date(usuario.fechaActualizacion);
-          usuario.fechaRegistro = new Date(usuario.fechaRegistro);
+          usuario.fechaActualizacion = new Date(usuario.fechaActualizacion!);
+          usuario.fechaRegistro = new Date(usuario.fechaRegistro!);
           return usuario
         });
         this.loading = false;
@@ -333,7 +336,7 @@ export class UsuariosComponent implements OnInit {
 
   buildFormFields(mode: 'create' | 'edit'): FormField<Usuario>[] {
     const fields: FormField<Usuario>[] = [
-      { name: 'dni', label: 'DNI', type: 'text', validators: [Validators.required], disabled: mode === 'edit' },
+      { name: 'dni', label: 'DNI', type: 'text', validators: [Validators.required, this.validatorsService.dniValidator() ], asyncValidators: [ this.validatorsService.dniExisteValidator()], disabled: mode === 'edit' },
       { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required] },
       { name: 'apellidos', label: 'Apellidos', type: 'text', validators: [Validators.required] },
       { name: 'email', label: 'Correo electrónico', type: 'email', validators: [Validators.required], disabled: mode === 'edit', showEnabledFieldButton: mode === 'edit' },

@@ -23,6 +23,10 @@ export class MembresiaService {
     return this.apiService.doGet<Membresia[]>('/membresia', { responseType: 'json'} );
   }
 
+  getMembresia(){
+    return this.apiService.doGet<Membresia[]>('/membresia', { responseType: 'json'} );
+  }
+
   getMembresiaById(id: string) {
     return this.apiService.doGetWithId<Membresia>('/membresia', id, { responseType: 'json' });
   }

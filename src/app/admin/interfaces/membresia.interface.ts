@@ -1,11 +1,12 @@
 import { Promocion } from "./promocion.interface";
 
 export interface Membresia {
-  id:       string;
-  nombre:   string;
-  precio:   number;
-  tipo:     string;
-  duracion: number;
+  id:          string;
+  nombre:      string;
+  descripcion: string;
+  precio:      number;
+  tipo:        string;
+  duracion:    number;
   membresiaPromociones?: MembresiaPromocion;
 }
 

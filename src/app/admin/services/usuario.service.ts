@@ -30,6 +30,15 @@ export class UsuarioService {
     return this.apiService.doGetWithId<Usuario>('/usuario', dni, { responseType: 'json' });
   }
 
+  checkUserExist(dni: string) {
+    return this.apiService.doGetWithId<{ exists: boolean }>('/usuario/check-dni', dni, { responseType: 'json' });
+  }
+
+  checkEamilExist(email: string) {
+    return this.apiService.doGet<{ exists: boolean }>(`/usuario/check-email?email=${email}`, { responseType: 'json'});
+  }
+
+
   getUseMembresiarById(id: string) {
     return this.apiService.doGetWithId<UsuarioMembresia>('/usuario-membresia', id, { responseType: 'json' });
   }

@@ -1,4 +1,4 @@
-import { ValidatorFn } from "@angular/forms";
+import { AsyncValidatorFn, ValidatorFn } from "@angular/forms";
 
 type FieldType = 'text' | 'number' | 'date' | 'dropdown' | 'boolean' | 'email' | 'password' | 'textarea' | 'autocomplete' | 'fileUpload' | 'time';
 type NumberType = 'currency' | 'decimal';
@@ -26,6 +26,7 @@ export interface FormField<T = any> {
   defaultValue?: any;
   clear?: boolean;
   validators?: ValidatorFn[];
+  asyncValidators?: AsyncValidatorFn[];
   showEnabledFieldButton?: boolean;
 
   // Propiedades específicas para autocomplete

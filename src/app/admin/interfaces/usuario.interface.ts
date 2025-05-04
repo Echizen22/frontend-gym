@@ -7,10 +7,10 @@ export interface Usuario {
   apellidos:          string;
   email:              string;
   password?:          string;
-  isAdmin:            boolean;
-  fechaRegistro:      Date;
-  fechaActualizacion: Date;
-  estado:             string;
+  isAdmin?:            boolean;
+  fechaRegistro?:      Date;
+  fechaActualizacion?: Date;
+  estado?:             string;
   telefono:           string;
   usuarioMembresia?:  UsuarioMembresia;
 }

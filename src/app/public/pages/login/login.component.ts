@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../../services/auth.service';
 import { ButtonModule } from 'primeng/button';
@@ -13,6 +13,7 @@ import { ToastModule } from 'primeng/toast';
     ReactiveFormsModule,
     ButtonModule,
     ToastModule,
+    RouterModule,
   ],
   providers: [MessageService],
   templateUrl: './login.component.html',
@@ -39,7 +40,6 @@ export class LoginComponent {
     this.authService.login( email, password )
       .subscribe({
         next: () => {
-
           if(this.authService.isAdmin()) {
             this.messageService.add({ severity: 'success', summary: 'Inicio de Sesión Exitoso', detail: 'Bienvenido Administrador' });
             setTimeout(() => {
@@ -48,7 +48,7 @@ export class LoginComponent {
 
           } else {
 
-            this.messageService.add({ severity: 'success', summary: 'Inicio de Sesión Exitoso', detail: 'Bienvenido de nuevo' });
+            this.messageService.add({ severity: 'success', summary: 'Inicio de Sesión Exitoso', detail: 'Bienvenido de nuevo.' });
             setTimeout(() => {
               this.router.navigateByUrl('/');
             }, 2000)
@@ -56,7 +56,7 @@ export class LoginComponent {
 
         },
         error: (message) => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: message.error.message });
         }
       });
 

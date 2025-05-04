@@ -2,9 +2,11 @@ import { inject, Injectable, signal } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Observer } from 'rxjs';
 import { LoginResponse } from '../interfaces/login-response.interface';
 import { Router } from '@angular/router';
+import { Usuario } from '../admin/interfaces/usuario.interface';
+import { RegisterResponse } from '../interfaces/register-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +37,11 @@ export class AuthService {
     )
   }
 
+  register(body: Usuario) {
+    const url = `${this.baseUrl}/auth/register`;
+    return this.http.post<RegisterResponse>(url, body);
+  }
+
   getToken(): string | null {
     return this.cookieService.get(this.tokenKey) || null;
   }
@@ -54,31 +61,44 @@ export class AuthService {
     }
   }
 
+  // isLoggedIn(): boolean {
+  //   const token = this.getToken();
+  //   if (!token) return false;
+
+  //   try {
+  //     const payload = JSON.parse(atob(token.split('.')[1]));
+  //     const now = Math.floor(Date.now() / 1000);
+
+  //     return payload.exp > now;
+  //   } catch (e) {
+  //     return false;
+  //   }
+  // }
+
+    // isAdmin(): boolean {
+  //   const token = this.getToken();
+  //   if (!token) return false;
+
+  //   try {
+  //     const payload = JSON.parse(atob(token.split('.')[1]));
+  //     return payload.isAdmin === true;
+  //   } catch {
+  //     return false;
+  //   }
+  // }
+
   isLoggedIn(): boolean {
-    const token = this.getToken();
-    if (!token) return false;
-
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const now = Math.floor(Date.now() / 1000);
-
-      return payload.exp > now; // ❗ Aquí sí lo usas
-    } catch (e) {
-      return false;
-    }
+    const payload = this.getPayload();
+    return payload ? payload.exp > Math.floor(Date.now() / 1000) : false;
   }
 
   isAdmin(): boolean {
-    const token = this.getToken();
-    if (!token) return false;
-
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.isAdmin === true;
-    } catch {
-      return false;
-    }
+    const payload = this.getPayload();
+    return payload?.isAdmin === true;
   }
+
+
+
 
   logout(): void {
     this.cookieService.delete(this.tokenKey, '/');
@@ -106,5 +126,15 @@ export class AuthService {
 
   }
 
+  private getPayload(): any | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      return JSON.parse(atob(token.split('.')[1]));
+    } catch {
+      return null;
+    }
+  }
 
 }
