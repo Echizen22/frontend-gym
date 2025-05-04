@@ -129,8 +129,6 @@ export class MainLayoutComponent {
   }
 
   actualizarMenu(loggedIn: boolean, admin: boolean) {
-
-    console.log({loggedIn, admin});
     const items: MenuItem[] = [];
     const settings: MenuItem[] = [];
 

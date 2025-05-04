@@ -78,11 +78,16 @@
 
   .p-menu {
     border-radius: 8px;
-    .p-button.p-button-text.p-button-plain, .p-menuitem-icon {
+    .p-button.p-button-text.p-button-plain, .p-menuitem-icon  {
+      color: white;
+    }
+
+    .p-menuitem > .p-menuitem-content .p-menuitem-link .p-menuitem-icon {
       color: white;
     }
 
   }
+
 
   .btn-logout {
 
@@ -115,6 +120,19 @@
     }
     .mobile .p-button {
       background: #E53935;
+    }
+  }
+}
+
+:host ::ng-deep {
+
+  .p-menu {
+    top: 62px !important;
+  }
+
+  .p-menubar-button {
+    .p-icon {
+      color: white;
     }
   }
 }

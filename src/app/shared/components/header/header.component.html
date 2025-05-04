@@ -40,11 +40,18 @@
   <ng-template pTemplate="end">
 
     @if(isAdmin) {
-      <p-menu #menu [model]="itemsSetting" [popup]="true"></p-menu>
-      <p-button class="btn-logout" icon="pi pi-bars" (click)="menu.toggle($event)" [text]="true" [plain]="true"></p-button>
+      <div class="menu-container">
+        <p-menu #menu [model]="itemsSetting" [popup]="true"  ></p-menu>
+        <p-button class="btn-logout" icon="pi pi-bars" (click)="menu.toggle($event)" [text]="true" [plain]="true"></p-button>
+      </div>
+
     } @else if (isLoggedIn) {
-      <p-menu #menu [model]="itemsSetting" [popup]="true"></p-menu>
-      <p-button class="btn-logout" icon="pi pi-bars" (click)="menu.toggle($event)" [text]="true" [plain]="true"></p-button>
+      <div class="menu-container">
+        <p-menu #menu [model]="itemsSetting" [popup]="true"></p-menu>
+        <p-button class="btn-logout" [icon]="iconClass()" (click)="menu.toggle($event)" [text]="true" [plain]="true"></p-button>
+      </div>
+
+
     } @else {
       <!-- Botones en pantallas más grande -->
       <button type="button" class="no-mobile btn-login mr-1" routerLink="/login" aria-label="Iniciar sesión">Iniciar Sesión</button>

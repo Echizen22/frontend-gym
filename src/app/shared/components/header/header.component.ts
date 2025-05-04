@@ -36,88 +36,17 @@ export class HeaderComponent {
   @Input()
   itemsSetting!: MenuItem[];
 
+  iconClass = signal('pi pi-bars');
 
-  // private readonly authService: AuthService = inject(AuthService);
+  constructor() {
+    this.updateIcon(window.innerWidth);
+    window.addEventListener('resize', () => {
+      this.updateIcon(window.innerWidth);
+    });
+  }
 
-  // isLoggedIn = computed(() => this.authService.authStatus().isLoggedIn);
-  // isAdmin = computed(() => this.authService.authStatus().isAdmin);
-
-  // itemsLogin: MenuItem[] = [
-  //   {
-  //     label: 'Options',
-  //     items: [
-  //       {
-  //         label: 'Perfil',
-  //         icon: 'pi pi-user',
-  //         routerLink: '/user/mi-perfil'
-  //       },
-  //       {
-  //           label: 'Logout',
-  //           icon: 'pi pi-sign-out',
-  //           command: () => this.authService.logout()
-  //       }
-  //     ]
-  //   }
-  // ];
-
-  // itemsLoginAdmin: MenuItem[] = [
-  //   {
-  //     label: 'Options',
-  //     items: [
-  //       {
-  //           label: 'Logout',
-  //           icon: 'pi pi-sign-out',
-  //           command: () => this.authService.logout()
-  //       }
-  //     ]
-  //   }
-  // ];
-
-
-
-
-
-
-  // ngOnInit(): void {
-  //   console.log('header:' + this.isAdmin());
-  //   this.isAdminShow = this.isAdmin();
-  //   if( this.isAdmin() ) {
-  //     this.menuItems = [
-  //       {
-  //         label: 'Bienvenido',
-  //         routerLink: '/admin',
-  //       },
-  //       {
-  //       label: 'Usuarios',
-  //       routerLink: '/admin/usuarios'
-  //       },
-  //       {
-  //       label: 'Membresias',
-  //       routerLink: '/admin/membresias',
-  //       },
-  //       {
-  //       label: 'Pagos',
-  //       routerLink: '/admin/pagos'
-  //       },
-  //       {
-  //       label: 'Instructores',
-  //       routerLink: '/admin/instructores'
-  //       },
-  //       {
-  //       label: 'Clases',
-  //       routerLink: '/admin/clases'
-  //       },
-  //       {
-  //       label: 'Reservas',
-  //       routerLink: '/admin/reservas'
-  //       },
-  //       {
-  //       label: 'Promociones',
-  //       routerLink: '/admin/promociones'
-  //       },
-  //     ]
-  //   }
-  // }
-
+  updateIcon(width: number) {
+    this.iconClass.set(width < 550 ? 'pi pi-ellipsis-v' : 'pi pi-bars');
+  }
 
 }

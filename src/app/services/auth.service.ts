@@ -19,7 +19,7 @@ export class AuthService {
   private readonly cookieService: CookieService = inject(CookieService);
   private readonly router = inject(Router);
 
-  private _authStatus = signal({ isLoggedIn: false, isAdmin: false });
+  private _authStatus = signal({ isLoggedIn: this.isLoggedIn(), isAdmin: this.isAdmin() });
 
   get authStatus() {
     return this._authStatus.asReadonly();
