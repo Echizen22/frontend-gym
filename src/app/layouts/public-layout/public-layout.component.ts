@@ -26,19 +26,20 @@ export class PublicLayoutComponent {
   private readonly authService = inject(AuthService);
 
 
-public menuItems = computed<MenuItem[]>(() => {
-  const baseItems = [
-    { label: 'Inicio', routerLink: '/' },
-    { label: 'About', routerLink: '/about' },
-    { label: 'Contacto', routerLink: '/contacto' }
-  ];
+  public menuItems = computed<MenuItem[]>(() => {
+    const baseItems = [
+      { label: 'Inicio', routerLink: '/' },
+      { label: 'About', routerLink: '/about' },
+      { label: 'Contacto', routerLink: '/contacto' }
+    ];
 
-  const clasesItem = this.authService.authStatus().isLoggedIn
-    ? { label: 'Mis Clases', routerLink: '/user/mis-clases' }
-    : { label: 'Clases', routerLink: '/clases' };
+    console.log('public-layout: ' + this.authService.isLoggedIn())
+    const clasesItem = this.authService.isLoggedIn()
+      ? { label: 'Mis Clases', routerLink: '/user/mis-clases' }
+      : { label: 'Clases', routerLink: '/clases' };
 
-  return [...baseItems, clasesItem];
-});
+    return [...baseItems, clasesItem];
+  });
 
 
 

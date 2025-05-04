@@ -10,7 +10,5 @@ import { MenuItem } from 'primeng/api';
 })
 export class FooterComponent {
 
-  @Input()
-  public menuItems!: MenuItem;
 
 }

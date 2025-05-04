@@ -1,0 +1,4 @@
+<shared-header *ngIf="showMenu()" [isAdmin]="isAdmin()" [isLoggedIn]="isLoggedIn()" [menuItems]="menuItems()" [itemsSetting]="itemsSetting()"></shared-header>
+<router-outlet />
+
+<shared-footer *ngIf="!isAdmin()"></shared-footer>

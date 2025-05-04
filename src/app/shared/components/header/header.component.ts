@@ -22,89 +22,102 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent implements OnInit {
-
-
-  private readonly authService: AuthService = inject(AuthService);
-
-  isLoggedIn = computed(() => this.authService.authStatus().isLoggedIn);
-  isAdmin = computed(() => this.authService.authStatus().isAdmin);
-
-  itemsLogin: MenuItem[] = [
-    {
-      label: 'Options',
-      items: [
-        {
-          label: 'Perfil',
-          icon: 'pi pi-user',
-          routerLink: '/user/mi-perfil'
-        },
-        {
-            label: 'Logout',
-            icon: 'pi pi-sign-out',
-            command: () => this.authService.logout()
-        }
-      ]
-    }
-  ];
-
-  itemsLoginAdmin: MenuItem[] = [
-    {
-      label: 'Options',
-      items: [
-        {
-            label: 'Logout',
-            icon: 'pi pi-sign-out',
-            command: () => this.authService.logout()
-        }
-      ]
-    }
-  ];
-
+export class HeaderComponent {
 
   @Input()
   menuItems!: MenuItem[];
 
+  @Input()
+  isAdmin!: boolean;
 
-  ngOnInit(): void {
+  @Input()
+  isLoggedIn!: boolean;
 
-    if( this.isAdmin() ) {
-      this.menuItems = [
-        {
-          label: 'Bienvenido',
-          routerLink: '/admin',
-        },
-        {
-        label: 'Usuarios',
-        routerLink: '/admin/usuarios'
-        },
-        {
-        label: 'Membresias',
-        routerLink: '/admin/membresias',
-        },
-        {
-        label: 'Pagos',
-        routerLink: '/admin/pagos'
-        },
-        {
-        label: 'Instructores',
-        routerLink: '/admin/instructores'
-        },
-        {
-        label: 'Clases',
-        routerLink: '/admin/clases'
-        },
-        {
-        label: 'Reservas',
-        routerLink: '/admin/reservas'
-        },
-        {
-        label: 'Promociones',
-        routerLink: '/admin/promociones'
-        },
-      ]
-    }
-  }
+  @Input()
+  itemsSetting!: MenuItem[];
+
+
+  // private readonly authService: AuthService = inject(AuthService);
+
+  // isLoggedIn = computed(() => this.authService.authStatus().isLoggedIn);
+  // isAdmin = computed(() => this.authService.authStatus().isAdmin);
+
+  // itemsLogin: MenuItem[] = [
+  //   {
+  //     label: 'Options',
+  //     items: [
+  //       {
+  //         label: 'Perfil',
+  //         icon: 'pi pi-user',
+  //         routerLink: '/user/mi-perfil'
+  //       },
+  //       {
+  //           label: 'Logout',
+  //           icon: 'pi pi-sign-out',
+  //           command: () => this.authService.logout()
+  //       }
+  //     ]
+  //   }
+  // ];
+
+  // itemsLoginAdmin: MenuItem[] = [
+  //   {
+  //     label: 'Options',
+  //     items: [
+  //       {
+  //           label: 'Logout',
+  //           icon: 'pi pi-sign-out',
+  //           command: () => this.authService.logout()
+  //       }
+  //     ]
+  //   }
+  // ];
+
+
+
+
+
+
+  // ngOnInit(): void {
+  //   console.log('header:' + this.isAdmin());
+  //   this.isAdminShow = this.isAdmin();
+  //   if( this.isAdmin() ) {
+  //     this.menuItems = [
+  //       {
+  //         label: 'Bienvenido',
+  //         routerLink: '/admin',
+  //       },
+  //       {
+  //       label: 'Usuarios',
+  //       routerLink: '/admin/usuarios'
+  //       },
+  //       {
+  //       label: 'Membresias',
+  //       routerLink: '/admin/membresias',
+  //       },
+  //       {
+  //       label: 'Pagos',
+  //       routerLink: '/admin/pagos'
+  //       },
+  //       {
+  //       label: 'Instructores',
+  //       routerLink: '/admin/instructores'
+  //       },
+  //       {
+  //       label: 'Clases',
+  //       routerLink: '/admin/clases'
+  //       },
+  //       {
+  //       label: 'Reservas',
+  //       routerLink: '/admin/reservas'
+  //       },
+  //       {
+  //       label: 'Promociones',
+  //       routerLink: '/admin/promociones'
+  //       },
+  //     ]
+  //   }
+  // }
 
 
 }

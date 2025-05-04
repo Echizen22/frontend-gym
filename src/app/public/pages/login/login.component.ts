@@ -41,17 +41,18 @@ export class LoginComponent {
       .subscribe({
         next: () => {
           if(this.authService.isAdmin()) {
-            this.messageService.add({ severity: 'success', summary: 'Inicio de Sesión Exitoso', detail: 'Bienvenido Administrador' });
-            setTimeout(() => {
-              this.router.navigateByUrl('/admin');
-            }, 2000)
-
+            // this.messageService.add({ severity: 'success', summary: 'Inicio de Sesión Exitoso', detail: 'Bienvenido Administrador' });
+            // setTimeout(() => {
+            //   this.router.navigateByUrl('/admin');
+            // }, 2000)
+            this.router.navigateByUrl('/admin');
           } else {
 
-            this.messageService.add({ severity: 'success', summary: 'Inicio de Sesión Exitoso', detail: 'Bienvenido de nuevo.' });
-            setTimeout(() => {
-              this.router.navigateByUrl('/');
-            }, 2000)
+            // this.messageService.add({ severity: 'success', summary: 'Inicio de Sesión Exitoso', detail: 'Bienvenido de nuevo.' });
+            // setTimeout(() => {
+            //   this.router.navigateByUrl('/');
+            // }, 2000)
+            this.router.navigateByUrl('/');
           }
 
         },

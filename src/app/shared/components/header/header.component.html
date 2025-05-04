@@ -4,7 +4,7 @@
   >
 
   <ng-template pTemplate="start">
-    <a  [routerLink]="isAdmin() ? '/admin/welcome': '/' ">
+    <a  [routerLink]="isAdmin ? '/admin/welcome': '/' ">
       <!-- <img src="../../../../assets/images/logoMYGYM.png" alt="mi imagen" height="60" class="mr-2"> -->
       <svg class="w-8" width="150" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
         <!-- Fondo oscuro solo para previsualizar -->
@@ -39,11 +39,11 @@
 
   <ng-template pTemplate="end">
 
-    @if(isAdmin()) {
-      <p-menu #menu [model]="itemsLoginAdmin" [popup]="true"></p-menu>
+    @if(isAdmin) {
+      <p-menu #menu [model]="itemsSetting" [popup]="true"></p-menu>
       <p-button class="btn-logout" icon="pi pi-bars" (click)="menu.toggle($event)" [text]="true" [plain]="true"></p-button>
-    } @else if (isLoggedIn()) {
-      <p-menu #menu [model]="itemsLogin" [popup]="true"></p-menu>
+    } @else if (isLoggedIn) {
+      <p-menu #menu [model]="itemsSetting" [popup]="true"></p-menu>
       <p-button class="btn-logout" icon="pi pi-bars" (click)="menu.toggle($event)" [text]="true" [plain]="true"></p-button>
     } @else {
       <!-- Botones en pantallas más grande -->

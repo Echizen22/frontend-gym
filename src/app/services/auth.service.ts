@@ -19,7 +19,7 @@ export class AuthService {
   private readonly cookieService: CookieService = inject(CookieService);
   private readonly router = inject(Router);
 
-  private _authStatus = signal({ isLoggedIn: this.isLoggedIn(), isAdmin: this.isAdmin() });
+  private _authStatus = signal({ isLoggedIn: false, isAdmin: false });
 
   get authStatus() {
     return this._authStatus.asReadonly();
@@ -61,32 +61,6 @@ export class AuthService {
     }
   }
 
-  // isLoggedIn(): boolean {
-  //   const token = this.getToken();
-  //   if (!token) return false;
-
-  //   try {
-  //     const payload = JSON.parse(atob(token.split('.')[1]));
-  //     const now = Math.floor(Date.now() / 1000);
-
-  //     return payload.exp > now;
-  //   } catch (e) {
-  //     return false;
-  //   }
-  // }
-
-    // isAdmin(): boolean {
-  //   const token = this.getToken();
-  //   if (!token) return false;
-
-  //   try {
-  //     const payload = JSON.parse(atob(token.split('.')[1]));
-  //     return payload.isAdmin === true;
-  //   } catch {
-  //     return false;
-  //   }
-  // }
-
   isLoggedIn(): boolean {
     const payload = this.getPayload();
     return payload ? payload.exp > Math.floor(Date.now() / 1000) : false;
@@ -96,9 +70,6 @@ export class AuthService {
     const payload = this.getPayload();
     return payload?.isAdmin === true;
   }
-
-
-
 
   logout(): void {
     this.cookieService.delete(this.tokenKey, '/');
@@ -120,6 +91,7 @@ export class AuthService {
         isLoggedIn: true,
         isAdmin: payload.isAdmin === true
       });
+
     } catch {
       this._authStatus.set({ isLoggedIn: false, isAdmin: false });
     }
