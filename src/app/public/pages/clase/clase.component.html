@@ -1,0 +1,29 @@
+
+<div *ngIf="loading" class="spinner">
+  <p-progressSpinner  ariaLabel="loading" />
+</div>
+
+<div *ngIf="clase" class="clase-container">
+  <div class="title-fondo">
+    <img [src]="imgBg" alt="Imagen fondo">
+    <h1 #imgTitle class="clase-title">{{ clase.nombre }}</h1>
+  </div>
+  <div class="clase-content">
+    <p class="clase-descripcion"></p>
+    <div class="instructor-container">
+      <div>
+        <h2>Instructor</h2>
+        <div class="instructor-detalles">
+          <p><strong>Nombre:</strong> {{  clase.instructor.nombre }}</p>
+          <p><strong>Apellidos:</strong> {{ clase.instructor.apellidos }}</p>
+          <p><strong>Especialidad:</strong> {{ clase.instructor.especialidad }}</p>
+          <p><strong>Experiencia:</strong> {{ clase.instructor.experiencia }}</p>
+          <p><strong>Teléfono:</strong> {{ clase.instructor.telefono }}</p>
+        </div>
+      </div>
+      <div class="img-instructor">
+        <img [src]="clase.instructor.foto" alt="Foto de instructor" class="clase-instructor">
+      </div>
+    </div>
+  </div>
+</div>

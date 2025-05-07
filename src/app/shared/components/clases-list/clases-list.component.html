@@ -1,6 +1,10 @@
-<div *ngFor="let clase of clasesAgrupadas" class="clase-card">
-  <h2>{{ clase.claseNombre }}</h2>
-  <p><strong>Instructor:</strong> {{ clase.instructor.nombre }} ({{ clase.instructor.especialidad }})</p>
+
+<div *ngFor="let clase of clasesList" class="clase-card">
+  <h2>{{ clase.nombre }}</h2>
+  <p>
+    <strong>Instructor:</strong> {{ clase.instructor.nombre }} {{ clase.instructor.apellidos }}
+    <span> ({{ clase.instructor.especialidad }})</span>
+  </p>
   <p><strong>Duración:</strong> {{ clase.duracion }} min</p>
   <p>{{ clase.descripcion }}</p>
 

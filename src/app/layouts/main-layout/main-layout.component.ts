@@ -5,6 +5,8 @@ import { HeaderComponent } from '../../shared/components/header/header.component
 import { AuthService } from '../../services/auth.service';
 import { MenuItem } from 'primeng/api';
 import { CommonModule } from '@angular/common';
+import { ClaseService } from '../../admin/services/clase.service';
+import { Clase } from '../../admin/interfaces/clase.interface';
 
 @Component({
   selector: 'app-main-layout',
@@ -22,6 +24,7 @@ export class MainLayoutComponent {
 
 
   private readonly authService = inject(AuthService);
+  private readonly claseService = inject(ClaseService);
 
   isLoggedIn = computed(() => this.authService.authStatus().isLoggedIn);
   isAdmin = computed(() => this.authService.authStatus().isAdmin);
@@ -33,6 +36,8 @@ export class MainLayoutComponent {
 
   menuItems = signal<MenuItem[]>([]);
   itemsSetting = signal<MenuItem[]>([]);
+  claseIds = signal<Clase[]>([]);
+  clasesCargadas = computed(() => this.claseIds().length > 0);
 
   // ngOnInit(): void {
   //   this.menuItems = [
@@ -120,45 +125,80 @@ export class MainLayoutComponent {
 
 
   constructor() {
+
+    if( this.claseIds().length === 0 ) {
+      this.claseService.getAllWithPagination().subscribe({
+        next: (res) => {
+          this.claseIds.set(res);
+        },
+        error: (err) => {
+          console.log(err.error);
+        }
+      })
+    }
+
     effect(() => {
       const loggedIn = this.isLoggedIn();
       const admin = this.isAdmin();
 
       this.actualizarMenu(loggedIn, admin);
     }, { allowSignalWrites: true });
+
+
   }
 
   actualizarMenu(loggedIn: boolean, admin: boolean) {
     const items: MenuItem[] = [];
     const settings: MenuItem[] = [];
+    const clasesReady = this.clasesCargadas();
 
-    if (!loggedIn) {
-      items.push(
-        { label: 'Inicio', routerLink: '/' },
-        { label: 'About', routerLink: '/about' },
-        { label: 'Contacto', routerLink: '/contacto' },
-        { label: 'Clases', routerLink: '/clases' }
-      );
+    if( clasesReady ) {
+
+      const clases: {label: string, routerLink: string}[] = [];
+
+        this.claseIds().forEach(clase => {
+          clases.push({ label: clase.nombre, routerLink: `clase/${clase.id} `})
+        });
+
+      if (!loggedIn) {
+
+
+
+        console.log('Sin login: ' + clases);
+
+        items.push(
+          { label: 'Inicio', routerLink: '/' },
+          { label: 'About', routerLink: '/about' },
+          { label: 'Contacto', routerLink: '/contacto' },
+          // { label: 'Clases', routerLink: '/clases' },
+          {label: 'Clases', items: clases}
+        );
+      }
+
+      if (loggedIn && !admin) {
+
+        console.log('Conn login: ' + clases);
+
+        items.push(
+          { label: 'Inicio', routerLink: '/' },
+          { label: 'About', routerLink: '/about' },
+          { label: 'Contacto', routerLink: '/contacto' },
+          // { label: 'Mis Clases', routerLink: '/user/mis-clases' },
+          {label: 'Clases', items: clases}
+        );
+
+
+        settings.push({
+          label: 'Options',
+          items: [
+            { label: 'Perfil', icon: 'pi pi-user', routerLink: '/user/mi-perfil' },
+            { label: 'Logout', icon: 'pi pi-sign-out', command: () => this.authService.logout() }
+          ]
+        });
+      }
     }
 
-    if (loggedIn && !admin) {
 
-      items.push(
-        { label: 'Inicio', routerLink: '/' },
-        { label: 'About', routerLink: '/about' },
-        { label: 'Contacto', routerLink: '/contacto' },
-        { label: 'Mis Clases', routerLink: '/user/mis-clases' }
-      );
-
-
-      settings.push({
-        label: 'Options',
-        items: [
-          { label: 'Perfil', icon: 'pi pi-user', routerLink: '/user/mi-perfil' },
-          { label: 'Logout', icon: 'pi pi-sign-out', command: () => this.authService.logout() }
-        ]
-      });
-    }
 
     if (loggedIn && admin) {
       items.push(
