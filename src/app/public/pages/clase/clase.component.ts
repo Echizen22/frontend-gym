@@ -68,6 +68,12 @@ export class ClaseComponent implements OnInit {
   private loadClase(id: string) {
     this.clasesService.getClaseConHorarios(id).subscribe({
       next: (res) => {
+        // Convertir las fechas de los horarios
+        res.horarios = res.horarios.map(horario => ({
+          ...horario,
+          fecha: new Date(horario.fecha)
+        }));
+
         this.clase = res;
         this.loading = false;
 

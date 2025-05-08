@@ -16,8 +16,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { ToastModule } from 'primeng/toast';
 import { CardModule } from 'primeng/card';
 import { ValidatorsService } from '../../../validators/Validators.service';
-import { Usuario } from '../../../admin/interfaces/usuario.interface';
+import { Usuario, UsuarioMembresia } from '../../../admin/interfaces/usuario.interface';
 import { RegisterResponse } from '../../../interfaces/register-response.interface';
+import { UsuarioService } from '../../../admin/services/usuario.service';
 
 @Component({
   selector: 'app-register',
@@ -53,9 +54,12 @@ export class RegisterComponent implements OnInit {
   private readonly fb = inject(UntypedFormBuilder);
   private readonly authService = inject(AuthService);
   private readonly membresiaService = inject(MembresiaService);
+  private readonly usuarioService = inject(UsuarioService);
   private readonly router = inject(Router);
   private readonly validatorsService = inject(ValidatorsService);
   private readonly messageService = inject(MessageService);
+
+  idPromocion!: string;
 
   ngOnInit(): void {
 
@@ -96,7 +100,6 @@ export class RegisterComponent implements OnInit {
 
   doSubmit() {
     if( this.myForm.valid) {
-      console.log(this.myForm.value);
 
       const newUser: Usuario = {
         dni: this.myForm.value.dni,
@@ -104,7 +107,7 @@ export class RegisterComponent implements OnInit {
         apellidos: this.myForm.value.apellidos,
         email: this.myForm.value.email,
         password: this.myForm.value.password,
-        telefono: this.myForm.value.telefono
+        telefono: this.myForm.value.telefono,
       }
 
       this.authService.register(newUser).subscribe(this.getRegister());
@@ -125,20 +128,47 @@ export class RegisterComponent implements OnInit {
 
   private getRegister(): Partial<Observer<RegisterResponse>> {
     return {
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Registro completado',
-          detail: '¡Tu cuenta ha sido creada con éxito! Ahora puedes iniciar sesión.',
-          life: 3000
-        });
+      next: (res) => {
 
-        setTimeout(() => {
-          this.router.navigateByUrl('/login');
-        }, 3000);
+        const newUsuarioMembresia: UsuarioMembresia = {
+          estado: 'activa',
+          idUsuario: res.dni,
+          idMembresia: this.myForm.value.membresia
+        }
+
+
+        if( this.idPromocion ) {
+          newUsuarioMembresia['idPromocion'] = this.idPromocion;
+        }
+
+
+        this.usuarioService.createUsuarioMembresia(newUsuarioMembresia).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Registro completado',
+              detail: '¡Tu cuenta ha sido creada con éxito! Ahora puedes iniciar sesión.',
+              life: 3000
+            });
+
+            setTimeout(() => {
+              this.router.navigateByUrl('/login');
+            }, 3000);
+          },
+          error: (err) => {
+            console.error(err.error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error al registrarse',
+              detail: err?.error?.message || 'Hubo un problema al registrarse.',
+              life: 4000
+            });
+          }
+        })
+
       },
       error: (err) => {
-        console.log(err.error);
+        console.error(err.error);
         this.messageService.add({
           severity: 'error',
           summary: 'Error al registrarse',

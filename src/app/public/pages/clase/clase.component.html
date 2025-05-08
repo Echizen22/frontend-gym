@@ -26,7 +26,9 @@
         <li
           *ngFor="let h of clase.horarios"
           (click)="seleccionarHorario(h)"
-          [class.selected]="h.id === horarioSeleccionado?.id">
+          [class.selected]="horarioSeleccionado && h.id === horarioSeleccionado.id">
+
+          <strong>Fecha:</strong> {{ h.fecha | date:'fullDate' }}<br>
           <strong>De:</strong> {{ h.horaIni }} <strong>a</strong> {{ h.horaFin }}
 
           <div *ngIf="h.id === horarioSeleccionado?.id" class="plazas-disponibles">
@@ -41,6 +43,7 @@
       <ul>
         <li
           *ngFor="let h of clase.horarios">
+          <strong>Fecha:</strong> {{ h.fecha | date:'fullDate' }}<br>
           <strong>De:</strong> {{ h.horaIni }} <strong>a</strong> {{ h.horaFin }}
         </li>
       </ul>

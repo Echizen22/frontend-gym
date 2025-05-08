@@ -97,7 +97,7 @@ export class PagosComponent implements OnInit {
         if( pago.usuarioMembresia ) {
           this.selectedPago = {
             ...pago,
-            idUsuarioMembresia: pago.usuarioMembresia.id
+            idUsuarioMembresia: pago.usuarioMembresia.id ?? ''
           };
         }
 

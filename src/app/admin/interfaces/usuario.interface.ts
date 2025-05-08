@@ -17,7 +17,7 @@ export interface Usuario {
 
 
 export interface UsuarioMembresia {
-  id: string;
+  id?: string;
   estado: string;
   fechaIni?: Date;
   fechaFin?: Date;

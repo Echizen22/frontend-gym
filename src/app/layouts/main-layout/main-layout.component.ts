@@ -152,7 +152,6 @@ export class MainLayoutComponent {
     const settings: MenuItem[] = [];
     const clasesReady = this.clasesCargadas();
 
-    console.log(clasesReady);
     // if( clasesReady ) {
 
       const clases: {label: string, routerLink: string}[] = [];
@@ -162,10 +161,6 @@ export class MainLayoutComponent {
         });
 
       if (!loggedIn) {
-
-
-
-        console.log('Sin login: ' + clases);
 
         items.push(
           { label: 'Inicio', routerLink: '/' },
