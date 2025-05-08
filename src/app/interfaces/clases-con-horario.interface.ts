@@ -6,7 +6,8 @@ export interface ClaseDetalleCompleto {
   capacidadMax: number;
   instructor:   Instructor;
   horarios:     Horario[];
-  reserva?:      Reserva[];
+  reserva?:     Reserva[];
+  inscritos:    number;
 }
 
 export interface Horario {
@@ -14,6 +15,7 @@ export interface Horario {
   horaIni: string;
   horaFin: string;
   fecha:   Date;
+  plazasOcupadas: number;
 }
 
 export interface Instructor {

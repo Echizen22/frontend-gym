@@ -99,8 +99,8 @@ export class ReservasComponent implements OnInit {
         this.selectedReserva = {
           ...reserva,
           fecha: new Date(reserva.fecha),
-          idClase: reserva.clase.id,
-          idUsuario: reserva.usuario.dni
+          idHorario: reserva.horario!.id,
+          idUsuario: reserva.usuario!.dni
         };
 
         this.buildFormFields(this.mode).then( formFields => {
@@ -122,6 +122,7 @@ export class ReservasComponent implements OnInit {
 
   updateReserva(reserva: Reserva) {
     this.displayDialog = false;
+
 
     switch (this.mode) {
       case 'create':
@@ -221,7 +222,9 @@ export class ReservasComponent implements OnInit {
 
     try {
       const usuariosDropdown = await firstValueFrom(this.usuarioService.getUsuariosForDropdown());
-      const clasesDropdown = await firstValueFrom(this.claseService.getClasesForDropdown());
+      const horariosDropdown = await firstValueFrom(this.claseService.getHorariosForDropdown());
+      // const clasesDropdown = await firstValueFrom(this.claseService.getClasesForDropdown());
+
 
       const usuarioField: FormField<Reserva> = {
         name: 'idUsuario',
@@ -236,21 +239,34 @@ export class ReservasComponent implements OnInit {
         usuarioField.defaultValue = this.selectedReserva.idUsuario;
       }
 
-      const claseField: FormField<Reserva> = {
-        name: 'idClase',
-        label: 'Clases',
+      // const claseField: FormField<Reserva> = {
+      //   name: 'idClase',
+      //   label: 'Clases',
+      //   type: 'dropdown',
+      //   validators: [Validators.required],
+      //   options: clasesDropdown,
+      //   defaultValue: null
+      // };
+
+      // if (mode === 'edit' && this.selectedReserva?.idClase) {
+      //   claseField.defaultValue = this.selectedReserva.idClase;
+      // }
+
+      const horarioField: FormField<Reserva> = {
+        name: 'idHorario',
+        label: 'Horarios disponibles',
         type: 'dropdown',
         validators: [Validators.required],
-        options: clasesDropdown,
+        options: horariosDropdown,
         defaultValue: null
       };
-
-      if (mode === 'edit' && this.selectedReserva?.idClase) {
-        claseField.defaultValue = this.selectedReserva.idClase;
+      if (mode === 'edit' && this.selectedReserva?.idHorario) {
+        horarioField.defaultValue = this.selectedReserva.idHorario;
       }
 
       fields.unshift(usuarioField);
-      fields.push(claseField);
+      fields.push(horarioField);
+      // fields.push(claseField);
 
 
     } catch (error) {

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { Reserva } from '../interfaces/reserva.interface';
+import { Reserva, ReservaPorHorario } from '../interfaces/reserva.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,10 @@ export class ReservaService {
 
   getReservaById(id: string) {
     return this.apiService.doGetWithId<Reserva>('/reserva', id, { responseType: 'json' });
+  }
+
+  getReservaConfirmada(dni: string, idClase: string) {
+    return this.apiService.doGetWithUrlWithParams<Reserva | null>(['reserva','usuario', dni, 'clase', idClase, 'reserva-confirmada' ], { responseType: 'json'});
   }
 
 

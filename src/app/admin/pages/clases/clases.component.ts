@@ -8,12 +8,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { GenericFormComponent } from '../../components/generic-form/generic-form.component';
 import { GenericTableComponent } from '../../components/generic-table/generic-table.component';
 import { ClaseService } from '../../services/clase.service';
-import { Clase, Horario } from '../../interfaces/clase.interface';
+import { Clase } from '../../interfaces/clase.interface';
 import { FormField, OptionsDropDown } from '../../interfaces/form-field.interface';
 import { TableConfig } from '../../interfaces/table-config.interface';
 import { firstValueFrom, Observer } from 'rxjs';
 import { InstructorService } from '../../services/instructor.service';
 import { ToastModule } from 'primeng/toast';
+import { Horario } from '../../interfaces/horario.interface';
 
 @Component({
   selector: 'app-clases',
@@ -80,7 +81,8 @@ export class ClasesComponent implements OnInit {
       columns: [
         { field: 'horaIni', header: 'Hora Inicio', object: true, sortable: true, dataType: 'text', filterable: true, filterType: 'text' },
         { field: 'horaFin', header: 'Hora Fin', object: true, sortable: true, dataType: 'text', filterable: true, filterType: 'text' },
-        { field: 'fecha', header: 'Fecha', object: true, sortable: true, dataType: 'date', filterable: true, filterType: 'date' }
+        { field: 'fecha', header: 'Fecha', object: true, sortable: true, dataType: 'date', filterable: true, filterType: 'date' },
+        { field: 'plazasOcupadas', header: 'Plazas Ocupadas', dataType: 'number', sortable: true, filterable: false, filterType: 'numeric' }
       ]
     }
   };
@@ -106,6 +108,12 @@ export class ClasesComponent implements OnInit {
     // Primero obtenemos los datos de la clase
     this.claseService.getClaseById(id).subscribe({
       next: (clase: Clase) => {
+
+        // if (!clase.instructor) {
+        //   console.error('Instructor no definido en la clase');
+        //   return;
+        // }
+
         this.selectedClase = {
           ...clase,
           idInstructor: clase.instructor.id
@@ -133,7 +141,7 @@ export class ClasesComponent implements OnInit {
       // Prepara los datos para la API
       const dataParaAPI = {
         ...clase,
-        idInstructor: clase.idInstructor // Asegúrate de que esto coincida con lo que espera tu backend
+        idInstructor: clase.idInstructor
       };
 
     this.displayDialog = false;

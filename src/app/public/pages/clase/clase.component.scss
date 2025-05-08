@@ -1,7 +1,4 @@
 
-// .clase-container {
-// }
-
 .spinner {
   height: 100vh;
   display: flex;
@@ -12,62 +9,196 @@
 .title-fondo {
   position: relative;
   height: 75vh;
+  overflow: hidden;
+
   img {
     width: 100%;
+    height: 100%;
     object-fit: cover;
     filter: blur(4px) brightness(0.6);
-    height: 100%;
   }
-}
 
-.clase-title {
-  position: absolute;
-  top: 50%;
-  left: 10%;
-  transform: translateY(-50%);
-  font-size: 7rem;
-  text-align: center;
-  // background-image: url('https://images.pexels.com/photos/917732/pexels-photo-917732.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
-  // background-repeat: no-repeat;
-  // background-size: cover;
-  // background-position: center;
-  // height: 70vh;
-  color: white;
-  display: flex;
-  margin: 0;
-  align-items: center;
-  justify-content: center;
-  // background-blend-mode: darken;
-  // background-color: rgba(0, 0, 0, 0.4);
-}
+  .clase-title {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+    font-size: 5rem;
+    color: white;
+    margin: 0;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
 
 
-.instructor-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  width: 70%;
-  margin: 0 auto;
-  justify-content: space-evenly;
-  column-gap: 20px;
-  align-items: center;
-
-  .img-instructor {
-    width: 500px;
-
-    img {
-      object-fit: contain;
-      width: 100%;
+    @media (max-width: 768px) {
+      font-size: 3rem;
     }
   }
 }
 
-h2 {
-  font-size: 3rem;
+.clase-content {
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+
+  .clase-descripcion {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    color: #333;
+  }
+
+  p {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+  }
 }
 
-.instructor-nombre {
-  font-size: 2rem;
-  margin-bottom: 5px;
-  text-align: start;
+.clase-horarios, .clase-horarios-sin-login {
+  margin: 2rem 0;
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #444;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+
+    li {
+      background: #f5f5f5;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      font-size: 1rem;
+    }
+  }
 }
 
+.instructor-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 3rem;
+  gap: 2rem;
+
+  .instructor-detalles {
+    flex: 1;
+    min-width: 250px;
+    text-align: left;
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin: 0.5rem 0;
+    }
+  }
+
+  .img-instructor {
+    flex: 1;
+    max-width: 300px;
+
+    img {
+      width: 100%;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+.reserva-container {
+  margin-top: 2rem;
+  text-align: center;
+
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .reserva-exito {
+    color: green;
+    margin-top: 1rem;
+    font-weight: bold;
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 0.8rem 2rem;
+    border-radius: 6px;
+  }
+
+  .reserva-botones {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+
+    button {
+      flex: 1 1 auto;
+      max-width: 240px;
+    }
+  }
+
+  .btn-responsive {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    .btn-label {
+      margin-left: 0.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .btn-label {
+        display: none;
+      }
+    }
+  }
+
+
+}
+
+
+// nuevo estilos
+.clase-horarios ul li {
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.clase-horarios ul li:hover {
+  background-color: #f0f0f0;
+}
+
+.clase-horarios ul li.selected {
+  border-color: #2196f3;
+  background-color: #e3f2fd;
+}
+
+.plazas-disponibles {
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+
+.reserva-acciones {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}

@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { Clase, Horario } from '../interfaces/clase.interface';
+import { Clase } from '../interfaces/clase.interface';
 import { OptionsDropDown } from '../interfaces/form-field.interface';
+import { Horario } from '../interfaces/horario.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +52,10 @@ export class ClaseService {
   // Dropdown
   getClasesForDropdown() {
     return this.apiService.doGet<OptionsDropDown[]>('/clase/dropdown', { responseType: 'json'} );
+  }
+
+  getHorariosForDropdown() {
+    return this.apiService.doGet<OptionsDropDown[]>('/horario/dropdown', { responseType: 'json'} );
   }
 
 }

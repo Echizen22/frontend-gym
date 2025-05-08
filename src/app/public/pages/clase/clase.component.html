@@ -1,29 +1,95 @@
 
+<!-- Spinner mientras carga -->
 <div *ngIf="loading" class="spinner">
-  <p-progressSpinner  ariaLabel="loading" />
+  <p-progressSpinner ariaLabel="loading" />
 </div>
 
-<div *ngIf="clase" class="clase-container">
-  <div class="title-fondo">
-    <img [src]="imgBg" alt="Imagen fondo">
-    <h1 #imgTitle class="clase-title">{{ clase.nombre }}</h1>
-  </div>
-  <div class="clase-content">
-    <p class="clase-descripcion"></p>
-    <div class="instructor-container">
-      <div>
-        <h2>Instructor</h2>
-        <div class="instructor-detalles">
-          <p><strong>Nombre:</strong> {{  clase.instructor.nombre }}</p>
-          <p><strong>Apellidos:</strong> {{ clase.instructor.apellidos }}</p>
-          <p><strong>Especialidad:</strong> {{ clase.instructor.especialidad }}</p>
-          <p><strong>Experiencia:</strong> {{ clase.instructor.experiencia }}</p>
-          <p><strong>Teléfono:</strong> {{ clase.instructor.telefono }}</p>
-        </div>
-      </div>
-      <div class="img-instructor">
-        <img [src]="clase.instructor.foto" alt="Foto de instructor" class="clase-instructor">
-      </div>
+<!-- Contenido de la clase -->
+<ng-container *ngIf="!loading && clase">
+  <!-- Cabecera con fondo -->
+  <section class="title-fondo">
+    <img [src]="imgBg || 'https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg'" alt="Imagen fondo">
+    <h1 class="clase-title">{{ clase.nombre }}</h1>
+  </section>
+
+  <!-- Información principal -->
+  <section class="clase-content">
+    <!-- Descripción general -->
+    <p class="clase-descripcion">{{ clase.descripcion }}</p>
+    <p><strong>Duración:</strong> {{ clase.duracion }} minutos</p>
+    <p><strong>Capacidad máxima:</strong> {{ clase.capacidadMax }} personas</p>
+
+    <!-- Horarios -->
+    <div *ngIf="isLogin" class="clase-horarios">
+      <h2>Horarios disponibles</h2>
+      <ul>
+        <li
+          *ngFor="let h of clase.horarios"
+          (click)="seleccionarHorario(h)"
+          [class.selected]="h.id === horarioSeleccionado?.id">
+          <strong>De:</strong> {{ h.horaIni }} <strong>a</strong> {{ h.horaFin }}
+
+          <div *ngIf="h.id === horarioSeleccionado?.id" class="plazas-disponibles">
+            Plazas disponibles: {{ clase.capacidadMax - h.plazasOcupadas }}
+          </div>
+        </li>
+      </ul>
     </div>
-  </div>
-</div>
+
+    <div *ngIf="!isLogin" class="clase-horarios-sin-login">
+      <h2>Horarios disponibles</h2>
+      <ul>
+        <li
+          *ngFor="let h of clase.horarios">
+          <strong>De:</strong> {{ h.horaIni }} <strong>a</strong> {{ h.horaFin }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="reserva-container">
+      <div class="reserva-botones">
+        <button
+          *ngIf="isLogin && horarioSeleccionado"
+          pButton
+          type="button"
+          icon="pi pi-check"
+          class="btn-responsive"
+          [disabled]="clase.capacidadMax <= horarioSeleccionado.plazasOcupadas"
+          (click)="reservarClase()">
+          <span class="btn-label">Confirmar reserva</span>
+        </button>
+
+        <!-- Botón para cancelar -->
+        <button
+          *ngIf="isLogin && horarioSeleccionado && reservaExistente"
+          pButton
+          type="button"
+          icon="pi pi-times"
+          class="btn-responsive p-button-danger"
+          (click)="cancelarReserva()">
+          <span class="btn-label">Cancelar reserva</span>
+        </button>
+      </div>
+
+      <!-- <p *ngIf="reservaRealizada" class="reserva-exito">¡Reserva realizada con éxito!</p> -->
+    </div>
+
+    <!-- Instructor -->
+    <section class="instructor-container">
+      <article class="instructor-detalles">
+        <h2>Instructor</h2>
+        <p><strong>Nombre:</strong> {{ clase.instructor.nombre }}</p>
+        <p><strong>Apellidos:</strong> {{ clase.instructor.apellidos }}</p>
+        <p><strong>Especialidad:</strong> {{ clase.instructor.especialidad }}</p>
+        <p><strong>Experiencia:</strong> {{ clase.instructor.experiencia }} años</p>
+        <p><strong>Teléfono:</strong> {{ clase.instructor.telefono }}</p>
+      </article>
+      <figure class="img-instructor">
+        <img [src]="clase.instructor.foto" alt="Foto del instructor" />
+      </figure>
+    </section>
+  </section>
+
+  <p-toast />
+
+</ng-container>

@@ -11,7 +11,7 @@ export interface Usuario {
   fechaRegistro?:      Date;
   fechaActualizacion?: Date;
   estado?:             string;
-  telefono:           string;
+  telefono?:           string;
   usuarioMembresia?:  UsuarioMembresia;
 }
 

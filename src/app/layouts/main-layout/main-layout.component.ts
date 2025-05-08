@@ -152,7 +152,8 @@ export class MainLayoutComponent {
     const settings: MenuItem[] = [];
     const clasesReady = this.clasesCargadas();
 
-    if( clasesReady ) {
+    console.log(clasesReady);
+    // if( clasesReady ) {
 
       const clases: {label: string, routerLink: string}[] = [];
 
@@ -196,7 +197,7 @@ export class MainLayoutComponent {
           ]
         });
       }
-    }
+    // }
 
 
 

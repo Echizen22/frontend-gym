@@ -30,6 +30,19 @@ export class ApiService {
     return this.http.get<T>(this.baseUrl + url, options);
   }
 
+  doGetWithUrlWithParams<T>(
+    segments: string[],
+    options: {
+      headers?: HttpHeaders;
+      context?: HttpContext;
+      params?: HttpParams | { [param: string]: string | number | boolean };
+      responseType: 'json';
+    }
+  ): Observable<T> {
+    const url = `${this.baseUrl}/${segments.join('/')}`;
+    return this.http.get<T>(url, options);
+  }
+
   doPost<T>(url: string, body: any, options: {
     headers?: HttpHeaders;
     context?: HttpContext;
