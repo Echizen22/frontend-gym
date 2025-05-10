@@ -76,14 +76,14 @@ export class InstructoresComponent {
     this.mode = 'create';
     this.formFields = this.buildFormFields(this.mode);
     this.selectedInstructor = {} as Instructor;
-    this.titleDialog = 'Crear Membresia';
+    this.titleDialog = 'Crear Instructor';
     this.displayDialog = showModal;
   }
 
   onEditInstructor(id: string) {
     this.mode = 'edit';
     this.formFields = this.buildFormFields(this.mode);
-    this.titleDialog = 'Editar Membresia';
+    this.titleDialog = 'Editar Instructor';
     this.displayDialog = true;
     this.selectIdInstructor = id;
 
@@ -187,13 +187,13 @@ export class InstructoresComponent {
 
   buildFormFields(mode: 'create' | 'edit'): FormField<Instructor>[] {
     const fields: FormField<Instructor>[] = [
-      { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required] },
-      { name: 'apellidos', label: 'Apellidos', type: 'text', validators: [Validators.required] },
-      { name: 'especialidad', label: 'Especialidad', type: 'text', validators: [Validators.required] },
+      { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required, Validators.maxLength(30) ] },
+      { name: 'apellidos', label: 'Apellidos', type: 'text', validators: [Validators.required, Validators.maxLength(70)] },
+      { name: 'especialidad', label: 'Especialidad', type: 'text', validators: [Validators.required, Validators.maxLength(100)] },
       { name: 'experiencia', label: 'Experiencia (Años)', type: 'number', validators: [Validators.required] },
-      { name: 'telefono', label: 'Teléfono', type: 'text', validators: [Validators.required] },
+      { name: 'telefono', label: 'Teléfono', type: 'text', validators: [Validators.required, Validators.maxLength(9) ] },
       // { name: 'foto', label: 'Foto', type: 'text', validators: [Validators.required] },
-      { name: 'file', inputName: 'foto', label: 'Foto', type: 'fileUpload', accept: 'image/*', validators: [Validators.required] }
+      { name: 'file', inputName: 'foto', label: 'Foto', type: 'fileUpload', accept: 'image/*', validators: [Validators.required, Validators.maxLength(255)] }
     ];
 
     return fields;

@@ -65,8 +65,8 @@ export class RegisterComponent implements OnInit {
 
     this.myForm = this.fb.group({
       dni: [, [ Validators.required, this.validatorsService.dniValidator()], [this.validatorsService.dniExisteValidator()]],
-      nombre: [, [ Validators.required ]],
-      apellidos: [, [ Validators.required ]],
+      nombre: [, [ Validators.required, Validators.maxLength(30) ]],
+      apellidos: [, [ Validators.required, Validators.maxLength(70) ]],
       password: [, [ Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/) ]],
       email: [, [ Validators.required, Validators.pattern( this.validatorsService.emailPattern ) ], [ this.validatorsService.emailExisteValidator() ]],
       membresia: [, [ Validators.required ]],

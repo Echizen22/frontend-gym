@@ -194,13 +194,14 @@
               </small>
             }
 
-            @if (form.get(field.name)?.errors?.['dniInvalido']) {
+            @if (!form.get(field.name)?.errors?.['minlength'] && form.get(field.name)?.errors?.['pattern']) {
               <small class="text-red-500">
-                Formato de dni invalido, introduzca un dni valido
+                Debe incluir al menos una mayúscula, una minúscula, un número y un carácter especial.
               </small>
             }
 
-            @if (form.get(field.name)?.errors?.['dniInvalido']) {
+
+            @if (form.get(field.name)?.errors?.['dniInvalido'] && !form.get(field.name)?.errors?.['required']) {
               <small class="text-red-500">
                 Formato de dni invalido, introduzca un dni valido
               </small>

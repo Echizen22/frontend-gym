@@ -35,6 +35,9 @@
           <small *ngIf="isValidField('nombre', 'required')"  class="text-red-500">
             El nombre es requerido
           </small>
+          <small *ngIf="isValidField('nombre', 'maxlength')"  class="text-red-500">
+            Máximo 30 carácteres.
+          </small>
         </div>
 
         <div class="field">
@@ -42,6 +45,9 @@
           <input pInputText formControlName="apellidos" class="text-base p-2 w-full"  type="text">
           <small *ngIf="isValidField('apellidos', 'required')"  class="text-red-500">
             Los apellidos son requeridos
+          </small>
+          <small *ngIf="isValidField('apellidos', 'maxlength')"  class="text-red-500">
+            Máximo 60 carácteres.
           </small>
         </div>
 

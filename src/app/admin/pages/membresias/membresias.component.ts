@@ -205,7 +205,7 @@ export class MembresiasComponent implements OnInit {
 
   buildFormFields(mode: 'create' | 'edit'): FormField<Membresia>[] {
     const fields: FormField<Membresia>[] = [
-      { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required] },
+      { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required, Validators.maxLength(50) ] },
       { name: 'descripcion', label: 'Descripción', type: 'textarea', validators: [Validators.required] },
       { name: 'precio', label: 'Precio', type: 'number', numberType: 'currency', validators: [Validators.required] },
       {

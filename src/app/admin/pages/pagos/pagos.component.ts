@@ -65,7 +65,7 @@ export class PagosComponent implements OnInit {
         { label: 'Aprobado', value: 'aprobado' },
         { label: 'Rechazado', value: 'rechazado' },
       ]},
-      { field: 'duracion', header: 'Duración', dataType: 'number', filterable: true, filterType: 'numeric' },
+      // { field: 'duracion', header: 'Duración', dataType: 'number', filterable: true, filterType: 'numeric' },
     ],
     menuMode: 'row',
     showBtnLimpiarFiltros: false,
@@ -188,7 +188,7 @@ export class PagosComponent implements OnInit {
       const fields: FormField<Pago>[] = [
         { name: 'monto', label: 'Monto', type: 'number', numberType: 'decimal', validators: [Validators.required] },
         // { name: 'fechaPago', label: 'Fecha de Pago', type: 'date', validators: [Validators.required] },
-        { name: 'metodoPago', label: 'Metodo de Pago', type: 'text', validators: [Validators.required] },
+        { name: 'metodoPago', label: 'Metodo de Pago', type: 'text', validators: [Validators.required, Validators.maxLength(60)] },
         {
           name: 'estado',
           label: 'Estado',

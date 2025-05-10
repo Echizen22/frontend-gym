@@ -337,10 +337,10 @@ export class UsuariosComponent implements OnInit {
   buildFormFields(mode: 'create' | 'edit'): FormField<Usuario>[] {
     const fields: FormField<Usuario>[] = [
       { name: 'dni', label: 'DNI', type: 'text', validators: [Validators.required, this.validatorsService.dniValidator() ], asyncValidators: [ this.validatorsService.dniExisteValidator()], disabled: mode === 'edit' },
-      { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required] },
-      { name: 'apellidos', label: 'Apellidos', type: 'text', validators: [Validators.required] },
+      { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required, Validators.maxLength(30) ] },
+      { name: 'apellidos', label: 'Apellidos', type: 'text', validators: [Validators.required, Validators.maxLength(60)] },
       { name: 'email', label: 'Correo electrónico', type: 'email', validators: [Validators.required], disabled: mode === 'edit', showEnabledFieldButton: mode === 'edit' },
-      { name: 'telefono', label: 'Teléfono', type: 'text' },
+      { name: 'telefono', label: 'Teléfono', type: 'text', validators: [ Validators.maxLength(9) ]},
       { name: 'isAdmin', label: 'Administrador', type: 'boolean', defaultValue: false },
       {
         name: 'estado',
@@ -364,7 +364,7 @@ export class UsuariosComponent implements OnInit {
         name: 'password',
         label: 'Contraseña',
         type: 'password',
-        validators: [Validators.required]
+        validators: [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/)]
       });
     }
 

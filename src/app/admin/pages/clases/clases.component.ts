@@ -221,7 +221,7 @@ export class ClasesComponent implements OnInit {
 
   async buildFormFields(mode: 'create' | 'edit'): Promise<FormField<Clase>[]> {
     const fields: FormField<Clase>[] = [
-      { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required] },
+      { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required, Validators.maxLength(100) ] },
       { name: 'descripcion', label: 'Descripción', type: 'textarea', validators: [Validators.required] },
       { name: 'duracion', label: 'Duración', type: 'number', validators: [Validators.required] },
       { name: 'capacidadMax', label: 'Capacidad Máxima', type: 'number', validators: [Validators.required] },

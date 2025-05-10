@@ -177,7 +177,7 @@ export class PromocionesComponent implements OnInit {
 
   buildFormFields(mode: 'create' | 'edit'): FormField<Promocion>[] {
     const fields: FormField<Promocion>[] = [
-      { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required] },
+      { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required, Validators.maxLength(100) ] },
       { name: 'descripcion', label: 'Descripción', type: 'text', validators: [Validators.required] },
       { name: 'descuento', label: 'Descuento', type: 'number', numberType: 'decimal', validators: [Validators.required] },
       { name: 'fechaIni', label: 'Fecha Inicio', type: 'date', validators: [ Validators.required ]},
