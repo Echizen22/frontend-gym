@@ -20,6 +20,12 @@
           <div class="dato-valor">
             @if (editMode()) {
               <input type="text" pInputText formControlName="nombre" />
+              <small *ngIf="isValidField('nombre', 'required')"  class="text-red-500">
+                El nombre es requerido
+              </small>
+              <small *ngIf="isValidField('nombre', 'maxlength')"  class="text-red-500">
+                Máximo 30 carácteres.
+              </small>
             } @else {
               {{ user.nombre }}
             }
@@ -29,6 +35,12 @@
           <div class="dato-valor">
             @if (editMode()) {
               <input type="text" pInputText formControlName="apellidos" />
+              <small *ngIf="isValidField('apellidos', 'required')"  class="text-red-500">
+                Los apellidos son requeridos
+              </small>
+              <small *ngIf="isValidField('apellidos', 'maxlength')"  class="text-red-500">
+                Máximo 60 carácteres.
+              </small>
             } @else {
               {{ user.apellidos }}
             }
@@ -38,6 +50,15 @@
           <div class="dato-valor">
             @if (editMode()) {
               <input type="email" pInputText formControlName="email" />
+              <small *ngIf="isValidField('email', 'required')" class="text-red-500">
+                El correo electrónico es requerido
+              </small>
+              <small *ngIf="!isValidField('email', 'required') && isValidField('email', 'pattern')"  class="text-red-500">
+                Se debe introducir un correo electrónico valido
+              </small>
+              <small *ngIf="isValidField('email', 'emailExiste')" class="text-red-500">
+                Ya existe un usuario con este Correo electrónico
+              </small>
             } @else {
               {{ user.email }}
             }
@@ -47,6 +68,9 @@
           <div class="dato-valor">
             @if (editMode()) {
               <input type="text" pInputText formControlName="telefono" />
+              <small *ngIf="isValidField('telefono', 'pattern')"  class="text-red-500">
+                Se debe introducir un teléfono valido
+              </small>
             } @else {
               {{ user.telefono }}
             }

@@ -7,11 +7,12 @@ import { AuthService } from '../../../services/auth.service';
 import { UsuarioService } from '../../../admin/services/usuario.service';
 import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { ValidatorsService } from '../../../validators/Validators.service';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -48,6 +49,7 @@ export class MiPerfilComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly usuarioService: UsuarioService,
     private readonly messageService: MessageService,
+    private readonly validatorsService: ValidatorsService,
   ) {
   }
 
@@ -80,12 +82,16 @@ export class MiPerfilComponent implements OnInit {
 
   private initForm(user: Usuario): void {
     this.form = this.fb.group({
-      nombre: [user.nombre],
-      apellidos: [user.apellidos],
-      email: [user.email],
-      telefono: [user.telefono],
+      nombre: [user.nombre, [Validators.required, Validators.maxLength(30) ]],
+      apellidos: [user.apellidos, [Validators.required, Validators.maxLength(60) ]],
+      email: [user.email, [Validators.required, Validators.pattern( this.validatorsService.emailPattern )], [ this.validatorsService.emailExisteValidator() ]],
+      telefono: [user.telefono, [ Validators.pattern(/^[6-9]\d{8}$/) ]],
       fechaRegistro: [{ value: user.fechaRegistro, disabled: true }],
     });
+  }
+
+  isValidField( field: string, errorType: string ) {
+    return this.validatorsService.isValidField( this.form, field, errorType );
   }
 
 
