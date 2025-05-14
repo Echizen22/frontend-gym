@@ -1,6 +1,6 @@
 <main>
   <h1 class="text-sm  md:text-base lg:text-lg xl:text-2xl">Mantenimiento de Membresias</h1>
-  <app-generic-table
+  <admin-generic-table
   [config]="tableConfig"
   [data]="membresias"
   [totalRecords]="totalRecords"
@@ -11,7 +11,7 @@
   (showModalExpansionCreate)="onCreateMembresiaPromocion($event)"
   (onEditExpansion)="onEditMembresiaPromocion($event)"
   (onDeleteExpansion)="onDeleteMembresiaPromocion($event)"
-  ></app-generic-table>
+  ></admin-generic-table>
 
 
   <p-dialog

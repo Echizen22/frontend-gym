@@ -157,14 +157,14 @@ export class MainLayoutComponent {
       const clases: {label: string, routerLink: string}[] = [];
 
         this.claseIds().forEach(clase => {
-          clases.push({ label: clase.nombre, routerLink: `clase/${clase.id} `})
+          clases.push({ label: clase.nombre, routerLink: `/clase/${clase.id} `})
         });
 
       if (!loggedIn) {
 
         items.push(
           { label: 'Inicio', routerLink: '/' },
-          { label: 'About', routerLink: '/about' },
+          { label: 'Sobre Nosotros', routerLink: '/about' },
           { label: 'Contacto', routerLink: '/contacto' },
           // { label: 'Clases', routerLink: '/clases' },
           {label: 'Clases', items: clases}
@@ -173,11 +173,9 @@ export class MainLayoutComponent {
 
       if (loggedIn && !admin) {
 
-        console.log('Conn login: ' + clases);
-
         items.push(
           { label: 'Inicio', routerLink: '/' },
-          { label: 'About', routerLink: '/about' },
+          { label: 'Sobre Nosotros', routerLink: '/about' },
           { label: 'Contacto', routerLink: '/contacto' },
           // { label: 'Mis Clases', routerLink: '/user/mis-clases' },
           {label: 'Clases', items: clases}

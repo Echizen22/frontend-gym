@@ -13,7 +13,7 @@ import { Usuario } from '../../interfaces/usuario.interface';
 
 
 @Component({
-  selector: 'app-generic-table',
+  selector: 'admin-generic-table',
   standalone: true,
   imports: [
     ReactiveFormsModule,

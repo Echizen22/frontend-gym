@@ -1,6 +1,6 @@
 <main>
   <h1 class="text-sm  md:text-base lg:text-lg xl:text-2xl">Mantenimiento de Reservas</h1>
-  <app-generic-table
+  <admin-generic-table
   [config]="tableConfig"
   [data]="reservas"
   [totalRecords]="totalRecords"
@@ -8,7 +8,7 @@
   (showModalCreate)="onCreateReserva($event)"
   (onEdit)="onEditReserva($event)"
   (onDelete)="onDeleteReserva($event)"
-  ></app-generic-table>
+  ></admin-generic-table>
 
 
   <p-dialog

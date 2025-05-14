@@ -1,6 +1,6 @@
 <main>
   <h1 class="text-sm  md:text-base lg:text-lg xl:text-2xl">Mantenimiento de Clases</h1>
-  <app-generic-table
+  <admin-generic-table
   [config]="tableConfig"
   [data]="clases"
   [totalRecords]="totalRecords"
@@ -11,7 +11,7 @@
   (showModalExpansionCreate)="onCreateHorario($event)"
   (onEditExpansion)="onEditHorario($event)"
   (onDeleteExpansion)="onDeleteHorario($event)"
-  ></app-generic-table>
+  ></admin-generic-table>
 
 
   <p-dialog

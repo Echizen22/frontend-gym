@@ -105,6 +105,8 @@ export class InstructoresComponent {
     this.displayDialog = false;
     const { file = '', ...rest } = instructor;
 
+    console.log(instructor);
+
     rest.foto = file;
 
     const nuevoInstructor = {
@@ -112,6 +114,7 @@ export class InstructoresComponent {
       foto: file
     }
 
+    console.log(nuevoInstructor);
 
     switch (this.mode) {
       case 'create':

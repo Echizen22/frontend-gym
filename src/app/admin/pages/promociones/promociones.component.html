@@ -1,6 +1,6 @@
 <main>
   <h1 class="text-sm  md:text-base lg:text-lg xl:text-2xl">Mantenimiento de Promoción</h1>
-  <app-generic-table
+  <admin-generic-table
   [config]="tableConfig"
   [data]="promociones"
   [totalRecords]="totalRecords"
@@ -8,7 +8,7 @@
   (showModalCreate)="onCreatePromocion($event)"
   (onEdit)="onEditPromocion($event)"
   (onDelete)="onDeletePromocion($event)"
-  ></app-generic-table>
+  ></admin-generic-table>
 
 
   <p-dialog

@@ -1,6 +1,8 @@
 <main>
   <h1 class="text-sm  md:text-base lg:text-lg xl:text-2xl">Mantenimiento de Usuarios</h1>
-  <app-generic-table
+
+  <!-- Tabla generica que se le pasa los datos desde el componente padre -->
+  <admin-generic-table
   [config]="tableConfig"
   [data]="usuarios"
   [totalRecords]="totalRecords"
@@ -11,7 +13,7 @@
   (showModalExpansionCreate)="onCreateUsuarioMembresia($event)"
   (onEditExpansion)="onEditUserMembresia($event)"
   (onDeleteExpansion)="onDeleteUserMembresia($event)"
-  ></app-generic-table>
+  ></admin-generic-table>
 
   <!-- Usuarios -->
   <p-dialog
@@ -25,6 +27,7 @@
     [maximizable]="true"
   >
 
+  <!-- Formulario generico -->
   <admin-generic-form
     #formRef
     [formFieldsValues]="selectedUser"
