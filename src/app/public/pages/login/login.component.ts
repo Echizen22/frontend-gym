@@ -29,8 +29,8 @@ export class LoginComponent {
 
 
   public myForm: FormGroup = this.fb.group({
-    email:      ['kathe@gmail.com'],
-    password: ['Kathe_1234'],
+    email:      [],
+    password: [],
   });
 
 
