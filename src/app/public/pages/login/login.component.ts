@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../../services/auth.service';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ import { ToastModule } from 'primeng/toast';
     ButtonModule,
     ToastModule,
     RouterModule,
+    CommonModule
   ],
   providers: [MessageService],
   templateUrl: './login.component.html',
@@ -29,8 +31,8 @@ export class LoginComponent {
 
 
   public myForm: FormGroup = this.fb.group({
-    email:      [],
-    password: [],
+    email:      [ , [Validators.email] ],
+    password: [, []],
   });
 
 
