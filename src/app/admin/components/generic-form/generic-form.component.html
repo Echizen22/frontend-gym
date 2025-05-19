@@ -16,6 +16,7 @@
           [readOnly]="field.readonly || false"
           [id]="field.name"
           [formControlName]="field.name"
+          autocomplete="off"
           [placeholder]="field.placeholder || ''"
           />
          }
@@ -31,6 +32,7 @@
           pInputText
           [type]="field.type"
           [id]="field.name"
+          autocomplete="off"
           aria-describedby="dni-help"
           [formControlName]="field.name"
           [placeholder]="field.placeholder || ''"

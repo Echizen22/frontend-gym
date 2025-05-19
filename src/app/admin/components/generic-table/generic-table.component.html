@@ -104,9 +104,9 @@
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-expanded="expanded">
         <tr>
-          @if (config.showRowExpansion) {
+          @if (config.showRowExpansion ) {
             <td >
-              <p-button type="button" pRipple [pRowToggler]="rowData" [text]="true" [rounded]="true" [plain]="true" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
+              <p-button *ngIf="!rowData['isAdmin']" type="button" pRipple [pRowToggler]="rowData" [text]="true" [rounded]="true" [plain]="true" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
             </td>
           }
           @for (col of config.columns; track $index) {
