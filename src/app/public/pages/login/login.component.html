@@ -13,6 +13,7 @@
           required
           formControlName="email"
           placeholder="Ingrese su correo electrónico">
+          <small *ngIf="this.myForm.get('email')?.errors?.['email']" class="text-red-500">Correo electrónico no es valido.</small>
       </div>
 
       <div class="field">

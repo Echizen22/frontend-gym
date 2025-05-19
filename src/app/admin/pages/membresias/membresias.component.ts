@@ -70,9 +70,9 @@ export class MembresiasComponent implements OnInit {
   tableConfig: TableConfig = {
     columns: [
       { field: 'nombre', header: 'Nombre', dataType: 'text', filterable: true, filterType: 'text' },
-      { field: 'descripciion', header: 'Descripción', dataType: 'text', filterable: true, filterType: 'text', responsiveClass: 'table-cell' },
+      { field: 'descripcion', header: 'Descripción', dataType: 'text', filterable: true, filterType: 'text', responsiveClass: 'table-cell' },
       { field: 'precio', header: 'Precio', dataType: 'number', filterable: true, filterType: 'numeric' },
-      { field: 'tipo', header: 'Tipo Membresia', dataType: 'text', filterable: true, filterType: 'select', filterOptions: [
+      { field: 'tipo', header: 'Tipo Membresía', dataType: 'text', filterable: true, filterType: 'select', filterOptions: [
         { label: 'Mensual', value: 'mensual' },
         { label: 'Semestral', value: 'semestral' },
         { label: 'Anual', value: 'anual' },
@@ -210,7 +210,7 @@ export class MembresiasComponent implements OnInit {
       { name: 'precio', label: 'Precio', type: 'number', numberType: 'currency', validators: [Validators.required] },
       {
         name: 'tipo',
-        label: 'Tipo Membresia',
+        label: 'Tipo Membresía',
         type: 'dropdown',
         clear: true,
         validators: [Validators.required],
