@@ -339,6 +339,7 @@ export class UsuariosComponent implements OnInit {
       { name: 'dni', label: 'DNI', type: 'text', validators: [Validators.required, this.validatorsService.dniValidator() ], asyncValidators: [ this.validatorsService.dniExisteValidator()], disabled: mode === 'edit' },
       { name: 'nombre', label: 'Nombre', type: 'text', validators: [Validators.required, Validators.maxLength(30) ] },
       { name: 'apellidos', label: 'Apellidos', type: 'text', validators: [Validators.required, Validators.maxLength(60)] },
+      { name: 'password', label: 'Contraseña', type: 'password', validators: [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/)], disabled: mode === 'edit', showEnabledFieldButton: mode === 'edit' },
       { name: 'email', label: 'Correo electrónico', type: 'email', validators: [Validators.required], disabled: mode === 'edit', showEnabledFieldButton: mode === 'edit' },
       { name: 'telefono', label: 'Teléfono', type: 'text', validators: [ Validators.maxLength(9) ]},
       { name: 'isAdmin', label: 'Administrador', type: 'boolean', defaultValue: false },
@@ -359,14 +360,14 @@ export class UsuariosComponent implements OnInit {
     ];
 
 
-    if( mode === 'create') {
-      fields.push({
-        name: 'password',
-        label: 'Contraseña',
-        type: 'password',
-        validators: [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/)]
-      });
-    }
+    // if( mode === 'create') {
+    //   fields.push({
+    //     name: 'password',
+    //     label: 'Contraseña',
+    //     type: 'password',
+    //     validators: [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/)]
+    //   });
+    // }
 
     return fields;
 
