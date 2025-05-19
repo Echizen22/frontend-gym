@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { Usuario, UsuarioMembresia } from '../interfaces/usuario.interface';
+import { NewPassword, Usuario, UsuarioMembresia } from '../interfaces/usuario.interface';
 import { PaginatedResponse } from '../interfaces/pagainted-response.interface';
 import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -46,6 +46,10 @@ export class UsuarioService {
 
   updateUserById(dni: string, body: Usuario ) {
     return this.apiService.doPatch<Usuario>('/usuario', dni, body, { responseType: 'json'} );
+  }
+
+  updateUserPassword(email: string, newPassowrd: NewPassword ) {
+    return this.apiService.doPatch<{message: string}>('/usuario/cambiar-password', email, newPassowrd, { responseType: 'json'} );
   }
 
   updateUserForProfileById(dni: string, body: Partial<Usuario>) {

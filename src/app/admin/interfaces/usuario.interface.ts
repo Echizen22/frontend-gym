@@ -16,6 +16,11 @@ export interface Usuario {
 }
 
 
+export interface NewPassword {
+  newPassword: string;
+}
+
+
 export interface UsuarioMembresia {
   id?: string;
   estado: string;

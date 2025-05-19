@@ -1,8 +1,9 @@
 
 <div id="contenido" class="grid justify-content-center">
   <div class="sm:col-11 md:col-6 lg:col-3 mt-5 p-4 border-1">
-    <h1>Iniciar Sesión</h1>
-    <form [formGroup]="myForm" (ngSubmit)="login()">
+    <h1 *ngIf="!showRecoveryPassword">Iniciar Sesión</h1>
+    <h1 *ngIf="showRecoveryPassword">Cambiar contraseña</h1>
+    <form *ngIf="!showRecoveryPassword" [formGroup]="myForm" (ngSubmit)="login()">
 
       <div class="field">
         <label>Correo electrónico</label><br>
@@ -19,6 +20,9 @@
       <div class="field">
         <label>Contraseña</label><br>
         <input type="password" required pPassword class="w-full" formControlName="password" placeholder="Ingrese su contraseña" >
+        <div class="mt-1">
+          <a (click)="recuperarContra()" class="text-blue-500 text-sm">¿Olvidaste tu contraseña?</a>
+        </div>
       </div>
 
 
@@ -39,6 +43,60 @@
               Crear una aquí
           </a>
       </div>
+    </form>
+
+    <form *ngIf="showRecoveryPassword" [formGroup]="myFormRecovery" (ngSubmit)="recovery()">
+
+      <div class="field">
+        <label>Correo electrónico</label><br>
+        <input
+          class="w-full"
+          type="text"
+          pInputText
+          required
+          formControlName="email"
+          placeholder="Ingrese su correo electrónico">
+          <small *ngIf="this.myFormRecovery.get('email')?.errors?.['email']" class="text-red-500">Correo electrónico no es valido.</small>
+          <small *ngIf="emailVerificado === false" class="text-red-500">
+            El correo no está registrado.
+          </small>
+          <small *ngIf="emailVerificado === true" class="text-green-500">
+            Correo verificado. Ahora puedes introducir una nueva contraseña.
+          </small>
+      </div>
+
+      <div *ngIf="emailVerificado" class="field">
+        <label>Nueva contraseña</label><br>
+        <input type="password" required pPassword class="w-full" formControlName="newPassword" placeholder="Ingrese su nueva contraseña" >
+        <small *ngIf="isValidField('newPassword', 'required')"  class="text-red-500">
+            La contraseña es requerida
+          </small>
+          <small *ngIf="isValidField('newPassword', 'minlength')"   class="text-red-500">
+            La contraseña debe tener un mínimo de 6 caracteres de longitud
+          </small>
+          <small *ngIf="!isValidField('newPassword', 'minlength') && isValidField('newPassword', 'pattern')" class="text-red-500">
+            Debe incluir al menos una mayúscula, una minúscula, un número y un carácter especial.
+          </small>
+      </div>
+
+
+      <div class="mb-2">
+        <p-button
+          class="mr-2"
+          label="Volver"
+          (onClick)="volverLogin()"
+          type="button"
+          [text]="true"
+          [raised]="true" />
+
+        <p-button
+          label="Cambiar contraseña"
+          type="submit"
+          [text]="true"
+          [raised]="true" />
+      </div>
+
+
     </form>
   </div>
 </div>
